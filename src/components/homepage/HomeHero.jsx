@@ -1,8 +1,8 @@
-// import { Button } from "@/components/ui/button";
 export default function HomeHero({ videoSrc }) {
   return (
-    <section className="relative bottom-24 isolate flex min-h-screen w-full items-end pb-20 justify-center overflow-hidden text-center text-white">
-      <video
+    <section className="relative isolate flex min-h-screen w-full items-end pb-20 justify-center overflow-hidden text-center text-white">
+     
+     <video
         className="absolute inset-0 z-[-2] h-full w-full object-cover"
         src="home-optimized.mp4"
         alt="Ezzstar.space"
@@ -20,11 +20,10 @@ export default function HomeHero({ videoSrc }) {
           A New World Awaits You!
         </h1>
 
-        <p className="max-w-3xl  md:text-md">
-          Claim <span className="font-medium">0.00015 $SPCA</span> every hour.
-          You just need to connect your wallet to claim your first Spica Token.
-          <span className="font-semibold md:text-md">
-            Withdraw Threshold: 0.001 $SPCA
+        <p className="max-w-3xl text-sm  md:text-md">
+          Claim <span className="font-medium">0.00015 $SPCA </span> every time you read your favorite <span className=""> story </span>or manga
+            <span className="font-semibold md:text-md"> -
+            unlimited withdrawls
           </span>
         </p>
 

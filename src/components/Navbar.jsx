@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav style={{ padding: "15px", background: "#222" }}>
+    <nav style={{ padding: "25px", background: "#222" }}>
       <NavLink to="/" style={{ margin: "10px", color: "#fff" }}>
         Home
       </NavLink>
