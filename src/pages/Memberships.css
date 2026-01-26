@@ -1,0 +1,229 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  color: #ffffff;
+}
+
+.memberships-container {
+  min-height: 100vh;
+  padding: 60px 20px;
+  background-color: #000000;
+}
+
+.memberships-title {
+  font-size: 48px;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 40px;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+}
+
+.billing-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 60px;
+}
+
+.toggle-btn {
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  background-color: #1a1a1a;
+  color: #888888;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.toggle-btn:first-child {
+  border-radius: 25px 0 0 25px;
+}
+
+.toggle-btn:last-child {
+  border-radius: 0 25px 25px 0;
+}
+
+.toggle-btn.active {
+  background-color: #a78bfa;
+  color: #ffffff;
+}
+
+.save-badge {
+  margin-left: 8px;
+  padding: 2px 8px;
+  background-color: #8b5cf6;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.pricing-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.pricing-card {
+  background-color: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  border-radius: 16px;
+  padding: 40px;
+  position: relative;
+}
+
+.card-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  background-color: #1a1a1a;
+}
+
+.heart-icon {
+  color: #888888;
+}
+
+.star-icon {
+  color: #00e5cc;
+}
+
+.card-title {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #ffffff;
+}
+
+.card-description {
+  font-size: 14px;
+  color: #888888;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.card-price {
+  font-size: 42px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #ffffff;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.original-price {
+  font-size: 18px;
+  color: #666666;
+  text-decoration: line-through;
+  font-weight: 400;
+}
+
+.card-button {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 32px;
+  transition: all 0.3s ease;
+}
+
+.card-button.current {
+  background-color: transparent;
+  border: 2px solid #1a1a1a;
+  color: #ffffff;
+}
+
+.card-button.upgrade {
+  background-color: #00e5cc;
+  color: #000000;
+}
+
+.card-button.upgrade:hover {
+  background-color: #00d4bb;
+  transform: translateY(-2px);
+}
+
+.features-list {
+  border-top: 1px solid #1a1a1a;
+  padding-top: 32px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.feature-item:last-child {
+  margin-bottom: 0;
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.feature-icon.included {
+  color: #00e5cc;
+}
+
+.feature-icon.excluded {
+  color: #ff4444;
+}
+
+.feature-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  .pricing-cards {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 768px) {
+  .memberships-title {
+    font-size: 36px;
+  }
+  
+  .pricing-card {
+    padding: 30px;
+  }
+  
+  .card-title {
+    font-size: 28px;
+  }
+  
+  .card-price {
+    font-size: 36px;
+  }
+}
