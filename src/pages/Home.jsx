@@ -1,11 +1,13 @@
 import HomeHero from "../components/homepage/HomeHero";
 import HomeManga from "../components/homepage/HomeManga";
+import HomeStories from "../components/homepage/HomeStories";
 
 export default function Home() {
   return (
-    <>
-    <HomeHero videoSrc="/media/home-hero-video.mp4" />
-    <HomeManga />
-    </>
+    <div className="bg-black">
+      <HomeHero />
+      <HomeManga />
+      <HomeStories />
+    </div>
   )
 }

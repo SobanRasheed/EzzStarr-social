@@ -1,4 +1,4 @@
-export default function HomeHero({ videoSrc }) {
+export default function HomeHero() {
   return (
     <section className="relative isolate flex min-h-screen w-full items-end pb-20 justify-center overflow-hidden text-center text-white">
      
@@ -39,7 +39,7 @@ export default function HomeHero({ videoSrc }) {
           >
             <button
               variant="secondary"
-              className="flex items-center gap-2 cursor-pointer text-white border border-gray-900 px-3 py-3 text-sm bg-transparent font-medium backdrop-blur-xs hover:bg-white/5 "
+              className="flex items-center gap-2 cursor-pointer text-white border border-gray-900 px-3 py-2  text-sm bg-transparent font-medium backdrop-blur-xs hover:bg-white/5 "
             >
               <img
                 src="spica-coin.png"
@@ -47,7 +47,7 @@ export default function HomeHero({ videoSrc }) {
                 height={30}
                 alt="Ezzstar.space"
               />
-              Ezzstar.space
+              Sign Up / Login
             </button>
           </a>
         </div>
