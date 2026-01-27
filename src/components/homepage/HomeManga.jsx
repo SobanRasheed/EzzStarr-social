@@ -3,20 +3,106 @@ import { X } from "lucide-react";
 import { useState } from "react";
 
 const HomeManga = () => {
-  const [mangas, setMangas] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // let [mangas, setMangas] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleRetry = () => {
     setRetryCount((prev) => prev + 1);
   };
+ let mangas = [
+  {
+    id: 1,
+    imageUrl: "placeholder.svg",
+    title: "Blooming Love",
+    author: "{Creator name}",
+    genre: "Love Story, Thriller",
+    reward: "0.00005 $SPCA",
+    stars: 5,
+    comments: 124,
+    chapters: 4,
+    views: "23k",
+    description:
+      "One day, when I was making school supplies in the art room, a very scary-looking girl was staring at me...!? Crafts girl vs. art boy romantic comedy!!",
+  },
+  {
+    id: 2,
+    imageUrl: "placeholder.svg",
+    title: "Shadow of Youth",
+    author: "{Creator name}",
+    genre: "Drama, Slice of Life",
+    reward: "0.00003 $SPCA",
+    stars: 4.5,
+    comments: 98,
+    chapters: 6,
+    views: "18k",
+    description:
+      "Two classmates struggle with identity, expectations, and the silent pressure of growing up.",
+  },
+  {
+    id: 3,
+    imageUrl: "placeholder.svg",
+    title: "Neon Hearts",
+    author: "{Creator name}",
+    genre: "Romance, Sci-Fi",
+    reward: "0.00007 $SPCA",
+    stars: 4.8,
+    comments: 212,
+    chapters: 9,
+    views: "31k",
+    description:
+      "In a city ruled by neon lights and secrets, love becomes the most dangerous rebellion.",
+  },
+  {
+    id: 4,
+    imageUrl: "placeholder.svg",
+    title: "Crimson Signal",
+    author: "{Creator name}",
+    genre: "Action, Mystery",
+    reward: "0.00006 $SPCA",
+    stars: 4.2,
+    comments: 76,
+    chapters: 5,
+    views: "15k",
+    description:
+      "A sudden transmission pulls an ordinary student into a hidden war beneath the city.",
+  },
+  {
+    id: 5,
+    imageUrl: "placeholder.svg",
+    title: "Petals After Rain",
+    author: "{Creator name}",
+    genre: "Romance, Drama",
+    reward: "0.00004 $SPCA",
+    stars: 4.9,
+    comments: 301,
+    chapters: 12,
+    views: "45k",
+    description:
+      "After heartbreak and loss, two strangers find healing in the quiet moments they share.",
+  },
+  {
+    id: 6,
+    imageUrl: "placeholder.svg",
+    title: "One-Shot: Fading Echo",
+    author: "{Creator name}",
+    genre: "Psychological, One-Shot",
+    reward: "0.00002 $SPCA",
+    stars: 4.6,
+    comments: 52,
+    chapters: 1,
+    views: "9k",
+    description:
+      "A single moment, a single choice — and an echo that never fades.",
+  },
+];
 
   return (
-    <div className="flex flex-col gap-2 px-4 md:px-20 lg:px-30 pt-10 dark-bg-2 ">
+    <div className="flex flex-col gap-2 mt-8 px-4 md:px-20 lg:px-3 pt-10 dark-bg-2 ">
 
       <div className={`flex flex-col lg:flex-row gap-5`}>
         {/* Manga Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-2  gap-2 w-full">
+        <div className="grid grid-cols-1 xl:grid-cols-3  gap-2 w-full">
           {isLoading ? (
             // Loading skeleton
             Array(8)
@@ -44,6 +130,9 @@ const HomeManga = () => {
               <MangaCard
                 key={manga.id}
                 id={manga.id}
+                stars={manga.stars}
+                genre={manga.genre}
+                comments={manga.comments}
                 imageUrl={manga.imageUrl}
                 title={manga.title}
                 author={manga.author}
@@ -53,26 +142,6 @@ const HomeManga = () => {
             ))
           )}
         </div>
-
-        {/* Spica Poster */}
-        {/* {showPoster && (
-          <div className="hidden lg:flex relative w-full lg:w-auto justify-center lg:justify-start ">
-            <video
-              autoPlay
-              loop
-              muted
-              src="/media/spica-video.mp4"
-              className="h-[350px] sm:h-[400px] w-[350px] object-cover rounded-md hover:scale-105 transition-transform duration-700 ease-in-out"
-              alt="Spica Poster"
-            />
-            <div
-              className="absolute top-2 right-2 cursor-pointer"
-              onClick={() => setShowPoster(false)}
-            >
-              <X size={20} className="text-white" />
-            </div>
-          </div>
-        )} */}
       </div>
     </div>
   );
