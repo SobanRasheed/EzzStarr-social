@@ -1,6 +1,7 @@
 import MangaCard from "../reuseable comps/MangaCard";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+
 
 const HomeManga = () => {
   // let [mangas, setMangas] = useState([]);
