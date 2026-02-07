@@ -2,7 +2,7 @@ import React from "react";
 
 const events = [
   {
-    title: "Counter Strike 2 Tournament",
+    title: "Counter Strike 2 ",
     logo: "ESL",
     tags: ["Registration", "Upcoming", "Game Jam"],
     cta: "Register",
@@ -35,7 +35,7 @@ const events = [
     image: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620",
   },
   {
-    title: "Counter Strike 2 Tournament",
+    title: "Counter Strike 2 ",
     logo: "ESL",
     tags: ["Registration", "Upcoming", "Game Jam"],
     cta: "Register",
@@ -98,27 +98,32 @@ export default function HomeEvents() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
               {/* Logo */}
-              <div className="absolute bottom-4 left-4 w-12 h-12 bg-black/80 backdrop-blur flex items-center justify-center text-sm font-bold">
-                {event.logo}
-              </div>
             </div>
 
             {/* Content */}
             <div className="flex flex-col flex-1 px-6 pt-5 pb-6">
-              <h3 className="text-lg font-semibold leading-tight mb-3">
-                {event.title}
-              </h3>
 
-              {/* Tags */}
-              <div className="flex flex-wrap gap-2 mb-4">
-                {event.tags.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className={`text-[11px] rounded-full px-3 py-1 font-medium ${tagColors[tag]}`}
-                  >
-                    {tag}
-                  </span>
-                ))}
+              <div className="flex gap-2">
+                <div className={`rounded-full relative -top-10 w-18 h-18 bg-yellow-500 backdrop-blur flex items-center justify-center text-sm font-bold`}>
+                  {event.logo}
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold leading-tight mb-3">
+                    {event.title}
+                  </h3>
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {event.tags.map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className={`text-[9px] rounded-full px-2 py-1 font-medium ${tagColors[tag]}`}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               <p className="text-xs text-gray-500 leading-relaxed mb-4">
@@ -153,8 +158,8 @@ export default function HomeEvents() {
               {/* CTA */}
               <button
                 className={`mt-auto h-11 text-sm font-semibold transition ${event.cta === "Register"
-                    ? "bg-cyan-400 text-black hover:bg-cyan-300"
-                    : "bg-gray-200 text-black hover:bg-gray-300"
+                  ? "bg-cyan-400 text-black hover:bg-cyan-300"
+                  : "bg-gray-200 text-black hover:bg-gray-300"
                   }`}
               >
                 {event.cta}

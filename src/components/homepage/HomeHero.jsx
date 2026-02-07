@@ -11,8 +11,8 @@ export default function HomeHero() {
         muted
       />
 
-      <div className="absolute left-0 w-[50%] inset-0 z-[-1] bg-gradient-to-r from-black to-transparent" />
-      <div className="absolute right-0  inset-0 z-[-1] bg-gradient-to-l from-black/60 to-transparent" />
+      <div className="absolute left-0 w-[50%] inset-0 z-[-1] bg-linear-to-r from-black to-transparent" />
+      <div className="absolute right-0  inset-0 z-[-1] bg-linear-to-l from-black/60 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[-1] h-1/3 bg-gradient-to-t from-black to-transparent" />
 
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-4 ">

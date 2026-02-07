@@ -65,11 +65,13 @@ export default function SpicaMembership() {
   };
 
   return (
-    <div className="bg-black mt-16 min-h-screen text-white font-sans relative -top-20 pt-10">
-      <div className="max-w-[1400px] mx-auto py-16 px-10 ">
+    <div className="bg-black min-h-screen text-white font-sans relative pt-10">
+      <div className='absolute -top-20 w-full bg-black h-22' />
+
+      <div className="mx-auto py-16 px-10 ">
         {/* Header */}
-        <div className="mb-16">
-          <div className="flex justify-between items-start">
+        <div className="">
+          <div className="flex justify-between items-center mb-6">
             <h1 className="text-[55px] font-normal leading-tight max-w-[550px] tracking-[-0.02em]">
               Pay less, and earn more by reading and writing stories
             </h1>
@@ -96,8 +98,7 @@ export default function SpicaMembership() {
 
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-24">
-          {/* Free Card */}
-          <div className="bg-white/5 border border-white/10 rounded-xl p-8">
+          <div className="bg-white/5 border hover:scale-105 transition-all border-white/10 rounded-xl p-8">
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-2xl font-semibold">Free</h2>
               <span className="bg-white/5 border border-white/10 px-4 py-1 rounded-full text-xs text-gray-400">Current Plan</span>
@@ -123,8 +124,7 @@ export default function SpicaMembership() {
             </div>
           </div>
 
-          {/* Star Membership Card */}
-          <div className="bg-white/5 border border-white/10 rounded-xl p-8">
+          <div className="bg-white/5 border hover:scale-105 transition-all border-white/10 rounded-xl p-8">
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-2xl font-semibold">Star Membership</h2>
               <button className="bg-[#00D9A3] border-none px-5 py-2 rounded-full text-black text-sm font-bold cursor-pointer">Upgrade</button>
@@ -150,8 +150,7 @@ export default function SpicaMembership() {
             </div>
           </div>
 
-          {/* NFT Signature Card */}
-          <div className="bg-white/5 border border-white/10 rounded-xl p-8">
+          <div className="bg-white/5 border hover:scale-105 transition-all border-white/10 rounded-xl p-8">
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-2xl font-semibold">NFT Signature</h2>
               <button className="bg-gradient-to-r from-[#E91E8C] to-[#9333EA] px-5 py-2 rounded-full text-white text-sm font-bold cursor-pointer">Unlock Now</button>
@@ -178,13 +177,11 @@ export default function SpicaMembership() {
           </div>
         </div>
 
-        {/* FAQ Section */}
         <div className="text-center mb-16">
           <h2 className="text-4xl font-semibold mb-4 tracking-[-0.02em]">Frequently Asked Questions</h2>
           <p className="text-gray-400 text-base mb-8 max-w-[700px] mx-auto">Unleashing clarity and empowering decision-making. Find in-depth answers and gain deeper understanding.</p>
           <button className="bg-gradient-to-r from-[#E91E8C] to-[#9333EA] px-6 py-3 rounded-2xl text-white text-sm font-bold mb-12">Support Center</button>
 
-          {/* FAQ Items */}
           <div className="max-w-[900px] mx-auto text-left">
             {faqs.map((faq, index) => (
               <div key={index} className="bg-white/5 border border-white/10 rounded-lg mb-4 overflow-hidden">
