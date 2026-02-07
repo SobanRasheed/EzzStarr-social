@@ -1,138 +1,204 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-function Memberships() {
+export default function SpicaMembership() {
   const [billingCycle, setBillingCycle] = useState('monthly');
+  const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
-  const freePlanFeatures = [
-    { text: 'Claim 0.00015 $SPCA Token every hour.', included: true },
-    { text: 'Writer & manga artist earn extra Spica when readers engage with their content.', included: false },
-    { text: 'AI voice narrator for reading stories.', included: false },
-    { text: 'Generate image visuals based on stories.', included: false },
-    { text: 'Access to private threads and participate in VIP events.', included: false },
-    { text: 'Gain early access to new features and updates.', included: false },
-    { text: 'Unlock Personalized Profile Themes', included: false }
+  const features = {
+    free: [
+      { text: 'Earn ', highlight: billingCycle === 'yearly' ? '0.00006 SPCA' : '0.00005 SPCA', textAfter: ' Token per quiz.', available: true },
+      { text: '', highlight: 'Creators Earn SPCA', textAfter: ' for every content they publish.', available: true },
+      { text: '', highlight: 'AI Voice Narrator', textAfter: ' brings every chapter to life.', available: false },
+      { text: '', highlight: 'Generate image visuals', textAfter: ' from scenes inside stories.', available: false },
+      { text: 'Access to participate in exclusive ', highlight: 'VIP events.', textAfter: '', available: false },
+      { text: 'Early access to ', highlight: 'new platform features', textAfter: ' and Updates.', available: false },
+      { text: 'Unlock Personalized ', highlight: 'Profile Themes.', textAfter: '', available: false },
+      { text: 'Receive ', highlight: '0 SPCA', textAfter: ' each month.', available: false }
+    ],
+    star: [
+      { text: 'Earn ', highlight: billingCycle === 'yearly' ? '0.00018 SPCA' : '0.00015 SPCA', textAfter: billingCycle === 'yearly' ? ' Token per quiz (3x Free tier).' : ' Token per quiz (3x Free tier).', available: true },
+      { text: '', highlight: 'Creators earn 20%', textAfter: ' more SPCA on every published content + 2x visibility boost.', available: true },
+      { text: '', highlight: 'AI Voice Narrator', textAfter: ' brings every chapter to life.', available: true },
+      { text: '', highlight: 'Generate image visuals', textAfter: ' from scenes inside stories.', available: true },
+      { text: 'Access to participate in exclusive ', highlight: 'VIP events.', textAfter: '', available: true },
+      { text: 'Early access to ', highlight: 'new platform features', textAfter: ' and Updates.', available: true },
+      { text: 'Unlock Personalized ', highlight: 'Profile Themes.', textAfter: '', available: true },
+      { text: 'Receive ', highlight: '2,000 SPCA FREE', textAfter: ' each month as a loyalty bonus.', available: true }
+    ],
+    nft: [
+      { text: 'NFT holders receive ', highlight: 'tier-based benefits', textAfter: ' across three exclusive NFTs.', available: true },
+      { text: '', highlight: 'Verified star badge', textAfter: ' displayed on profile (Lifetime).', available: true },
+      { text: 'Access to ', highlight: 'exclusive drops, IRL collectibles,', textAfter: ' and VIP events.', available: true },
+      { text: 'Early access to ', highlight: 'beta apps, metaverse,', textAfter: ' and game ecosystems.', available: true },
+      { text: 'Entry into ', highlight: 'private discord lounges', textAfter: ' and holder-only experiences.', available: true },
+      { text: '', highlight: 'Cross-platform privileges', textAfter: ' across all Ezzstar products.', available: true },
+      { text: 'Receive ', highlight: 'SPCA based on NFT signature tier.', textAfter: '', available: true },
+      { text: 'Enjoy limited ', highlight: 'free membership access', textAfter: ' based on your NFT tier.', available: true }
+    ]
+  };
+
+  const faqs = [
+    {
+      question: 'What is Ezzstar Social?',
+      answer: 'Ezzstar Social is a creator and gamer platform where you can share content, participate in event, upgrade your profile, earn Spica, and boost your visibility and growth.'
+    },
+    {
+      question: 'How do i earn Spica on the platform ?',
+      answer: 'You can earn Spica by posting content, views, receiving tips from audience, reading your favorite content, engaging with the community, and participating in events.'
+    },
+    {
+      question: 'What is the NFT Signature, and why is it important?',
+      answer: 'Your NFT Signature acts as your identity badge on the platform. It unlocks limited free membership, higher earning advantages, exclusive features, and premium access.'
+    },
+    {
+      question: 'Do I need crypto knowledge to use Ezzstar Social?',
+      answer: 'No. Everything runs in the background. You can post, participate, earn, and grow naturally. crypto features are optional and simplified.'
+    },
+    {
+      question: 'Can I use another payment option to receive tips?',
+      answer: 'Yes. You can add your own payment link to receive tips directly from your audience. The "Buy Me a Coffee" option is already available on your profile as well.'
+    }
   ];
 
-  const starPlanFeatures = [
-    { text: 'Claim 0.00025 $SPCA Token every hour.', included: true },
-    { text: 'Writer & manga artist earn extra Spica when readers engage with their content.', included: true },
-    { text: 'AI voice narrator for reading stories.', included: true },
-    { text: 'Generate image visuals based on stories.', included: true },
-    { text: 'Access to private threads and participate in VIP events.', included: true },
-    { text: 'Gain early access to new features and updates.', included: true },
-    { text: 'Unlock Personalized Profile Themes', included: true }
-  ];
-
-  const pricing = {
-    monthly: { price: '$12.99', original: '$15.99' },
-    yearly: { price: '$9.99', original: '$12.99' }
+  const toggleFaq = (index) => {
+    setOpenFaqIndex(openFaqIndex === index ? -1 : index);
   };
 
   return (
-    <div className="min-h-screen p-[60px_20px] bg-black">
-      <h1 className="text-5xl font-light text-center mb-10 leading-tight">
-        Pay less, and earn more by<br />reading and writing stories
-      </h1>
+    <div className="bg-black mt-16 min-h-screen text-white font-sans relative -top-20 pt-10">
+      <div className="max-w-[1400px] mx-auto py-16 px-10 ">
+        {/* Header */}
+        <div className="mb-16">
+          <div className="flex justify-between items-start">
+            <h1 className="text-[55px] font-normal leading-tight max-w-[550px] tracking-[-0.02em]">
+              Pay less, and earn more by reading and writing stories
+            </h1>
 
-      <div className="flex justify-center items-center gap-0 mb-[60px]">
-        <button 
-          className={`px-8 py-3 text-base font-medium border-none rounded-l-full cursor-pointer transition-all ${
-            billingCycle === 'monthly' 
-              ? 'bg-purple-400 text-white' 
-              : 'bg-gray-900 text-gray-600'
-          }`}
-          onClick={() => setBillingCycle('monthly')}
-        >
-          Monthly
-        </button>
-        <button 
-          className={`px-8 py-3 text-base font-medium border-none rounded-r-full cursor-pointer transition-all ${
-            billingCycle === 'yearly' 
-              ? 'bg-purple-400 text-white' 
-              : 'bg-gray-900 text-gray-600'
-          }`}
-          onClick={() => setBillingCycle('yearly')}
-        >
-          Yearly
-          {billingCycle === 'yearly' && <span className="ml-2 px-2 py-0.5 bg-purple-600 text-white text-xs font-semibold rounded">SAVE</span>}
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto px-5">
-        {/* Free Plan */}
-        <div className="bg-gray-950 border border-gray-900 rounded-2xl p-10">
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 bg-gray-900 text-gray-600">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-label="Heart icon">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
-          </div>
-          
-          <h2 className="text-4xl font-semibold mb-4 text-white">Free</h2>
-          <p className="text-base text-gray-600 leading-relaxed mb-8">
-            In the basic plan, users can claim and earn Spica Tokens by writing stories and referring friends.
-          </p>
-          
-          <div className="text-5xl font-semibold mb-6 text-white">$0.00</div>
-          
-          <button className="w-full py-4 text-base font-semibold border-2 border-gray-900 text-white rounded-lg mb-8 cursor-pointer">Current Plan</button>
-          
-          <div className="border-t border-gray-900 pt-8">
-            {freePlanFeatures.map((feature, index) => (
-              <div key={index} className="flex items-start gap-3 mb-5">
-                <span className={`flex-shrink-0 w-5 h-5 flex items-center justify-center ${feature.included ? 'text-cyan-400' : 'text-red-500'}`}>
-                  {feature.included ? (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Included">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  ) : (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Not included">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  )}
+            <div className="inline-flex gap-0">
+              <button
+                onClick={() => setBillingCycle('monthly')}
+                className={`px-7 py-2.5 rounded-l-full text-sm font-semibold transition-all ${billingCycle === 'monthly' ? 'bg-gradient-to-r from-[#E91E8C] to-[#9333EA] text-white' : 'bg-transparent text-gray-400 border-r border-white/10'}`}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setBillingCycle('yearly')}
+                className={`px-7 py-2.5 rounded-r-full text-sm font-semibold flex items-center gap-2 transition-all ${billingCycle === 'yearly' ? 'bg-gradient-to-r from-[#E91E8C] to-[#9333EA] text-white' : 'bg-transparent text-gray-400'}`}
+              >
+                Yearly
+                <span className={`${billingCycle === 'yearly' ? 'bg-white/25 text-white' : 'bg-[#9333EA]/30 text-[#9333EA]'} px-2 py-0.5 rounded-md text-[10px] font-extrabold tracking-[0.5px]`}>
+                  SAVE
                 </span>
-                <span className="text-base leading-relaxed text-white">{feature.text}</span>
-              </div>
-            ))}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Star Membership Plan */}
-        <div className="bg-gray-950 border border-gray-900 rounded-2xl p-10">
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 bg-gray-900 text-cyan-500">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-label="Star icon">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-24">
+          {/* Free Card */}
+          <div className="bg-white/5 border border-white/10 rounded-xl p-8">
+            <div className="flex justify-between items-center mb-3">
+              <h2 className="text-2xl font-semibold">Free</h2>
+              <span className="bg-white/5 border border-white/10 px-4 py-1 rounded-full text-xs text-gray-400">Current Plan</span>
+            </div>
+
+            <p className="text-gray-400 text-sm mb-5 leading-6">In the basic plan, users can claim and earn Spica Tokens by writing stories and referring friends.</p>
+
+            <div className="text-[42px] font-extrabold mb-7">$00.00</div>
+
+            <div className="flex flex-col gap-3">
+              {features.free.map((feature, index) => (
+                <div key={index} className="flex items-start gap-3 text-sm leading-6">
+                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 ${feature.available ? 'bg-emerald-500 text-white' : 'bg-red-200 text-red-500'}`}>
+                    {feature.available ? '✓' : '×'}
+                  </span>
+                  <span className={`${feature.available ? 'text-white' : 'text-gray-500'}`}>
+                    {feature.text}
+                    <span className="text-[#E91E8C] font-semibold">{feature.highlight}</span>
+                    {feature.textAfter}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-          
-          <h2 className="text-4xl font-semibold mb-4 text-white">Star Membership</h2>
-          <p className="text-base text-gray-600 leading-relaxed mb-8">
-            Get 2x Spica Token rewards for writing stories, premium features, and exclusive access to special events or content
-          </p>
-          
-          <div className="text-5xl font-semibold mb-6 text-white flex items-baseline gap-3">
-            {pricing[billingCycle].price}
-            <span className="text-lg text-gray-600 line-through font-normal">{pricing[billingCycle].original}</span>
+
+          {/* Star Membership Card */}
+          <div className="bg-white/5 border border-white/10 rounded-xl p-8">
+            <div className="flex justify-between items-center mb-3">
+              <h2 className="text-2xl font-semibold">Star Membership</h2>
+              <button className="bg-[#00D9A3] border-none px-5 py-2 rounded-full text-black text-sm font-bold cursor-pointer">Upgrade</button>
+            </div>
+
+            <p className="text-gray-400 text-sm mb-5 leading-6">In the star plan, users unlock higher Spica rewards, advanced AI tools, and creator features.</p>
+
+            <div className="text-[42px] font-extrabold mb-7">${billingCycle === 'yearly' ? '99.99' : '12.99'}</div>
+
+            <div className="flex flex-col gap-3">
+              {features.star.map((feature, index) => (
+                <div key={index} className="flex items-start gap-3 text-sm leading-6">
+                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 ${feature.available ? 'bg-emerald-500 text-white' : 'bg-red-200 text-red-500'}`}>
+                    {feature.available ? '✓' : '×'}
+                  </span>
+                  <span className={`${feature.available ? 'text-white' : 'text-gray-500'}`}>
+                    {feature.text}
+                    <span className="text-[#E91E8C] font-semibold">{feature.highlight}</span>
+                    {feature.textAfter}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-          
-          <button className="w-full py-4 text-base font-semibold bg-cyan-400 text-black rounded-lg mb-8 cursor-pointer hover:bg-cyan-300 transition-colors">Upgrade</button>
-          
-          <div className="border-t border-gray-900 pt-8">
-            {starPlanFeatures.map((feature, index) => (
-              <div key={index} className="flex items-start gap-3 mb-5">
-                <span className={`flex-shrink-0 w-5 h-5 flex items-center justify-center ${feature.included ? 'text-cyan-400' : 'text-red-500'}`}>
-                  {feature.included ? (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Included">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  ) : (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Not included">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  )}
-                </span>
-                <span className="text-base leading-relaxed text-white">{feature.text}</span>
+
+          {/* NFT Signature Card */}
+          <div className="bg-white/5 border border-white/10 rounded-xl p-8">
+            <div className="flex justify-between items-center mb-3">
+              <h2 className="text-2xl font-semibold">NFT Signature</h2>
+              <button className="bg-gradient-to-r from-[#E91E8C] to-[#9333EA] px-5 py-2 rounded-full text-white text-sm font-bold cursor-pointer">Unlock Now</button>
+            </div>
+
+            <p className="text-gray-400 text-sm mb-5 leading-6">In the elite tier, NFT holders gain tier-based rewards, exclusive perks, and early access to VIP events.</p>
+
+            <div className="text-[42px] font-extrabold mb-2">Elite Access</div>
+
+            <div className="flex flex-col gap-3">
+              {features.nft.map((feature, index) => (
+                <div key={index} className="flex items-start gap-3 text-sm leading-6">
+                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 ${feature.available ? 'bg-[#00D9A3] text-black' : 'bg-red-200 text-red-500'}`}>
+                    {feature.available ? '◆' : '×'}
+                  </span>
+                  <span className={`${feature.available ? 'text-white' : 'text-gray-500'}`}>
+                    {feature.text}
+                    <span className="text-[#00D9A3] font-semibold">{feature.highlight}</span>
+                    {feature.textAfter}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-semibold mb-4 tracking-[-0.02em]">Frequently Asked Questions</h2>
+          <p className="text-gray-400 text-base mb-8 max-w-[700px] mx-auto">Unleashing clarity and empowering decision-making. Find in-depth answers and gain deeper understanding.</p>
+          <button className="bg-gradient-to-r from-[#E91E8C] to-[#9333EA] px-6 py-3 rounded-2xl text-white text-sm font-bold mb-12">Support Center</button>
+
+          {/* FAQ Items */}
+          <div className="max-w-[900px] mx-auto text-left">
+            {faqs.map((faq, index) => (
+              <div key={index} className="bg-white/5 border border-white/10 rounded-lg mb-4 overflow-hidden">
+                <div onClick={() => toggleFaq(index)} className="px-7 py-6 flex justify-between items-center cursor-pointer">
+                  <span className="text-base font-semibold">{faq.question}</span>
+                  <button className={`w-7 h-7 rounded-full border border-white/10 flex items-center justify-center text-lg transition-all ${openFaqIndex === index ? 'bg-[#E91E8C] text-white' : 'bg-transparent text-white'}`}>
+                    {openFaqIndex === index ? '×' : '+'}
+                  </button>
+                </div>
+                {openFaqIndex === index && (
+                  <div className="px-7 pb-6 text-gray-400 text-sm leading-7">
+                    {faq.answer}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -141,5 +207,3 @@ function Memberships() {
     </div>
   );
 }
-
-export default Memberships;
