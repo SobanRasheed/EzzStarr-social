@@ -1,15 +1,20 @@
+import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "./Layout";
-import Home from "./pages/Home";
-import Memberships from "./pages/Memberships";
-import Manga from "./pages/Manga";
-import Threads from "./pages/Threads";
-import Stories from "./pages/Stories";
-import Events from "./pages/Events";
-import Eventsparticipants from "./components/events/Eventsparticipants";
-import Eventsoverview from "./components/events/Eventsoverview";
-import EventsPrizes from "./components/events/Eventsprizes";
-import EventsLayout from "./components/events/EventsLayout";
+
+// lazy-load top level pages/routes
+const Layout = React.lazy(() => import("./Layout"));
+const Home = React.lazy(() => import("./pages/Home"));
+const Memberships = React.lazy(() => import("./pages/Memberships"));
+const Manga = React.lazy(() => import("./pages/Manga"));
+const Threads = React.lazy(() => import("./pages/Threads"));
+const Stories = React.lazy(() => import("./pages/Stories"));
+const Events = React.lazy(() => import("./pages/Events"));
+
+// lazy-load event sub-components
+const Eventsparticipants = React.lazy(() => import("./components/events/Eventsparticipants"));
+const Eventsoverview = React.lazy(() => import("./components/events/Eventsoverview"));
+const EventsPrizes = React.lazy(() => import("./components/events/Eventsprizes"));
+const EventsLayout = React.lazy(() => import("./components/events/EventsLayout"));
 
 const router = createBrowserRouter([
   {
