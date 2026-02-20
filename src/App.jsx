@@ -6,6 +6,10 @@ import Manga from "./pages/Manga";
 import Threads from "./pages/Threads";
 import Stories from "./pages/Stories";
 import Events from "./pages/Events";
+import Eventsparticipants from "./components/events/Eventsparticipants";
+import Eventsoverview from "./components/events/Eventsoverview";
+import EventsPrizes from "./components/events/Eventsprizes";
+import EventsLayout from "./components/events/EventsLayout";
 
 const router = createBrowserRouter([
   {
@@ -34,8 +38,22 @@ const router = createBrowserRouter([
       },
       {
         path: "Events",
-        element: <Events />,
-      },
+        children: [
+          {
+            index: true,
+            element: <Events />, // /Events
+          },
+          {
+            path: ":id", // 👈 group dynamic event
+            element: <EventsLayout />, // layout for one event
+            children: [
+              { path: "overview", element: <Eventsoverview /> },
+              { path: "prizes", element: <EventsPrizes /> },
+              { path: "participants", element: <Eventsparticipants /> },
+            ],
+          },
+        ],
+      }
     ],
   },
 ]);

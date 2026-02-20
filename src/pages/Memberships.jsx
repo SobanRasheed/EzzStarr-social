@@ -98,7 +98,8 @@ export default function SpicaMembership() {
 
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-24">
-          <div className="bg-white/5 border hover:scale-105 transition-all border-white/10 rounded-xl p-8">
+          {/* Free Card */}
+          <div className="bg-[#0d110f] hover:scale-105 transition-all rounded-xl p-8">
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-2xl font-semibold">Free</h2>
               <span className="bg-white/5 border border-white/10 px-4 py-1 rounded-full text-xs text-gray-400">Current Plan</span>
@@ -116,7 +117,7 @@ export default function SpicaMembership() {
                   </span>
                   <span className={`${feature.available ? 'text-white' : 'text-gray-500'}`}>
                     {feature.text}
-                    <span className="text-[#E91E8C] font-semibold">{feature.highlight}</span>
+                    <span className="text-[#DF28E2] font-semibold">{feature.highlight}</span>
                     {feature.textAfter}
                   </span>
                 </div>
@@ -124,10 +125,11 @@ export default function SpicaMembership() {
             </div>
           </div>
 
-          <div className="bg-white/5 border hover:scale-105 transition-all border-white/10 rounded-xl p-8">
+          {/* Star Membership Card */}
+          <div className="bg-[#0d110f] hover:scale-105 transition-all rounded-xl p-8">
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-2xl font-semibold">Star Membership</h2>
-              <button className="bg-[#00D9A3] border-none px-5 py-2 rounded-full text-black text-sm font-bold cursor-pointer">Upgrade</button>
+              <button className="bg-[#01F1E3] border-none px-5 py-2 rounded-full text-black text-sm font-bold cursor-pointer">Upgrade</button>
             </div>
 
             <p className="text-gray-400 text-sm mb-5 leading-6">In the star plan, users unlock higher Spica rewards, advanced AI tools, and creator features.</p>
@@ -142,7 +144,7 @@ export default function SpicaMembership() {
                   </span>
                   <span className={`${feature.available ? 'text-white' : 'text-gray-500'}`}>
                     {feature.text}
-                    <span className="text-[#E91E8C] font-semibold">{feature.highlight}</span>
+                    <span className="text-[#DF28E2] font-semibold">{feature.highlight}</span>
                     {feature.textAfter}
                   </span>
                 </div>
@@ -150,10 +152,11 @@ export default function SpicaMembership() {
             </div>
           </div>
 
-          <div className="bg-white/5 border hover:scale-105 transition-all border-white/10 rounded-xl p-8">
+          {/* NFT Signature Card */}
+          <div className="bg-[#0B0312] hover:scale-105 transition-all rounded-xl p-8">
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-2xl font-semibold">NFT Signature</h2>
-              <button className="bg-gradient-to-r from-[#E91E8C] to-[#9333EA] px-5 py-2 rounded-full text-white text-sm font-bold cursor-pointer">Unlock Now</button>
+              <button className="bg-gradient-to-r from-[#DF28E2] to-[#AD7AFF] px-5 py-2 rounded-full text-white text-sm font-bold cursor-pointer">Unlock Now</button>
             </div>
 
             <p className="text-gray-400 text-sm mb-5 leading-6">In the elite tier, NFT holders gain tier-based rewards, exclusive perks, and early access to VIP events.</p>
@@ -163,12 +166,12 @@ export default function SpicaMembership() {
             <div className="flex flex-col gap-3">
               {features.nft.map((feature, index) => (
                 <div key={index} className="flex items-start gap-3 text-sm leading-6">
-                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 ${feature.available ? 'bg-[#00D9A3] text-black' : 'bg-red-200 text-red-500'}`}>
+                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 ${feature.available ? 'bg-[#01F1E3] text-black' : 'bg-red-200 text-red-500'}`}>
                     {feature.available ? '◆' : '×'}
                   </span>
                   <span className={`${feature.available ? 'text-white' : 'text-gray-500'}`}>
                     {feature.text}
-                    <span className="text-[#00D9A3] font-semibold">{feature.highlight}</span>
+                    <span className="text-[#01F1E3] font-semibold">{feature.highlight}</span>
                     {feature.textAfter}
                   </span>
                 </div>

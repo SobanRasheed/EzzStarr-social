@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function CraytaGaming() {
   const [openFaq, setOpenFaq] = useState(null);
-
+  const navigate = useNavigate();
   const upcomingEvents = [
     {
+      id: 1,
       title: "Counter Strike 2 Tournament",
       organizer: "ESL",
       organizerBg: "bg-yellow-400 text-black",
@@ -17,6 +19,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop"
     },
     {
+      id: 2,
       title: "Tekken 8 Tournament",
       organizer: "5 STAR",
       organizerBg: "bg-white text-black",
@@ -29,6 +32,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&h=300&fit=crop"
     },
     {
+      id: 3,
       title: "International Cosplay Contest",
       organizer: "COSPLAY",
       organizerBg: "bg-purple-600 text-white",
@@ -41,6 +45,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop"
     },
     {
+      id: 4,
       title: "Digital Guider",
       organizer: "DG",
       organizerBg: "bg-blue-500 text-white",
@@ -53,6 +58,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop"
     },
     {
+      id: 5,
       title: "Game dev Jam: Neon Futures",
       organizer: "LEAGUE",
       organizerBg: "bg-yellow-500 text-black",
@@ -65,6 +71,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&h=300&fit=crop"
     },
     {
+      id: 6,
       title: "Game dev Jam: Neon Futures",
       organizer: "GAME JAM",
       organizerBg: "bg-gray-800 text-white",
@@ -77,6 +84,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop"
     },
     {
+      id: 7,
       title: "Cyberpunk Writing Contest 2024",
       organizer: "V",
       organizerBg: "bg-red-600 text-white",
@@ -89,6 +97,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop"
     },
     {
+      id: 8,
       title: "Game dev Jam: Neon Futures",
       organizer: "EPIC",
       organizerBg: "bg-gray-700 text-white",
@@ -101,6 +110,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&h=300&fit=crop"
     },
     {
+      id: 9,
       title: "Game dev Jam: Neon Futures",
       organizer: "ULTIMATE",
       organizerBg: "bg-orange-500 text-white",
@@ -113,6 +123,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop"
     },
     {
+      id: 10,
       title: "Game dev Jam: Neon Futures",
       organizer: "DG",
       organizerBg: "bg-blue-500 text-white",
@@ -125,6 +136,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop"
     },
     {
+      id: 11,
       title: "Game dev Jam: Neon Futures",
       organizer: "XBOX",
       organizerBg: "bg-green-600 text-white",
@@ -137,6 +149,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&h=300&fit=crop"
     },
     {
+      id: 12,
       title: "Cyberpunk Writing Contest 2024",
       organizer: "5 STAR",
       organizerBg: "bg-white text-black",
@@ -152,6 +165,7 @@ export default function CraytaGaming() {
 
   const ongoingEvents = [
     {
+      id: 1,
       title: "HI-TECH 4",
       game: "Apex Legends",
       status: "Live Now",
@@ -159,6 +173,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=250&fit=crop"
     },
     {
+      id: 2,
       title: "Championship Finals",
       game: "League of Legends",
       status: "Live Now",
@@ -166,6 +181,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&h=250&fit=crop"
     },
     {
+      id: 3,
       title: "HI-TECH 4",
       game: "Valorant",
       status: "Live Now",
@@ -173,6 +189,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=250&fit=crop"
     },
     {
+      id: 4,
       title: "Fortnite Battle",
       game: "Fortnite",
       status: "Live Now",
@@ -180,6 +197,7 @@ export default function CraytaGaming() {
       image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=250&fit=crop"
     },
     {
+      id: 5,
       title: "Pro League",
       game: "CS:GO",
       status: "Live Now",
@@ -207,7 +225,7 @@ export default function CraytaGaming() {
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
       <div
-        className="relative h-96 bg-cover bg-center"
+        className="relative min-h-screen bg-cover bg-center"
         style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=1200&h=400&fit=crop')` }}
       >
       <div className="absolute inset-0 flex flex-col justify-end items-start px-8 md:px-16 pb-12 md:pb-16">
@@ -281,22 +299,22 @@ export default function CraytaGaming() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {upcomingEvents.map((event, index) => (
-              <div key={index} className="bg-neutral-900 rounded-lg overflow-hidden hover:ring-2 hover:ring-cyan-400 transition-all duration-300 shadow-xl">
+              <div key={index} className="bg-gray-900 border border-gray-800 rounded-none overflow-hidden hover:ring-2 hover:ring-cyan-400 transition-all duration-300 shadow-xl">
                 {/* Event Image */}
                 <div className="relative h-48">
                   <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
                 </div>
                 {/* Event Content - Black Background */}
-                <div className="p-5 bg-black">
+                <div className="px-6 py-8 bg-gray-900 text-center">
                   <div className="relative">
                     <div className={`absolute -top-12 left-0 w-14 h-14 rounded-full ${event.organizerBg} flex items-center justify-center font-black text-[9px] leading-[10px] text-center p-2 shadow-lg border-4 border-black`} >
                       {event.organizer}
                     </div>
                   </div>
                   {/* Title */}
-                  <h3 className="text-lg font-bold mb-3 text-white">{event.title}</h3>
+                  <h3 className="text-lg font-bold mb-3 text-white text-center">{event.title}</h3>
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap justify-center gap-2 mb-4">
                     {event.tags.map((tag, tagIndex) => (
                       <span key={tagIndex} className={`px-2.5 py-1 rounded text-[10px] font-semibold ${
                         tag === 'Open' ? 'bg-green-600 text-white' :
@@ -348,7 +366,7 @@ export default function CraytaGaming() {
                     </div>
                   </div>
                   {/* Register Button */}
-                  <button className="w-full bg-cyan-400 hover:bg-cyan-500 text-black font-bold py-3 rounded-md text-sm transition-colors duration-300 uppercase tracking-wide">
+                  <button onClick={() => navigate(`${event.id}/overview`)} className="w-full bg-cyan-400 hover:bg-cyan-500 text-black font-bold py-3 rounded-none text-sm transition-colors duration-300 uppercase tracking-wide">
                     Register
                   </button>
                 </div>
@@ -359,34 +377,61 @@ export default function CraytaGaming() {
       </div>
 
       {/* Ongoing Events Section */}
-      <div className="px-4 md:px-8 lg:px-16 py-12 bg-gray-950">
+      <div className="px-4 md:px-8 lg:px-16 py-12 bg-black">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8">Ongoing Events</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">Ongoing Events</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ongoingEvents.map((event, index) => (
-              <div key={index} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-red-500/50 transition-shadow duration-300">
-                <div className="relative h-48">
-                  <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
-                  <div className="absolute top-2 left-2 bg-red-600 text-xs px-3 py-1 rounded-full flex items-center gap-1">
-                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                    {event.status}
-                  </div>
-                  <div className="absolute top-2 right-2 bg-purple-600 text-xs px-3 py-1 rounded-full">
-                    {event.game}
-                  </div>
-                </div>
-                <div className="p-5">
-                  <h3 className="text-xl font-bold mb-3">{event.title}</h3>
-                  <div className="flex items-center gap-2 text-sm text-gray-300 mb-4">
-                    <span className="text-cyan-400">👁️</span>
-                    <span>{event.viewers} watching</span>
-                  </div>
-                  <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-2 rounded-lg transition-all duration-300">
-                    Watch Live
-                  </button>
-                </div>
-              </div>
-            ))}
+           {ongoingEvents.map((event, index) => (
+  <div
+    key={index}
+    className="bg-gray-900 border border-gray-800 rounded-none overflow-hidden hover:ring-2 hover:ring-cyan-400 transition-all duration-300 shadow-xl"
+  >
+    {/* Event Image */}
+    <div className="relative h-48">
+      <img
+        src={event.image}
+        alt={event.title}
+        className="w-full h-full object-cover"
+      />
+    </div>
+
+    {/* Event Content */}
+    <div className="px-6 py-8 bg-gray-900 text-center">
+      {/* Fake Organizer Circle (using game name instead) */}
+      <div className="relative">
+        <div className="absolute -top-12 left-0 w-14 h-14 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-[10px] text-center p-2 shadow-lg border-4 border-black">
+          {event.game}
+        </div>
+      </div>
+
+      {/* Title */}
+      <h3 className="text-lg font-bold mb-3 text-white">
+        {event.title}
+      </h3>
+
+      {/* Tags styled same as upcoming */}
+      <div className="flex flex-wrap justify-center gap-2 mb-4">
+        <span className="bg-red-600 text-white px-2.5 py-1 rounded text-[10px] font-semibold">
+          {event.status}
+        </span>
+        <span className="bg-purple-600 text-white px-2.5 py-1 rounded text-[10px] font-semibold">
+          {event.game}
+        </span>
+      </div>
+
+      {/* Viewers Section (same spacing style as upcoming details area) */}
+      <div className="text-xs text-gray-400 mb-5">
+        👁️ {event.viewers} watching
+      </div>
+
+      {/* Button (same style as Register) */}
+      <button className="w-full bg-cyan-400 hover:bg-cyan-500 text-black font-bold py-3 rounded-none text-sm transition-colors duration-300 uppercase tracking-wide">
+        Watch Live
+      </button>
+    </div>
+  </div>
+))}
+
           </div>
         </div>
       </div>
