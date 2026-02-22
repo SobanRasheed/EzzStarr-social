@@ -15,7 +15,7 @@ const HomeManga = () => {
     id: 1,
     imageUrl: "placeholder.svg",
     title: "Blooming Love",
-    author: "{Creator name}",
+    author: "Satashi Nakamoto",
     genre: "Love Story, Thriller",
     reward: "0.00005 $SPCA",
     stars: 5,
@@ -29,7 +29,7 @@ const HomeManga = () => {
     id: 2,
     imageUrl: "placeholder.svg",
     title: "Shadow of Youth",
-    author: "{Creator name}",
+    author: "Satashi Nakamoto",
     genre: "Drama, Slice of Life",
     reward: "0.00003 $SPCA",
     stars: 4.5,
@@ -43,7 +43,7 @@ const HomeManga = () => {
     id: 3,
     imageUrl: "placeholder.svg",
     title: "Neon Hearts",
-    author: "{Creator name}",
+    author: "Satashi Nakamoto",
     genre: "Romance, Sci-Fi",
     reward: "0.00007 $SPCA",
     stars: 4.8,
@@ -57,7 +57,7 @@ const HomeManga = () => {
     id: 4,
     imageUrl: "placeholder.svg",
     title: "Crimson Signal",
-    author: "{Creator name}",
+    author: "Satashi Nakamoto",
     genre: "Action, Mystery",
     reward: "0.00006 $SPCA",
     stars: 4.2,
@@ -71,7 +71,7 @@ const HomeManga = () => {
     id: 5,
     imageUrl: "placeholder.svg",
     title: "Petals After Rain",
-    author: "{Creator name}",
+    author: "Satashi Nakamoto",
     genre: "Romance, Drama",
     reward: "0.00004 $SPCA",
     stars: 4.9,
@@ -85,8 +85,8 @@ const HomeManga = () => {
     id: 6,
     imageUrl: "placeholder.svg",
     title: "One-Shot: Fading Echo",
-    author: "{Creator name}",
-    genre: "Psychological, One-Shot",
+    author: "Satashi Nakamoto",
+    genre: "Psychological, One",
     reward: "0.00002 $SPCA",
     stars: 4.6,
     comments: 52,
@@ -98,8 +98,8 @@ const HomeManga = () => {
 ];
 
   return (
-    <div className="flex flex-col gap-2 mt-8 px-4 md:px-20 lg:px-3 pt-10 dark-bg-2 ">
-
+    <div className="flex flex-col gap-2 mt-8 px-4 md:px-20 lg:px-3 pt-10 dark-bg-2 mx-16">
+        <h1 className="text-white text-center text-5xl mb-8">Manga</h1>
       <div className={`flex flex-col lg:flex-row gap-5`}>
         {/* Manga Grid */}
         <div className="grid grid-cols-1 xl:grid-cols-3  gap-2 w-full">

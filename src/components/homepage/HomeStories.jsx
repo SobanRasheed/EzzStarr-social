@@ -69,15 +69,14 @@ const stories = [
 
 export default function HomeStories() {
   return (
-    <section className="w-full px-4 sm:px-8 lg:px-16 py-12 bg-black">
-
+    <section className="mx-35 py-12 bg-black">
       {/* Heading */}
-      <h2 className="text-white text-3xl font-semibold text-center mb-10">
+      <h2 className="text-white text-5xl font-semibold text-center mb-10">
         Stories
       </h2>
 
       {/* Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {stories.map((story) => (
           <StoryCard key={story.id} {...story} />
         ))}
