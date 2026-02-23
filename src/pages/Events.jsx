@@ -299,13 +299,13 @@ export default function CraytaGaming() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {upcomingEvents.map((event, index) => (
-              <div key={index} className="bg-gray-900 border border-gray-800 rounded-none overflow-hidden hover:ring-2 hover:ring-cyan-400 transition-all duration-300 shadow-xl">
+              <div key={index} className="border border-gray-800 rounded-none overflow-hidden hover:ring-2 hover:ring-cyan-400 transition-all duration-300 shadow-xl" style={{ backgroundColor: '#1C1C1E' }}>
                 {/* Event Image */}
                 <div className="relative h-48">
                   <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
                 </div>
                 {/* Event Content - Black Background */}
-                <div className="px-6 py-8 bg-gray-900 text-center">
+                <div className="px-6 py-8 text-center" style={{ backgroundColor: '#1C1C1E' }}>
                   <div className="relative">
                     <div className={`absolute -top-12 left-0 w-14 h-14 rounded-full ${event.organizerBg} flex items-center justify-center font-black text-[9px] leading-[10px] text-center p-2 shadow-lg border-4 border-black`} >
                       {event.organizer}
