@@ -166,11 +166,11 @@ export default function Eventsoverview() {
           </div>
 
           {/* RIGHT SIDEBAR */}
-          <div className="space-y-8">
+          <div className="space-y-4">
 
-            <div className="bg-[#1C1C1E]/60 p-6 rounded-xl border border-[#1C1C1E]">
-              <h3 className="text-lg font-semibold mb-6">Hosted By</h3>
-              <div className="flex items-center gap-4">
+            <div className="bg-[#E06EDF]/20 p-6">
+              <h3 className="text-lg font-semibold mb-6 text-center text-[#01F1E3]">Hosted By</h3>
+              <div className="flex items-center gap-4 justify-center">
                 <div className="w-14 h-14 rounded-full bg-[#00615B] flex items-center justify-center font-bold">
                   EZ
                 </div>
@@ -178,16 +178,16 @@ export default function Eventsoverview() {
               </div>
             </div>
 
-            <div className="bg-[#1C1C1E]/60 p-6 rounded-xl border border-[#1C1C1E]">
-              <h3 className="text-lg font-semibold mb-6">Timeline</h3>
+            <div className="bg-[#E06EDF]/20 p-6">
+              <h3 className="text-lg font-semibold mb-6 text-[#01F1E3]">Timeline</h3>
               <p className="text-gray-400 text-sm">Contest Starts</p>
               <p className="mb-4">2 April 2024</p>
               <p className="text-gray-400 text-sm">Contest Ends</p>
               <p>20 April 2024</p>
             </div>
 
-            <div className="bg-[#1C1C1E]/60 p-6 rounded-xl border border-[#1C1C1E]">
-              <h3 className="text-lg font-semibold mb-6">
+            <div className="bg-[#E06EDF]/20 p-6">
+              <h3 className="text-lg font-semibold mb-6 text-[#01F1E3]">
                 Contestants <span className="text-[#DF28E2]">(100)</span>
               </h3>
 
@@ -203,8 +203,8 @@ export default function Eventsoverview() {
               </div>
             </div>
 
-            <div className="bg-[#1C1C1E]/60 p-6 rounded-xl border border-[#1C1C1E]">
-              <h3 className="text-lg font-semibold mb-4">Venue</h3>
+            <div className="bg-[#E06EDF]/20 p-6">
+              <h3 className="text-lg font-semibold mb-4 text-[#01F1E3]">Venue</h3>
               <p className="text-gray-400 text-sm">Online</p>
               <p>Ezzstar</p>
             </div>

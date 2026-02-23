@@ -11,8 +11,8 @@ export default function EventsTabs() {
     const activeClasses = 'bg-purple-500 text-white';
     const inactiveClasses = 'text-gray-300 hover:bg-neutral-800';
     return (
-        <div className="flex justify-start bg-black px-20">
-            <div className="bg-neutral-900 rounded-full p-1 mt-4 flex gap-2">
+        <div className="flex justify-center bg-black px-20">
+            <div className="bg-neutral-900 rounded-full p-1 mt-2 mb-2 flex gap-0.5">
                 {tabs.map((tab) => (
                     <NavLink
                         key={tab.label}
