@@ -11,8 +11,8 @@ export default function StoryCard({
   const [liked, setLiked] = useState(false);
 
   return (
-    <div className="group relative rounded-sm overflow-hidden bg-black cursor-pointer">
-      
+    // <div className="group relative rounded-sm overflow-hidden bg-black cursor-pointer shadow-xl shadow-fuchsia-500/50">
+      <div className="group relative rounded-sm overflow-hidden bg-black cursor-pointer shadow-[0_0_15px_#d146aa]">
       {/* Image Wrapper with Fixed Aspect Ratio */}
       <div className="relative aspect-[3/3.7] w-full">
         <img
@@ -38,9 +38,8 @@ export default function StoryCard({
           className="absolute top-3 right-3 p-2 rounded-full bg-black/60 hover:bg-black/80 transition"
         >
           <Heart
-            className={`w-4 h-4 ${
-              liked ? "fill-red-500 text-red-500" : "text-white"
-            }`}
+            className={`w-4 h-4 ${liked ? "fill-red-500 text-red-500" : "text-white"
+              }`}
           />
         </button>
 
@@ -59,6 +58,6 @@ export default function StoryCard({
           </p>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

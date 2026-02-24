@@ -181,7 +181,7 @@ const threadsData = [
   },
 ];
 
-export default function Threads() {
+export default function Gist() {
   return (
     <div className="bg-black text-white min-h-screen px-4 md:px-[60px] py-[30px] font-sans">
       {/* Header */}

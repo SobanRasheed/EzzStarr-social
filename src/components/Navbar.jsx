@@ -47,7 +47,7 @@ const Navbar = () => {
             <NavLink to="/membership" className={linkClass}>Membership</NavLink>
             <NavLink to="/manga" className={linkClass}>Manga</NavLink>
             <NavLink to="/stories" className={linkClass}>Stories</NavLink>
-            <NavLink to="/threads" className={linkClass}>Threads</NavLink>
+            <NavLink to="/gist" className={linkClass}>Gist</NavLink>
             <NavLink to="/events" className={linkClass}>Events</NavLink>
           </div>
 
@@ -88,7 +88,7 @@ const Navbar = () => {
               <NavLink to="/membership" onClick={() => setIsOpen(false)} className={linkClass}>Membership</NavLink>
               <NavLink to="/manga" onClick={() => setIsOpen(false)} className={linkClass}>Manga</NavLink>
               <NavLink to="/stories" onClick={() => setIsOpen(false)} className={linkClass}>Stories</NavLink>
-              <NavLink to="/threads" onClick={() => setIsOpen(false)} className={linkClass}>Threads</NavLink>
+              <NavLink to="/gist" onClick={() => setIsOpen(false)} className={linkClass}>Gist</NavLink>
               <NavLink to="/events" onClick={() => setIsOpen(false)} className={linkClass}>Events</NavLink>
             </div>
           </div>

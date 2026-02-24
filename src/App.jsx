@@ -6,7 +6,7 @@ const Layout = React.lazy(() => import("./Layout"));
 const Home = React.lazy(() => import("./pages/Home"));
 const Memberships = React.lazy(() => import("./pages/Memberships"));
 const Manga = React.lazy(() => import("./pages/Manga"));
-const Threads = React.lazy(() => import("./pages/Threads"));
+const Gist = React.lazy(() => import("./pages/Gist"));
 const Stories = React.lazy(() => import("./pages/Stories"));
 const Events = React.lazy(() => import("./pages/Events"));
 
@@ -34,8 +34,8 @@ const router = createBrowserRouter([
         element: <Manga />,
       },
       {
-        path: "Threads",
-        element: <Threads />,
+        path: "Gist",
+        element: <Gist />,
       },
       {
         path: "Stories",
