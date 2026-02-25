@@ -1,22 +1,35 @@
-import { getDefaultWallets } from "@rainbow-me/rainbowkit";
+// wagmi.js
 import { createConfig, http } from "wagmi";
-import { mainnet, polygon, bsc } from "wagmi/chains";
+import { mainnet, base } from "wagmi/chains";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 
-// 👇 define chains separately
-export const chains = [mainnet, polygon, bsc];
+import {
+  metaMaskWallet,
+  rainbowWallet,
+  trustWallet,
+  binanceWallet,
+  okxWallet,
+  coinbaseWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 
-const { connectors } = getDefaultWallets({
-  appName: "Ezzstar",
-  projectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID,
-  chains,
-});
+const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
+
+const connectors = connectorsForWallets(
+  [
+    {
+      groupName: "Popular",
+      wallets: [rainbowWallet, metaMaskWallet, coinbaseWallet,trustWallet, binanceWallet, okxWallet, walletConnectWallet],
+    },
+  ],
+  { appName: "My Web3 App", projectId }
+);
 
 export const wagmiConfig = createConfig({
-  chains,
+  chains: [mainnet, base],
   connectors,
   transports: {
     [mainnet.id]: http(),
-    [polygon.id]: http(),
-    [bsc.id]: http(),
+    [base.id]: http(),
   },
 });

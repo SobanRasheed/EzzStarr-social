@@ -12,9 +12,8 @@ export default function LoginModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50">
-      <div className="bg-black rounded-2xl w-[420px] p-8 relative shadow-2xl text-white">
-
+    <div className="fixed inset-0 z-50">
+      <div className="bg-black absolute right-20 top-20  rounded-2xl w-[350px] p-8 shadow-2xl text-white">
         {/* Close Button */}
         <button
           onClick={() => {
@@ -35,14 +34,14 @@ export default function LoginModal({ isOpen, onClose }) {
 
             <button
               onClick={() => setStep("email")}
-              className="w-full bg-gradient-to-r from-pink-500 to-purple-500 py-3 rounded-md font-semibold mb-4"
+              className="w-full bg-[#FF00CC] py-3  font-semibold mb-4"
             >
               Continue with Email
             </button>
 
             <button
               onClick={() => setStep("wallet")}
-              className="w-full bg-cyan-400 py-3 rounded-md text-black font-semibold"
+              className="w-full bg-[#1ED6C6] py-3  text-black font-semibold"
             >
               Continue with Wallet
             </button>
@@ -59,7 +58,7 @@ export default function LoginModal({ isOpen, onClose }) {
             {!isConnected ? (
               <button
                 onClick={openConnectModal}
-                className="w-full bg-cyan-400 py-3 rounded-md text-black font-semibold"
+                className="w-full bg-[#1ED6C6] py-3  text-black font-semibold"
               >
                 Connect Wallet
               </button>
@@ -76,7 +75,7 @@ export default function LoginModal({ isOpen, onClose }) {
                     console.log("Wallet Connected:", address);
                     onClose();
                   }}
-                  className="bg-cyan-400 text-black px-6 py-2 rounded-md font-semibold text-sm"
+                  className="bg-[#1ED6C6] text-black px-6 py-2  font-semibold text-sm"
                 >
                   Continue
                 </button>
@@ -103,7 +102,7 @@ export default function LoginModal({ isOpen, onClose }) {
 
             <button
               onClick={() => setStep("wallet")}
-              className="w-full bg-cyan-400 py-3 rounded-md text-black font-semibold mb-6"
+              className="w-full bg-[#1ED6C6] py-3  text-black font-semibold mb-6"
             >
               Continue with Wallet
             </button>
@@ -118,7 +117,7 @@ export default function LoginModal({ isOpen, onClose }) {
               <label className="text-sm text-gray-400">
                 Your email
               </label>
-              <div className="flex items-center border border-white/20 rounded-md mt-1">
+              <div className="flex items-center border border-white/20  mt-1">
                 <input
                   type="email"
                   placeholder="Your Email address"
@@ -136,11 +135,11 @@ export default function LoginModal({ isOpen, onClose }) {
               </label>
               <input
                 type="text"
-                className="w-full bg-transparent border border-white/20 rounded-md p-3 mt-1 outline-none text-white"
+                className="w-full bg-transparent border border-white/20  p-3 mt-1 outline-none text-white"
               />
             </div>
 
-            <button className="w-full bg-purple-600 py-3 rounded-md font-semibold">
+            <button className="w-full bg-purple-600 py-3  font-semibold">
               Login
             </button>
           </>
