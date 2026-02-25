@@ -5,12 +5,11 @@ import { RouterProvider } from "react-router-dom";
 import router from "./App";
 import Loader from "./Loader";
 import { Provider } from "react-redux";
-import { store } from "./Store";
+import { store } from "./store";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-
       <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-black text-white"><Loader /></div>}>
         <RouterProvider router={router} />
       </Suspense>
