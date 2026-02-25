@@ -11,8 +11,7 @@ export default function StoryCard({
   const [liked, setLiked] = useState(false);
 
   return (
-    // <div className="group relative rounded-sm overflow-hidden bg-black cursor-pointer shadow-xl shadow-fuchsia-500/50">
-      <div className="group relative rounded-sm overflow-hidden bg-black cursor-pointer shadow-[0_0_15px_#d146aa]">
+    <div className="group relative rounded-sm overflow-hidden bg-black cursor-pointer shadow-lg shadow-amber-500/50">
       {/* Image Wrapper with Fixed Aspect Ratio */}
       <div className="relative aspect-[3/3.7] w-full">
         <img

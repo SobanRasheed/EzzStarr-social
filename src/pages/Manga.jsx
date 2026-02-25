@@ -1,13 +1,10 @@
-import React from 'react'
-import MangaList from "../components/manga/MangaList";
-import DailyUpdates from "../components/manga/DailyUpdates";
+import HomeManga from '../components/homepage/HomeManga';
 
 
 export default function Manga() {
   return (
     <div className="px-6 pt-10">
-      <MangaList />
-      <DailyUpdates/>
+      <HomeManga />
     </div>
   );
 }
