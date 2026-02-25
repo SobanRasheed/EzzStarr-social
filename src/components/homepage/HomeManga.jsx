@@ -1,7 +1,7 @@
 import MangaCard from "../reuseable comps/MangaCard";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchManga } from "../../Store/slices/mangaSlice";
+import { fetchManga } from "../../store/slices/mangaSlice";
 
 const HomeManga = () => {
   const dispatch = useDispatch();
