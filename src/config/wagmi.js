@@ -13,7 +13,7 @@ import {
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 
-const projectId = "00a1459bb2b3b534cd9235580a7d0220";
+const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
 
 const connectors = connectorsForWallets(
   [

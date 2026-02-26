@@ -12,6 +12,7 @@ const MangaCard = ({
   views = "23k",
   description,
 }) => {
+  console.log(`${import.meta.env.VITE_API_URL}${imageUrl}`);
   const [isLiked, setIsLiked] = useState(false);
   return (
     <div className="group relative w-full bg-[#1C1C1E80] rounded-xl overflow-hidden text-white flex flex-col md:flex-row transition hover:shadow-xl">
@@ -29,7 +30,7 @@ const MangaCard = ({
       {/* 🖼 Image */}
       <div className="w-full md:w-40 h-60 flex-shrink-0">
         <img
-          src={imageUrl}
+          src={`${import.meta.env.VITE_API_URL}${imageUrl}`}
           alt={title}
           className="w-full h-full object-cover"
         />
