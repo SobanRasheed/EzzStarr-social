@@ -13,7 +13,7 @@ export const fetchManga = createAsyncThunk(
     }
 
     const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/manga?limit=12`
+      `https://sb-chi-ten.vercel.app//api/manga?limit=12`
     );
 
     const data = await res.json();
