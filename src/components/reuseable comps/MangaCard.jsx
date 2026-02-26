@@ -58,7 +58,7 @@ const MangaCard = ({
 
           {/* Description */}
           <p className="text-xs text-white/50 mt-2 line-clamp-2">
-            {description }
+            {description}
           </p>
         </div>
 
