@@ -32,7 +32,7 @@ const MangaCard = ({
         <img
           src={`${import.meta.env.VITE_API_URL}${imageUrl}`}
           alt={title}
-          className="w-full h-full object-cover"
+          className="w-full h-full"
         />
       </div>
 
