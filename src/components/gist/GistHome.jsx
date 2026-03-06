@@ -119,16 +119,16 @@ const gistData = [
 
 export default function GistHome() {
   return (
-    <div className="bg-black text-white min-h-screen px-4 py-10 font-sans">
+    <div className="bg-black text-white min-h-screen px-4 py-10 pt-25 font-sans">
       
       {/* Header */}
-      <h1 className="text-4xl font-bold text-center mb-10">Gist</h1>
+      <h1 className="text-4xl font-bold text-center"></h1>
 
       {/* Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-[180px_1fr_300px] gap-2">
 
         {/* LEFT SIDEBAR */}
-        <div className="space-y-6 text-gray-400 text-sm">
+        <div className="space-y-6 text-gray-400 text-sm pt-10">
           <div className="space-y-3">
             <div className="hover:text-white cursor-pointer border-b border-gray-600 flex items-center gap-4 pb-2"><IoMdHome />Home</div>
             <div className="hover:text-white cursor-pointer border-b border-gray-600 flex items-center gap-4 pb-2"><FaFire />Popular</div>
@@ -242,9 +242,9 @@ export default function GistHome() {
 
 
         {/* RIGHT SIDEBAR */}
-        <div className="space-y-6">
+        <div className="space-y-2">
           {/* Gifts */}
-          <div className="bg-[#111] border border-[#222] rounded-xl p-5">
+          <div className="bg-[#DF28E2]/10 border border-[#222] bg- p-5">
             <h4 className="mb-4 font-semibold">Gifts</h4>
             {["Mux Michel", "Danish Javed", "Mux Michel", "Danish Javed"].map(
               (name, i) => (
@@ -253,10 +253,10 @@ export default function GistHome() {
 
                   <div className="flex-1 text-sm">
                     <div>{name}</div>
-                    <div className="text-gray-500 text-xs">11 posts</div>
+                    <div className="text-gray-500 text-xs">112.45k threads</div>
                   </div>
 
-                  <button className="text-xs px-3 py-1 rounded-full bg-purple-600 hover:bg-purple-500">
+                  <button className="text-xs px-3 py-1 bg-purple-600 hover:bg-purple-500">
                     Subscribe
                   </button>
 
@@ -267,7 +267,7 @@ export default function GistHome() {
 
 
           {/* Upgrade */}
-          <div className="bg-[#111] border border-[#222] rounded-xl p-5 text-center">
+          <div className="bg-[#DF28E2]/10 border border-[#222] bg- p-5 text-center">
 
             <h4 className="mb-3 font-semibold">Upgrade Your Profile</h4>
 
