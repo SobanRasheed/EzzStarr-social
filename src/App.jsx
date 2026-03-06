@@ -1,64 +1,94 @@
-import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-
-// lazy-load top level pages/routes
-const Layout = React.lazy(() => import("./Layout"));
-const Home = React.lazy(() => import("./pages/Home"));
-const Memberships = React.lazy(() => import("./pages/Memberships"));
-const Manga = React.lazy(() => import("./pages/Manga"));
-const Gist = React.lazy(() => import("./pages/Gist"));
-const Stories = React.lazy(() => import("./pages/Stories"));
-const Events = React.lazy(() => import("./pages/Events"));
-
-// lazy-load event sub-components
-const Eventsparticipants = React.lazy(() => import("./components/events/Eventsparticipants"));
-const Eventsoverview = React.lazy(() => import("./components/events/Eventsoverview"));
-const EventsPrizes = React.lazy(() => import("./components/events/Eventsprizes"));
-const EventsLayout = React.lazy(() => import("./components/events/EventsLayout"));
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    async lazy() {
+      const module = await import("./Layout");
+      return { Component: module.default };
+    },
     children: [
       {
         index: true,
-        element: <Home />,
+        async lazy() {
+          const module = await import("./pages/Home");
+          return { Component: module.default };
+        },
       },
       {
         path: "Membership",
-        element: <Memberships />,
+        async lazy() {
+          const module = await import("./pages/Memberships");
+          return { Component: module.default };
+        },
       },
       {
         path: "Manga",
-        element: <Manga />,
+        async lazy() {
+          const module = await import("./pages/Manga");
+          return { Component: module.default };
+        },
       },
       {
         path: "Gist",
-        element: <Gist />,
+        async lazy() {
+          const module = await import("./pages/Gist");
+          return { Component: module.default };
+        },
       },
       {
         path: "Stories",
-        element: <Stories />,
+        async lazy() {
+          const module = await import("./pages/Stories");
+          return { Component: module.default };
+        },
       },
       {
         path: "Events",
         children: [
           {
             index: true,
-            element: <Events />, // /Events
+            async lazy() {
+              const module = await import("./pages/Events");
+              return { Component: module.default };
+            },
           },
           {
-            path: ":id", // 👈 group dynamic event
-            element: <EventsLayout />, // layout for one event
+            path: ":id",
+            async lazy() {
+              const module = await import("./components/events/EventsLayout");
+              return { Component: module.default };
+            },
             children: [
-              { path: "overview", element: <Eventsoverview /> },
-              { path: "prizes", element: <EventsPrizes /> },
-              { path: "participants", element: <Eventsparticipants /> },
+              {
+                path: "overview",
+                async lazy() {
+                  const module = await import("./components/events/Eventsoverview");
+                  return { Component: module.default };
+                },
+              },
+              {
+                path: "prizes",
+                async lazy() {
+                  const module = await import("./components/events/Eventsprizes");
+                  return { Component: module.default };
+                },
+              },
+              {
+                path: "participants",
+                async lazy() {
+                  const module = await import("./components/events/Eventsparticipants");
+                  return { Component: module.default };
+                },
+              },
             ],
           },
         ],
-      }
+      },
+      {
+        path: "*",
+        element: <div>Page Not Found</div>,
+      },
     ],
   },
 ]);

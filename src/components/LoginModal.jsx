@@ -2,6 +2,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { GiWallet } from "react-icons/gi";
 
 export default function LoginModal({ isOpen, onClose }) {
   const [step, setStep] = useState("options");
@@ -13,7 +14,7 @@ export default function LoginModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50">
-      <div className="bg-black absolute right-20 top-20  rounded-2xl w-[350px] p-8 shadow-2xl text-white">
+      <div className="bg-black absolute right-20 top-20  rounded-2xl w-[400px] p-8 shadow-2xl text-white">
         {/* Close Button */}
         <button
           onClick={() => {
@@ -28,22 +29,22 @@ export default function LoginModal({ isOpen, onClose }) {
         {/* STEP 1 — OPTIONS */}
         {step === "options" && (
           <>
-            <h2 className="text-2xl font-semibold text-center mb-6">
+            <h2 className="text-2xl text-center mb-6">
               Welcome to Ezzstar
             </h2>
 
             <button
               onClick={() => setStep("email")}
-              className="w-full bg-[#FF00CC] py-3  font-semibold mb-4"
+              className="w-full bg-[#FF00CC] flex gap-2 items-center justify-center py-3 font-semibold text-black mb-4"
             >
-              Continue with Email
+              <img src="email.svg" className="h-5" alt="" /> Continue with Email
             </button>
 
             <button
               onClick={() => setStep("wallet")}
-              className="w-full bg-[#1ED6C6] py-3  text-black font-semibold"
+              className="w-full bg-[#1ED6C6] py-3 gap-2 flex items-center justify-center font-semibold text-black"
             >
-              Continue with Wallet
+              <GiWallet /> Continue with Wallet
             </button>
           </>
         )}
@@ -51,16 +52,27 @@ export default function LoginModal({ isOpen, onClose }) {
         {/* STEP 2 — WALLET FLOW */}
         {step === "wallet" && (
           <>
-            <h2 className="text-2xl font-semibold text-center mb-6">
-              Connect Wallet
+            <h2 className="text-2xl text-center mb-6">
+              Sign up for Ezzstar
             </h2>
 
+            <button
+              onClick={() => setStep("email")}
+              className="w-full bg-[#FF00CC] flex gap-2 items-center justify-center py-3 font-semibold text-black mb-4"
+            >
+              <img src="email.svg" className="h-5" alt="" /> Continue with Email
+            </button>
+            <div className="flex items-center my-6">
+              <div className="flex-1 h-px bg-white/20" />
+              <span className="mx-4 text-gray-400 text-sm">OR</span>
+              <div className="flex-1 h-px bg-white/20" />
+            </div>
             {!isConnected ? (
               <button
                 onClick={openConnectModal}
-                className="w-full bg-[#1ED6C6] py-3  text-black font-semibold"
+                className="w-full bg-green-300 py-2  text-black"
               >
-                Connect Wallet
+                Connect Wallet Now
               </button>
             ) : (
               <div className="text-center">
@@ -75,36 +87,29 @@ export default function LoginModal({ isOpen, onClose }) {
                     console.log("Wallet Connected:", address);
                     onClose();
                   }}
-                  className="bg-[#1ED6C6] text-black px-6 py-2  font-semibold text-sm"
+                  className="bg-[#1ED6C6] text-black px-6 py-2  text-sm"
                 >
                   Continue
                 </button>
               </div>
             )}
 
-            <div className="flex justify-between mt-8">
-              <button
-                onClick={() => setStep("options")}
-                className="text-gray-400 text-sm"
-              >
-                Cancel
-              </button>
-            </div>
+            
           </>
         )}
 
         {/* STEP 3 — EMAIL FLOW */}
         {step === "email" && (
           <>
-            <h2 className="text-2xl font-semibold text-center mb-6">
+            <h2 className="text-2xl text-center mb-6">
               Sign up for Ezzstar
             </h2>
 
             <button
               onClick={() => setStep("wallet")}
-              className="w-full bg-[#1ED6C6] py-3  text-black font-semibold mb-6"
+              className="w-full bg-[#1ED6C6] py-3 gap-2 flex items-center justify-center font-semibold text-black"
             >
-              Continue with Wallet
+              <GiWallet /> Continue with Wallet
             </button>
 
             <div className="flex items-center my-6">
@@ -139,7 +144,7 @@ export default function LoginModal({ isOpen, onClose }) {
               />
             </div>
 
-            <button className="w-full bg-purple-600 py-3  font-semibold">
+            <button className="w-full bg-purple-600 py-3 ">
               Login
             </button>
           </>

@@ -1,5 +1,4 @@
 // store/slices/mangaSlice.js
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchManga = createAsyncThunk(
@@ -43,7 +42,6 @@ export const fetchManga = createAsyncThunk(
         genre: genres || "N/A",
       };
     });
-
     return formattedManga;
   }
 );

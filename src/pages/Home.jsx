@@ -1,8 +1,8 @@
 import HomeEvents from "../components/homepage/HomeEvents";
+import HomeGist from "../components/homepage/HomeGist";
 import HomeHero from "../components/homepage/HomeHero";
 import HomeManga from "../components/homepage/HomeManga";
 import HomeStories from "../components/homepage/HomeStories";
-import HomeThreads from "../components/homepage/HomeThreads";
 
 export default function Home() {
   return (
@@ -10,7 +10,7 @@ export default function Home() {
       <HomeHero />
       <HomeManga />
       <HomeStories />
-      <HomeThreads />
+      <HomeGist />
       <HomeEvents />
     </div>
   )
