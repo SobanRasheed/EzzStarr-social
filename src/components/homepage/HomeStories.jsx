@@ -76,7 +76,7 @@ export default function HomeStories() {
       </h2>
 
       {/* Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
         {stories.map((story) => (
           <StoryCard key={story.id} {...story} />
         ))}

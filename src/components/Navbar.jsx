@@ -33,7 +33,7 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 w-full z-50">
-      <nav className="backdrop-blur-md px-20 bg-black/40 border-b border-white/5">
+      <nav className="backdrop-blur-md px-20 bg-black/40">
 
         <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
           {/* Logo */}
@@ -67,7 +67,7 @@ const Navbar = () => {
 
             <FaMagnifyingGlass className="hover:text-white text-white cursor-pointer transition" />
             {/* Avatar */}
-            <div onClick={() => setIsLoginOpen(true)} className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-xs font-semibold text-white cursor-pointer">
+            <div onClick={() => setIsLoginOpen(true)} className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold text-white cursor-pointer">
               <img className="w-7" src="pfp.svg" alt="" />
             </div>
 
