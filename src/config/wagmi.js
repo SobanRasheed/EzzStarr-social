@@ -14,7 +14,6 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 
 const projectId = "00a1459bb2b3b534cd9235580a7d0220";
-console.log(projectId);
 const connectors = connectorsForWallets(
   [
     {

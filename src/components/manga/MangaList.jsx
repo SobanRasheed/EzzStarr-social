@@ -12,7 +12,6 @@ const MangaList = () => {
 
   // 🔄 Retry (future API use)
   const handleRetry = () => {
-    console.log("Retry clicked");
   };
     const startSliding = () => {
     const slider = sliderRef.current;

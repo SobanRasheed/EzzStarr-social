@@ -1,73 +1,17 @@
+import { useDispatch, useSelector } from "react-redux";
 import StoryCard from "../reuseable comps/StoryCard.jsx";
+import { useEffect } from "react";
+import { fetchStory } from "../../store/slices/storySlice.js";
 
-const stories = [
-  {
-    id: 1,
-    image: "/placeholder.svg",
-    title: "LOVE",
-    author: "Olivia Wilson",
-    genre: "Sci-Fi, Action, Mystery",
-    reward: "0.00005 SPCA",
-  },
-  {
-    id: 2,
-    image: "/placeholder.svg",
-    title: "CAINE COIN",
-    author: "H.G. Wells",
-    genre: "Sci-Fi, Action, Mystery",
-    reward: "0.00005 SPCA",
-  },
-  {
-    id: 3,
-    image: "/placeholder.svg",
-    title: "The Black Girl",
-    author: "H.G. Wells",
-    genre: "Sci-Fi, Action, Mystery",
-    reward: "0.00005 SPCA",
-  },
-  {
-    id: 4,
-    image: "/placeholder.svg",
-    title: "LOVE",
-    author: "Olivia Wilson",
-    genre: "Sci-Fi, Action, Mystery",
-    reward: "0.00005 SPCA",
-  },
-  {
-    id: 5,
-    image: "/placeholder.svg",
-    title: "LOVE",
-    author: "Olivia Wilson",
-    genre: "Sci-Fi, Action, Mystery",
-    reward: "0.00005 SPCA",
-  },
-  {
-    id: 6,
-    image: "/placeholder.svg",
-    title: "CAINE COIN",
-    author: "H.G. Wells",
-    genre: "Sci-Fi, Action, Mystery",
-    reward: "0.00005 SPCA",
-  },
-  {
-    id: 7,
-    image: "/placeholder.svg",
-    title: "The Black Girl",
-    author: "H.G. Wells",
-    genre: "Sci-Fi, Action, Mystery",
-    reward: "0.00005 SPCA",
-  },
-  {
-    id: 8,
-    image: "/placeholder.svg",
-    title: "LOVE",
-    author: "Olivia Wilson",
-    genre: "Sci-Fi, Action, Mystery",
-    reward: "0.00005 SPCA",
-  },
-];
 
 export default function HomeStories() {
+  const dispatch = useDispatch();
+
+  const { stories, isLoading, error } = useSelector(
+    (state) => state.story);
+  useEffect(() => {
+    dispatch(fetchStory());
+  }, [dispatch]);
   return (
     <section className="mx-35 py-12 bg-black">
       {/* Heading */}

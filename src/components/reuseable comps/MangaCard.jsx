@@ -12,7 +12,6 @@ const MangaCard = ({
   views = "23k",
   description,
 }) => {
-  console.log(`${import.meta.env.VITE_API_URL}${imageUrl}`);
   const [isLiked, setIsLiked] = useState(false);
   return (
     <div className="group relative w-full bg-[#1C1C1E80] rounded-xl overflow-hidden text-white flex flex-col md:flex-row transition hover:shadow-xl">
@@ -69,10 +68,10 @@ const MangaCard = ({
           {/* 📊 Stats */}
           <div className="my-1 flex flex-wrap gap-1">
             <hr className="w-full text-gray-800 mb-1" />
-            <Stat icon={<Eye className="w-3 h-3" />} value={views} />
-            <Stat icon={<Star className="w-3 h-3" />} value={stars} />
-            <Stat icon={<MessageCircle className="w-3 h-3" />} value={comments} />
-            <Stat icon={<MessageCircle className="w-3 h-3" />} value={comments} />
+            <Stat icon={<Eye className="w-3 h-4" />} value={views} />
+            <Stat icon={<Star className="w-3 h-4" />} value={stars} />
+            <Stat icon={<MessageCircle className="w-3 h-4" />} value={comments} />
+            <Stat icon={ <img src="/icons/thread.svg" alt="Image" className="h-6" /> } value={comments} />
             <hr className="w-full text-gray-800 mt-1" />
           </div>
         </div>

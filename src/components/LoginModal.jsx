@@ -84,7 +84,6 @@ export default function LoginModal({ isOpen, onClose }) {
 
                 <button
                   onClick={() => {
-                    console.log("Wallet Connected:", address);
                     onClose();
                   }}
                   className="bg-[#1ED6C6] text-black px-6 py-2  text-sm"
