@@ -11,7 +11,7 @@ export const fetchManga = createAsyncThunk(
       return state.manga.mangas;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/manga`);
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/manga?limit=12`);
 
     const data = await res.json();
 
