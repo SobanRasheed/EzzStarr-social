@@ -20,7 +20,7 @@ const HomeManga = () => {
 
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-2 w-full">
         {isLoading ? (
-          Array(12)
+          Array(9)
             .fill(0)
             .map((_, index) => (
               <div
