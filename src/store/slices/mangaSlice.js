@@ -11,9 +11,7 @@ export const fetchManga = createAsyncThunk(
       return state.manga.mangas;
     }
 
-    const res = await fetch(
-      `https://social-backend-pi.vercel.app/api/manga?limit=12`
-    );
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/manga`);
 
     const data = await res.json();
 

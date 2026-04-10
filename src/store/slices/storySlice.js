@@ -1,4 +1,3 @@
-// store/slices/mangaSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchStory = createAsyncThunk(
@@ -6,17 +5,13 @@ export const fetchStory = createAsyncThunk(
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
 
-    // 🚀 Prevent refetch if already loaded
     if (state.story.isLoaded) {
-      return state.story.story;
+      return state.story.stories;
     }
 
-    const res = await fetch(
-      `https://social-backend-pi.vercel.app/api/stories`
-    );
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/stories`);
     const data = await res.json();
     return data;
-
   }
 );
 

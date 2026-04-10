@@ -1,14 +1,31 @@
+import { useState } from "react";
+
 export default function HomeHero() {
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
   return (
     <section className="relative isolate flex min-h-screen w-full items-end pb-20 justify-center overflow-hidden text-center text-white">
-     
-     <video
-        className="absolute inset-0 z-[-2] h-full w-full object-cover"
-        src="home-optimized.mp4"
+
+      <img
+        className={`absolute inset-0 z-[-3] h-full w-full object-cover transition-opacity duration-500 ${
+          isVideoLoaded ? "opacity-0" : "opacity-100"
+        }`}
+        src="home-optimized.png"
         alt="Ezzstar.space"
+      />
+
+      <video
+        className={`absolute inset-0 z-[-2] h-full w-full object-cover transition-opacity duration-500 ${
+          isVideoLoaded ? "opacity-100" : "opacity-0"
+        }`}
+        src="home-optimized.mp4"
+        poster="home-optimized.png"
         autoPlay
         loop
         muted
+        playsInline
+        preload="metadata"
+        onLoadedData={() => setIsVideoLoaded(true)}
       />
 
       <div className="absolute left-0 w-[50%] inset-0 z-[-1] bg-linear-to-r from-black to-transparent" />
