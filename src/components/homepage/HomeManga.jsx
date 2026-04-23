@@ -9,7 +9,7 @@ const HomeManga = () => {
   const { mangas, isLoading, error } = useSelector(
     (state) => state.manga
   );
-
+  console.log(mangas)
   useEffect(() => {
     dispatch(fetchManga());
   }, [dispatch]);

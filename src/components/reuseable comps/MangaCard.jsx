@@ -14,7 +14,7 @@ const MangaCard = ({
 }) => {
   const [isLiked, setIsLiked] = useState(false);
   return (
-    <div className="group relative w-full bg-[#1C1C1E80] rounded-xl overflow-hidden text-white flex flex-col md:flex-row transition hover:shadow-xl">
+    <div className="group relative w-full bg-[#1C1C1E80] rounded-sm overflow-hidden text-white flex flex-col md:flex-row transition hover:shadow-xl">
       {/* ❤️ Heart */}
       <button
         onClick={() => setIsLiked(!isLiked)}
