@@ -43,16 +43,20 @@ const MangaCard = ({
           <p className="text-xs text-white/60">
             {author}
             {genre && (
-              <span className="text-[#14FF00] line-clamp-1">{genre}</span>
+              <span className="text-[#14FF00] line-clamp-1 max-w-[90%]">{genre}</span>
             )}
           </p>
 
           {/* Title + Share */}
           <div className="flex items-start justify-between gap-2 mt-1">
-            <h2 className="text-lg font-semibold line-clamp-2">
+            <h2 className="text-lg font-semibold line-clamp-1 max-w-[90%]">
               {title}
             </h2>
-            <Share2 className="w-4 h-4 mt-1 text-white/70 hover:text-white cursor-pointer" />
+            <button
+              className="z-10 bg-black/60 hover:bg-black/80 rounded-full p-1">
+
+              <Share2 className="w-5 h-5 text-white/70 hover:text-white cursor-pointer" />
+            </button>
           </div>
 
           {/* Description */}
@@ -71,7 +75,7 @@ const MangaCard = ({
             <Stat icon={<Eye className="w-3 h-4" />} value={views} />
             <Stat icon={<Star className="w-3 h-4" />} value={stars} />
             <Stat icon={<MessageCircle className="w-3 h-4" />} value={comments} />
-            <Stat icon={ <img src="/icons/thread.svg" alt="Image" className="h-6" /> } value={comments} />
+            <Stat icon={<img src="/icons/thread.svg" alt="Image" className="h-5" />} value={comments} />
             <hr className="w-full text-gray-800 mt-1" />
           </div>
         </div>

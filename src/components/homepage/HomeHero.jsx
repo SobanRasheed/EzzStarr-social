@@ -14,6 +14,20 @@ export default function HomeHero() {
         alt="Ezzstar.space"
       />
 
+      <video
+        className={`absolute inset-0 z-[-2] h-full w-full object-cover transition-opacity duration-500 ${
+          isVideoLoaded ? "opacity-100" : "opacity-0"
+        }`}
+        src="home-optimized.mp4"
+        poster="home-optimized.png"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        onLoadedData={() => setIsVideoLoaded(true)}
+      />
+
       <div className="absolute left-0 w-[50%] inset-0 z-[-1] bg-linear-to-r from-black to-transparent" />
       <div className="absolute right-0  inset-0 z-[-1] bg-linear-to-l from-black/60 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[-1] h-1/3 bg-gradient-to-t from-black to-transparent" />
