@@ -2,6 +2,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --font-sf: 'SF Pro Display', sans-serif;
+  --font-satoshi: 'Satoshi', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+}
+
 body,html{
     max-width: 100vw;
 }

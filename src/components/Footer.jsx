@@ -5,6 +5,7 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa6";
 import { PiTelegramLogo } from "react-icons/pi";
+import logo from "../assets/logo.png";
 const Footer = () => {
   return (
     <footer className="relative bg-black text-white pt-16 pb-10">
@@ -13,9 +14,8 @@ const Footer = () => {
 
       <div className="max-w-6xl mx-auto px-6 flex flex-col items-center text-center gap-6">
         {/* Logo */}
-        <div className="flex items-center gap-2 text-lg font-semibold tracking-wide">
-          <span className="text-xl">∞</span>
-          <span>EZZSTAR</span>
+        <div className="flex items-center justify-center">
+          <img src={logo} alt="Ezzstar Logo" className="h-6 w-auto" />
         </div>
 
         {/* Nav links */}
@@ -30,19 +30,19 @@ const Footer = () => {
 
         {/* Social icons */}
         <div className="flex items-center gap-5">
-          <a href="#" className="hover:text-white transition">
+          <a href="https://discord.gg/sY3gsZVyeg" target="_blank" rel="noopener noreferrer" className="hover:text-[#5865F2] transition">
             <FaDiscord size={18} />
           </a>
-          <a href="#" className="hover:text-white transition">
+          <a href="https://t.me/EzzstarSPCA" target="_blank" rel="noopener noreferrer" className="hover:text-[#0088cc] transition">
             <PiTelegramLogo size={18} />
           </a>
-          <a href="#" className="hover:text-white transition">
+          <a href="https://x.com/ezzstarx?s=21" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
             <FaXTwitter size={18} />
           </a>
-          <a href="#" className="hover:text-white transition">
+          <a href="https://www.instagram.com/ezzstars/" target="_blank" rel="noopener noreferrer" className="hover:text-[#E1306C] transition">
             <FaInstagram size={18} />
           </a>
-          <a href="#" className="hover:text-white transition">
+          <a href="https://www.linkedin.com/company/ezzstar/" target="_blank" rel="noopener noreferrer" className="hover:text-[#0077b5] transition">
             <FaLinkedinIn size={18} />
           </a>
         </div>

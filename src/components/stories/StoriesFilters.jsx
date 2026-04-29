@@ -8,13 +8,13 @@ function Dropdown({ label, options, value, onChange }) {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 px-4 py-2.5 bg-transparent border border-white/20 rounded text-white/70 text-sm hover:border-white/40 transition min-w-[160px] justify-between"
+        className="flex items-center gap-2 px-4 py-2.5 bg-transparent border border-white/20 rounded-xl text-white text-sm hover:border-white/40 transition min-w-[160px] justify-between font-inter"
       >
         <span>{value || label}</span>
         <ChevronDown className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-1 w-full bg-zinc-900 border border-white/10 rounded shadow-xl z-50 overflow-hidden">
+        <div className="absolute top-full left-0 mt-1 w-full bg-zinc-900 border border-white/10 rounded-xl shadow-xl z-50 overflow-hidden">
           {options.map((option) => (
             <button
               key={option}
@@ -22,7 +22,7 @@ function Dropdown({ label, options, value, onChange }) {
                 onChange(option === "All" ? "" : option);
                 setOpen(false);
               }}
-              className="w-full text-left px-4 py-2 text-sm text-white/70 hover:bg-white/10 hover:text-white transition"
+              className="w-full text-left px-4 py-2 text-sm text-white/70 hover:bg-white/10 hover:text-white transition font-inter"
             >
               {option}
             </button>
@@ -46,13 +46,13 @@ export default function StoriesFilters({
   return (
     <>
       <div className="relative mb-6">
-        <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+        <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-white" />
         <input
           type="text"
           placeholder="Search anything"
           value={search}
           onChange={(event) => onSearchChange(event.target.value)}
-          className="w-full bg-transparent border-b border-white/20 pl-8 pr-4 pb-3 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white/50 transition"
+          className="w-full bg-transparent border-b border-white pl-8 pr-4 pb-3 text-white placeholder:text-white/50 text-sm focus:outline-none transition opacity-100 font-satoshi"
         />
       </div>
 

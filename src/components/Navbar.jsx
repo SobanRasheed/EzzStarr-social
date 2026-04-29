@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import LoginModal from "../components/LoginModal";
+import logo from "../assets/logo.png";
 import {
   FaDiscord,
   FaXTwitter,
@@ -16,7 +17,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const linkClass = ({ isActive }) =>
-    `text-sm transition ${isActive ? "text-white" : "text-gray-400 hover:text-white"
+    `text-sm transition relative ${isActive ? "text-white before:absolute before:top-1/2 before:-left-1 before:-right-1 before:h-[1px] before:bg-white before:-translate-y-1/2" : "text-gray-400 hover:text-white"
     }`;
 
   // Close menu when resizing to desktop
@@ -37,9 +38,8 @@ const Navbar = () => {
 
         <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2 text-white font-semibold tracking-wide">
-            <span className="text-xl">∞</span>
-            <span>EZZSTAR</span>
+          <div className="flex items-center">
+            <img src={logo} alt="Ezzstar Logo" className="h-8 w-auto" />
           </div>
 
           {/* Desktop Nav */}
