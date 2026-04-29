@@ -68,10 +68,7 @@ export default function StoryCard({
 
         {/* Bottom Content */}
         <div className="absolute bottom-0 p-3 w-full text-center">
-          <p 
-            className="text-[#14FF00] text-[10px] font-bold mb-1 tracking-wider underline underline-offset-2 decoration-[#14FF00]"
-            style={{ fontFamily: "'Georgia', serif" }}
-          >
+          <p className="text-[#14FF00] text-[10px] font-normal mb-1 tracking-wider underline underline-offset-2 decoration-[#14FF00] font-sf">
             {genreText}
           </p>
           <h3 className="text-white font-bold text-sm leading-tight line-clamp-2 mb-0.5 flex items-center justify-center gap-1">
