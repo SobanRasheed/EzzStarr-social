@@ -17,7 +17,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const linkClass = ({ isActive }) =>
-    `text-sm transition relative ${isActive ? "text-white before:absolute before:top-1/2 before:-left-1 before:-right-1 before:h-[1px] before:bg-white before:-translate-y-1/2" : "text-gray-400 hover:text-white"
+    `text-sm transition relative leading-none ${isActive ? "text-gray-400 before:absolute before:top-1/2 before:-left-1 before:-right-1 before:h-[1px] before:bg-gray-400 before:-translate-y-1/2" : "text-white hover:text-gray-300"
     }`;
 
   // Close menu when resizing to desktop
