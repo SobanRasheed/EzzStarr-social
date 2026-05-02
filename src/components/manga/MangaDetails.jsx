@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchManga, fetchAggregate } from "../../store/slices/mangaSlice";
 import HomeManga from "../homepage/HomeManga";
@@ -37,9 +37,11 @@ const Stat = ({ value }) => (
   </div>
 );
 
-const ChapterRow = ({ ch, index, manga }) => (
-  <div className="flex items-center justify-between px-4 py-3 rounded-lg border-b border-white/10 hover:bg-white/5 transition">
-    
+const ChapterRow = ({ ch, index, manga, onClick }) => (
+  <div
+    onClick={onClick}
+    className="flex cursor-pointer items-center justify-between px-4 py-3 rounded-lg border-b border-white/10 hover:bg-white/5 transition"
+  >
     <div className="flex gap-4 items-center">
 
       {/* Index */}
@@ -79,6 +81,7 @@ const ChapterRow = ({ ch, index, manga }) => (
 
 const MangaDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { mangas, aggregate, isLoading } = useSelector(
@@ -192,6 +195,7 @@ const MangaDetails = () => {
                   ch={ch}
                   manga={manga}
                   index={(currentPage - 1) * CHAPTERS_PER_PAGE + index}
+                  onClick={() => navigate(`/manga/read/${ch.id}`)}
                 />
               ))}
 
@@ -222,9 +226,10 @@ const MangaDetails = () => {
         </div>
 
         {/* RIGHT SIDEBAR */}
-        <div className="w-90 space-y-2">
+        <div className="w-96 space-y-2">
+
           {/* ABOUT */}
-          <div className="bg-gradient-to-br px-5 py-3 bg-purple-800/20 border border-white/10">
+          <div className="bg-purple-800/20 px-5 py-3 border border-white/10">
             <h3 className="font-semibold mb-4">About the Manga</h3>
 
             <p className="text-sm text-gray-400">
@@ -241,7 +246,7 @@ const MangaDetails = () => {
           </div>
 
           {/* CHARACTERS */}
-          <div className="bg-gradient-to-br px-5 py-3 bg-purple-800/20 border border-white/10">
+          <div className="bg-purple-800/20 px-5 py-3 border border-white/10">
             <h3 className="font-semibold mb-3">Main Characters</h3>
 
             <div className="flex items-center gap-3 mb-2">
@@ -256,7 +261,7 @@ const MangaDetails = () => {
           </div>
 
           {/* RIGHTS */}
-          <div className="bg-gradient-to-br px-5 py-3 bg-purple-800/20 border border-white/10">
+          <div className="bg-purple-800/20 px-5 py-3 border border-white/10">
             <h3 className="font-semibold mb-3">Rights</h3>
 
             <p className="text-sm text-gray-400">
@@ -270,9 +275,12 @@ const MangaDetails = () => {
 
         </div>
       </div>
-        <div>
-            <HomeManga title={"Recommended For You"}/>
-        </div>
+
+      {/* RECOMMENDED */}
+      <div>
+        <HomeManga title={"Recommended For You"} />
+      </div>
+
     </div>
   );
 };
