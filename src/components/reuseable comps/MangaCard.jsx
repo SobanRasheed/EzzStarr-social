@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Heart, Share2, Eye, MessageCircle, Star } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 const MangaCard = ({
+  id,
   imageUrl,
   title,
   author,
@@ -13,11 +14,20 @@ const MangaCard = ({
   description,
 }) => {
   const [isLiked, setIsLiked] = useState(false);
+  const boosted=false;
+  const navigate = useNavigate();
+
+  const handleClick = (id) => {
+    navigate(`/manga/${id}`, { state: id });
+  };
   return (
-    <div className="group relative w-full bg-[#1C1C1E80] rounded-sm overflow-hidden text-white flex flex-col md:flex-row transition hover:shadow-xl">
+    <div onClick={() => handleClick(id)} className="group relative w-full bg-[#1C1C1E80] rounded-sm overflow-hidden text-white flex flex-col md:flex-row transition hover:shadow-xl">
       {/* ❤️ Heart */}
       <button
-        onClick={() => setIsLiked(!isLiked)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsLiked(!isLiked);
+        }}
         className="absolute top-2 right-2 z-10 bg-black/60 hover:bg-black/80 p-1 rounded-full"
       >
         <Heart
@@ -66,8 +76,13 @@ const MangaCard = ({
         </div>
 
         <div>
-          <p className="text-xs mt-1 text-[#DF28E2]">
+          <p className="text-xs relative mt-1 text-[#DF28E2]">
             Earn {reward}
+            {boosted && (
+              <button className="absolute bottom-0 right-0 bg-[#ffea00] px-3 py-1  text-black text-sm">
+                ⚡ Boost
+              </button>
+            )}
           </p>
           {/* 📊 Stats */}
           <div className="my-1 flex flex-wrap gap-1">

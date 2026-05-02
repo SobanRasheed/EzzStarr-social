@@ -1,17 +1,22 @@
-// store/slices/mangaSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+/* =========================
+   📚 FETCH MANGA LIST
+========================= */
 
 export const fetchManga = createAsyncThunk(
   "manga/fetchManga",
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
 
-    // 🚀 Prevent refetch if already loaded
     if (state.manga.isLoaded) {
       return state.manga.mangas;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/manga?limit=12`);
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/manga?limit=12`
+    );
+
     const data = await res.json();
 
     const formattedManga = data.data.map((item) => {
@@ -39,14 +44,43 @@ export const fetchManga = createAsyncThunk(
         genre: genres || "N/A",
       };
     });
+
     return formattedManga;
   }
 );
+
+/* =========================
+   📖 FETCH CHAPTERS
+========================= */
+
+export const fetchAggregate = createAsyncThunk(
+  "manga/fetchAggregate",
+  async (mangaId, thunkAPI) => {
+    const state = thunkAPI.getState();
+
+    if (state.manga.aggregate[mangaId]) {
+      return { mangaId, data: state.manga.aggregate[mangaId] };
+    }
+
+    const res = await fetch(
+      `https://api.mangadex.org/manga/${mangaId}/aggregate`
+    );
+
+    const data = await res.json();
+
+    return { mangaId, data };
+  }
+);
+
+/* =========================
+   🧠 SLICE
+========================= */
 
 const mangaSlice = createSlice({
   name: "manga",
   initialState: {
     mangas: [],
+    aggregate: {}, // 🔥 chapters per manga
     isLoading: false,
     error: null,
     isLoaded: false,
@@ -54,6 +88,7 @@ const mangaSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // 📚 manga list
       .addCase(fetchManga.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -66,6 +101,21 @@ const mangaSlice = createSlice({
       .addCase(fetchManga.rejected, (state) => {
         state.isLoading = false;
         state.error = "Failed to fetch manga";
+      })
+
+      // 📖 aggregate
+      .addCase(fetchAggregate.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAggregate.fulfilled, (state, action) => {
+        state.isLoading = false;
+
+        const { mangaId, data } = action.payload;
+        state.aggregate[mangaId] = data;
+      })
+      .addCase(fetchAggregate.rejected, (state) => {
+        state.isLoading = false;
+        state.error = "Failed to fetch chapters";
       });
   },
 });
