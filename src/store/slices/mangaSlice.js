@@ -3,84 +3,95 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 /* =========================
    📚 FETCH MANGA LIST
 ========================= */
-
 export const fetchManga = createAsyncThunk(
   "manga/fetchManga",
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
-
     if (state.manga.isLoaded) {
       return state.manga.mangas;
     }
-
     const res = await fetch(
       `${import.meta.env.VITE_API_URL}/api/manga?limit=12`
     );
+    const json = await res.json();
+    const mangaArray = json.data || [];
 
-    const data = await res.json();
-
-    const formattedManga = data.data.map((item) => {
-      const author = item.relationships.find(
+    const formattedManga = mangaArray.map((item) => {
+      // Handle platform manga
+      if (item.isPlatform) {
+        return {
+          id: item.id,
+          imageUrl: item.coverUrl,
+          description: item.attributes?.description?.en || item.description || "No description available.",
+          title: item.attributes?.title?.en || item.title,
+          author: item.relationships?.find(rel => rel.type === "author")?.attributes?.name || "Platform Creator",
+          genre: (item.attributes?.tags || [])
+            .filter(tag => tag.attributes?.group === "genre")
+            .map(tag => tag.attributes?.name?.en)
+            .join(", ") || "",
+          isPlatform: true,
+        };
+      }
+      // Handle MangaDex manga
+      const author = item.relationships?.find(
         (rel) => rel.type === "author"
       )?.attributes?.name;
-
-      const genres = item.attributes.tags
-        .filter((tag) => tag.attributes.group === "genre")
+      const genres = item.attributes?.tags
+        ?.filter((tag) => tag.attributes.group === "genre")
         .map((tag) => tag.attributes.name.en)
         .join(", ");
-
       const title =
-        item.attributes.title.en ||
-        Object.values(item.attributes.title)[0];
-
+        item.attributes?.title?.en ||
+        (item.attributes?.title && Object.values(item.attributes.title)[0]) ||
+        "Untitled";
       return {
         id: item.id,
         imageUrl: item.coverUrl,
-        description:
-          item.attributes.description.en ||
-          "No description available.",
+        description: item.attributes?.description?.en || "No description available.",
         title,
         author: author || "Unknown",
         genre: genres || "N/A",
+        isPlatform: false,
       };
     });
-
     return formattedManga;
   }
 );
 
 /* =========================
-   📖 FETCH CHAPTERS
+   📖 FETCH CHAPTERS (supports both sources)
 ========================= */
-
-export const fetchAggregate = createAsyncThunk(
-  "manga/fetchAggregate",
-  async (mangaId, thunkAPI) => {
+export const fetchChapters = createAsyncThunk(
+  "manga/fetchChapters",
+  async ({ mangaId, isPlatform }, thunkAPI) => {
     const state = thunkAPI.getState();
-
-    if (state.manga.aggregate[mangaId]) {
-      return { mangaId, data: state.manga.aggregate[mangaId] };
+    const cacheKey = `${mangaId}-${isPlatform}`;
+    if (state.manga.chapters[cacheKey]) {
+      return { cacheKey, data: state.manga.chapters[cacheKey] };
     }
 
-    const res = await fetch(
-      `https://api.mangadex.org/manga/${mangaId}/aggregate`
-    );
+    let url;
+    if (isPlatform) {
+      url = `${import.meta.env.VITE_API_URL}/api/manga/${mangaId}/episodes`;
+    } else {
+      url = `${import.meta.env.VITE_API_URL}/api/manga/external/${mangaId}/chapters?limit=500`;
+    }
 
-    const data = await res.json();
-
-    return { mangaId, data };
+    const res = await fetch(url);
+    const json = await res.json();
+    const chaptersArray = json.data || [];
+    return { cacheKey, data: chaptersArray };
   }
 );
 
 /* =========================
    🧠 SLICE
 ========================= */
-
 const mangaSlice = createSlice({
   name: "manga",
   initialState: {
     mangas: [],
-    aggregate: {}, // 🔥 chapters per manga
+    chapters: {},    // key: `${mangaId}-${isPlatform}`
     isLoading: false,
     error: null,
     isLoaded: false,
@@ -102,18 +113,16 @@ const mangaSlice = createSlice({
         state.isLoading = false;
         state.error = "Failed to fetch manga";
       })
-
-      // 📖 aggregate
-      .addCase(fetchAggregate.pending, (state) => {
+      // 📖 chapters
+      .addCase(fetchChapters.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchAggregate.fulfilled, (state, action) => {
+      .addCase(fetchChapters.fulfilled, (state, action) => {
         state.isLoading = false;
-
-        const { mangaId, data } = action.payload;
-        state.aggregate[mangaId] = data;
+        const { cacheKey, data } = action.payload;
+        state.chapters[cacheKey] = data;
       })
-      .addCase(fetchAggregate.rejected, (state) => {
+      .addCase(fetchChapters.rejected, (state) => {
         state.isLoading = false;
         state.error = "Failed to fetch chapters";
       });
