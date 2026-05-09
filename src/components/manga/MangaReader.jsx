@@ -33,7 +33,7 @@ const MangaReader = () => {
           throw new Error(data.message || "No pages found");
         }
 
-        setPages(data.pages);
+        setPages(data.pagesDataSaver);
       } catch (err) {
         console.error("Reader error:", err);
         setError(err.message);
