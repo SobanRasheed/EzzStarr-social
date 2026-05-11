@@ -181,15 +181,17 @@ export default function StoryDetailPage({ story, onBack }) {
             <p className="text-white/40 text-[10px] mt-2">Artist: {author}</p>
 
             {/* Action buttons */}
-            <div className="flex gap-2 mt-4">
-              <button className="flex-1 bg-[#1a1a1a] hover:bg-[#222] border border-white/10 rounded-full py-2 flex items-center justify-center gap-1.5 text-[12px] font-semibold text-white/80 transition-colors">
-                <Volume2 className="w-3.5 h-3.5 text-[#00e5ff]" /> Listen Audio
+            <div className="flex items-center gap-2 mt-4 flex-wrap">
+              <button className="inline-flex items-center justify-center gap-1.5 bg-[#1a1a1a] hover:bg-[#222] border border-white/10 rounded-full h-[34px] px-3.5 text-[11px] font-semibold text-white/80 transition-colors whitespace-nowrap shrink-0">
+                <span className="w-2 h-2 rounded-full bg-[#14FF00] shrink-0" />
+                Listen Audio
               </button>
-              <button className="flex-1 bg-[#c9a227] hover:bg-[#b8921f] rounded-full py-2 flex items-center justify-center gap-1.5 text-[12px] font-bold text-black transition-colors">
+              <button className="inline-flex items-center justify-center gap-1.5 bg-[#c9a227] hover:bg-[#b8921f] border border-[#c9a227] rounded-full h-[34px] px-3.5 text-[11px] font-bold text-black transition-colors whitespace-nowrap shrink-0">
+                <span className="w-2 h-2 rounded-full bg-[#14FF00] shrink-0" />
                 💰 Tip Author
               </button>
-              <button className="bg-[#14FF00] hover:bg-[#10dd00] rounded-full px-3 py-2 flex items-center justify-center text-[12px] font-bold text-black transition-colors">
-                <Zap className="w-3.5 h-3.5" /> Boost
+              <button className="inline-flex items-center justify-center gap-1.5 bg-[#14FF00] hover:bg-[#10dd00] border border-[#14FF00] rounded-full h-[34px] px-3.5 text-[11px] font-bold text-black transition-colors whitespace-nowrap shrink-0">
+                <Zap className="w-3.5 h-3.5 shrink-0" /> Boost
               </button>
             </div>
 
