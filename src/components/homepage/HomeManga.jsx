@@ -3,20 +3,19 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchManga } from "../../store/slices/mangaSlice";
 
-const HomeManga = () => {
+const HomeManga = ({title}) => {
   const dispatch = useDispatch();
 
   const { mangas, isLoading, error } = useSelector(
     (state) => state.manga
   );
-  console.log(mangas)
   useEffect(() => {
     dispatch(fetchManga());
   }, [dispatch]);
 
   return (
     <div className="flex flex-col gap-2 mt-8 px-4 md:px-20 lg:px-3 pt-10 dark-bg-2 mx-16">
-      <h1 className="text-white text-center text-5xl mb-8">Manga</h1>
+      <h1 className="text-white text-center text-5xl mb-8">{title}</h1>
 
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-2 w-full">
         {isLoading ? (
