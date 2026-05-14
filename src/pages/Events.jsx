@@ -1,5 +1,10 @@
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import eventHero from '../assets/event_hero.png';
+import logoEventPage from '../assets/logo_event_page.png';
+import bellOffIcon from '../assets/image copy.png';
+import coinIcon from '../assets/coin.png';
+import spacIcon from '../assets/spac.png';
 
 export default function CraytaGaming() {
   const [openFaq, setOpenFaq] = useState(null);
@@ -226,8 +231,17 @@ export default function CraytaGaming() {
       {/* Hero Section */}
       <div
         className="relative min-h-screen bg-cover bg-center"
-        style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=1200&h=400&fit=crop')` }}
+        style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('${eventHero}')` }}
       >
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            pointerEvents: 'none',
+            zIndex: 2,
+            background: 'linear-gradient(to right, rgba(0, 0, 0, 0.95) 0%, transparent 30%, transparent 70%, rgba(0, 0, 0, 0.95) 100%)'
+          }}
+        ></div>
       <div className="absolute inset-0 flex flex-col justify-end items-start px-8 md:px-16 pb-12 md:pb-16">
 
 
@@ -235,57 +249,57 @@ export default function CraytaGaming() {
   <div className="flex items-center gap-4 mb-4">
 
     {/* PCMag Circle */}
-    <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center font-bold text-white text-sm">
-      PC
+    <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center font-bold text-white text-sm overflow-hidden">
+      <img src={logoEventPage} alt="PCMag" className="w-full h-full object-cover" />
     </div>
 
     <div className="flex items-center gap-3">
-      <span className="text-base font-semibold">PCMag</span>
+      <span className="font-sf font-normal text-2xl leading-none tracking-normal">PCMag</span>
 
-      <span className="bg-green-600 text-white text-xs px-3 py-1 rounded-full">
+      <span className="font-sf bg-green-600 text-white text-xs px-3 py-1 rounded-full">
         Open
       </span>
 
-      <span className="text-yellow-400 text-lg">🔕</span>
+      <img src={bellOffIcon} alt="Notifications Off" className="w-6 h-6" />
     </div>
   </div>
 
   {/* Status Pills */}
   <div className="flex items-center gap-2 mb-4">
-    <span className="bg-black/70 border border-gray-700 px-3 py-1 rounded-full text-xs">
+    <span className="font-sf bg-black/70 border border-gray-700 px-3 py-1 rounded-full text-xs">
       🔥 Hot
     </span>
 
-    <span className="bg-cyan-500 text-black px-3 py-1 rounded-full text-xs font-semibold">
+    <span className="font-sf bg-cyan-500 text-black px-3 py-1 rounded-full text-xs font-semibold">
       Online
     </span>
 
-    <span className="bg-black/70 border border-gray-700 px-3 py-1 rounded-full text-xs flex items-center gap-2">
+    <span className="font-sf bg-black/70 border border-gray-700 px-3 py-1 rounded-full text-xs flex items-center gap-2">
       👥 102
     </span>
   </div>
 
   {/* Big Title */}
-  <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white">
+  <h1 className="font-sf font-bold text-4xl md:text-6xl mb-6 text-white leading-tight">
     Crayta Gaming!
   </h1>
 
   {/* Buttons Row */}
   <div className="flex flex-wrap items-center gap-3">
 
-    <button className="bg-gradient-to-r from-purple-600 to-pink-500 px-5 py-2.5 rounded-lg font-semibold text-white">
+    <button className="font-satoshi font-normal text-base leading-[22px] bg-[#DF28E2] px-4 py-3 rounded text-black">
       Join Now
     </button>
 
-    <div className="bg-black/70 border border-gray-800 px-4 py-2 rounded-lg flex items-center gap-2">
-      <span className="text-yellow-400">🪙</span>
-      <span className="text-gray-300">Fee:</span>
-      <span className="font-semibold">250 SPCA</span>
+    <div className="bg-black/70 border border-gray-800 px-4 py-3 rounded flex items-center gap-1">
+      <img src={coinIcon} alt="Coin" className="w-6 h-6 rounded-[50px]" />
+      <span className="font-satoshi font-normal text-base leading-[22px] text-gray-300">Fee:</span>
+      <span className="font-satoshi font-bold text-base leading-[22px]">250 SPCA</span>
     </div>
 
-    <div className="bg-black/70 border border-gray-800 px-5 py-3 rounded-lg flex items-center gap-2">
-      <span className="text-purple-400">🟣</span>
-      <span className="font-semibold">1500 SPCA</span>
+    <div className="bg-black/70 border border-gray-800 px-4 py-3 rounded flex items-center gap-1">
+      <img src={spacIcon} alt="SPAC" className="w-5 h-5 rounded-[50px]" />
+      <span className="font-sf font-semibold">1500 SPCA</span>
     </div>
 
   </div>
