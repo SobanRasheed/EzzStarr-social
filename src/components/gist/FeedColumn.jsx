@@ -15,9 +15,9 @@ const gistData = [
     views: "12K",
     stars: 8,
     images: [
-      "https://images.unsplash.com/photo-1605902711622-cfb43c44367f",
-      "https://images.unsplash.com/photo-1541963463532-d68292c34b19",
-      "https://images.unsplash.com/photo-1515169067865-5387ec356754"
+      "https://picsum.photos/id/1018/800/600",
+      "https://picsum.photos/id/1015/800/600",
+      "https://picsum.photos/id/1019/800/600"
     ],
   },
   {
@@ -30,7 +30,7 @@ const gistData = [
     replies: 124,
     views: "42K",
     stars: 5,
-    images: ["https://images.unsplash.com/photo-1515169067865-5387ec356754"],
+    images: ["https://picsum.photos/id/1025/800/600"],
   },
   {
     id: 3,
@@ -43,16 +43,16 @@ const gistData = [
     views: "9K",
     stars: 12,
     images: [
-      "https://images.unsplash.com/photo-1605902711622-cfb43c44367f",
-      "https://images.unsplash.com/photo-1541963463532-d68292c34b19",
-      "https://images.unsplash.com/photo-1515169067865-5387ec356754"
+      "https://picsum.photos/id/1043/800/600",
+      "https://picsum.photos/id/1044/800/600",
+      "https://picsum.photos/id/1045/800/600"
     ],
   },
 ];
 
 export default function FeedColumn() {
   return (
-    <div className="w-full max-w-[1200px] flex-1 lg:border-l lg:border-r border-[rgba(255,255,255,0.25)] backdrop-blur-[36px] flex flex-col items-center">
+    <div className="w-full max-w-[1200px] flex-1 min-w-0 lg:border-l lg:border-r border-[rgba(255,255,255,0.25)] backdrop-blur-[36px] flex flex-col items-center">
       
       {/* Create Post Bar */}
       <div className="w-full flex items-center justify-between h-[63px] px-[12px] py-[16px] bg-[rgba(0,0,0,0.25)] border-b border-[rgba(255,255,255,0.1)]">

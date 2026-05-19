@@ -15,7 +15,7 @@ export default function RightSidebar() {
     <div className="hidden lg:flex w-[300px] xl:w-[450px] flex-shrink-0 flex-col gap-[16px] sticky top-[100px] h-[calc(100vh-100px)] pt-10">
       
       {/* Gifts Leaderboard */}
-      <div className="bg-[rgba(223,40,226,0.07)] backdrop-blur-[27px] rounded-[4px] p-6">
+      <div className="bg-[#DF28E2]/10 backdrop-blur-[27px] rounded-[4px] p-6">
         <h2 className="text-[28px] font-sf text-white mb-4">Gifts</h2>
         
         <div className="flex flex-col">
@@ -43,13 +43,13 @@ export default function RightSidebar() {
       </div>
 
       {/* Upgrade Promo */}
-      <div className="bg-[rgba(223,40,226,0.07)] backdrop-blur-[27px] rounded-[4px] p-6 flex flex-col items-center text-center">
+      <div className="bg-[#DF28E2]/10 backdrop-blur-[27px] rounded-[4px] p-6 flex flex-col items-center text-center">
         <h3 className="font-sf text-[20px] text-white mb-6">Upgrade your profile</h3>
         
         {/* Custom Avatar composition */}
         <div className="relative w-[138px] h-[138px] flex items-center justify-center mb-6">
           {/* Metallic/Silver gradient wrapper (placeholder styling) */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-gray-500 via-gray-300 to-gray-600 rounded-full blur-sm opacity-50"></div>
+          <div className="absolute inset-0 bg-gradient-to-tr from-gray-500 via-gray-300 to-gray-600 rounded-full opacity-50"></div>
           <img src="https://i.pravatar.cc/150?img=9" alt="User" className="relative w-[120px] h-[120px] rounded-full object-cover z-10 border-4 border-transparent" style={{ background: 'linear-gradient(white, white) padding-box, linear-gradient(to right, #ccc, #fff) border-box' }} />
         </div>
 
