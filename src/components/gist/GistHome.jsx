@@ -9,8 +9,8 @@ export default function GistHome() {
       {/* We assume the Navbar/GlobalHeader is handled by the Layout.jsx, 
           so we add top padding to account for the fixed header (e.g., pt-[124px] or similar). */}
       
-      <div className="w-full max-w-[1920px] mx-auto flex justify-center gap-0 pt-[80px]">
-        {/* The 1920px container is split into 270px + 1200px + 450px = 1920px */}
+      <div className="w-full max-w-[1920px] mx-auto flex justify-center gap-4 pt-[80px] px-4 md:px-8">
+        {/* The 1920px container is split into 270px + 1200px + 450px = 1920px on large screens */}
         <LeftSidebar />
         <FeedColumn />
         <RightSidebar />

@@ -44,7 +44,7 @@ const MediaGrid = ({ images }) => {
 
 export default function PostCard({ post }) {
   return (
-    <div className="w-[1172px] flex flex-col p-6 gap-4 bg-[rgba(28,28,30,0.5)] rounded-[8px] border border-[rgba(223,40,226,0.3)] backdrop-blur-[36px] mb-6">
+    <div className="w-full flex flex-col p-4 sm:p-6 gap-4 bg-[rgba(28,28,30,0.5)] rounded-[8px] border border-[rgba(223,40,226,0.3)] backdrop-blur-[36px] mb-6">
       
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -88,7 +88,7 @@ export default function PostCard({ post }) {
       </div>
 
       {/* Footer Actions */}
-      <div className="flex items-center gap-2 mt-2">
+      <div className="flex flex-wrap items-center gap-2 mt-2">
         {/* Reply Thread Element */}
         <div className="flex items-center gap-2 bg-[rgba(255,255,255,0.1)] backdrop-blur-[27px] rounded-[27px] py-1 pl-2 pr-3 cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition">
           <div className="flex -space-x-2">

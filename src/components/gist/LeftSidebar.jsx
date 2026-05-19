@@ -14,7 +14,7 @@ const navItems = [
 
 export default function LeftSidebar() {
   return (
-    <div className="w-[270px] flex-shrink-0 pt-[44px] sticky top-[100px] h-[calc(100vh-100px)]">
+    <div className="hidden xl:flex w-[270px] flex-shrink-0 pt-[44px] sticky top-[100px] h-[calc(100vh-100px)] flex-col">
       <div className="flex flex-col gap-6">
         {navItems.map((item) => (
           <div

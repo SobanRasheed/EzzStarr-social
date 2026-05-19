@@ -52,7 +52,7 @@ const gistData = [
 
 export default function FeedColumn() {
   return (
-    <div className="w-[1200px] flex-shrink-0 border-l border-r border-[rgba(255,255,255,0.25)] backdrop-blur-[36px] flex flex-col items-center">
+    <div className="w-full max-w-[1200px] flex-1 lg:border-l lg:border-r border-[rgba(255,255,255,0.25)] backdrop-blur-[36px] flex flex-col items-center">
       
       {/* Create Post Bar */}
       <div className="w-full flex items-center justify-between h-[63px] px-[12px] py-[16px] bg-[rgba(0,0,0,0.25)] border-b border-[rgba(255,255,255,0.1)]">
@@ -75,9 +75,9 @@ export default function FeedColumn() {
       </div>
 
       {/* Filter Bar */}
-      <div className="w-[1172px] flex items-center justify-end h-[80px] gap-6 mt-4">
+      <div className="w-full px-4 lg:px-6 flex flex-col sm:flex-row items-center sm:justify-end h-auto min-h-[80px] py-4 gap-4 sm:gap-6 mt-4">
         {/* Search */}
-        <div className="relative w-[386px] h-[48px] border-b border-white flex items-center">
+        <div className="relative w-full sm:w-[386px] h-[48px] border-b border-white flex items-center">
           <input 
             type="text" 
             placeholder="Search by tag or Title"

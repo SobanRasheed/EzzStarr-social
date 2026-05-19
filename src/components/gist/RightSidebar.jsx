@@ -12,7 +12,7 @@ export default function RightSidebar() {
   ];
 
   return (
-    <div className="w-[450px] flex-shrink-0 flex flex-col gap-[16px] sticky top-[100px] h-[calc(100vh-100px)] pt-10">
+    <div className="hidden lg:flex w-[300px] xl:w-[450px] flex-shrink-0 flex-col gap-[16px] sticky top-[100px] h-[calc(100vh-100px)] pt-10">
       
       {/* Gifts Leaderboard */}
       <div className="bg-[rgba(223,40,226,0.07)] backdrop-blur-[27px] rounded-[4px] p-6">
