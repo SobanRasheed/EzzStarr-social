@@ -1,123 +1,25 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchGists, toggleJoinGist, starGist, fetchCreators, subscribeCreator } from "../../store/slices/gistSlice";
 import { Share2, Eye, MessageCircle, Star,  } from "lucide-react";
 import { FaFire } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
 import { CiClock2 } from "react-icons/ci";
 import { BsFillPersonPlusFill } from "react-icons/bs";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-const gistData = [
-  {
-    id: 1,
-    author: "Kelly Wearstler",
-    time: "about 1 hour ago",
-    type: "Confession",
-    title: "Will it be a sin to take Grandma Mildred's dress ornaments apart for jewelry?",
-    replies: 18,
-    views: "12,804",
-    image: null,
-    subscribed: false,
-  },
-  {
-    id: 2,
-    author: "Danish Javed",
-    time: "2 hours ago",
-    type: "Cosplay",
-    title: "New Apex Legend cheat brings smurfing in low ranked lobbies to a whole new level",
-    replies: 124,
-    views: "42,312",
-    image: "https://images.unsplash.com/photo-1605902711622-cfb43c44367f",
-    subscribed: false,
-  },
-  {
-    id: 3,
-    author: "Mux Michel",
-    time: "Just now",
-    type: "Story",
-    title: `"I'm your wife, not your mom." My wife says this a lot and I don’t know how to respond.`,
-    replies: 67,
-    views: "9,451",
-    image: null,
-    subscribed: true,
-  },
-  {
-    id: 4,
-    author: "Ava Thompson",
-    time: "30 minutes ago",
-    type: "Event",
-    title: "Ezztar Social Event is coming soon — here’s what you should expect",
-    replies: 52,
-    views: "18,903",
-    image: "https://images.unsplash.com/photo-1515169067865-5387ec356754",
-    subscribed: false,
-  },
-  {
-    id: 5,
-    author: "Rohan Mehta",
-    time: "3 hours ago",
-    type: "Manga",
-    title: "Blooming Love Chapter 1 discussion — did anyone catch that final panel detail?",
-    replies: 89,
-    views: "27,110",
-    image: "https://wallpapers.com/images/high/cute-anime-profile-pictures-myg1ifdra7qohdks.webp",
-    subscribed: true,
-  },
-  {
-    id: 6,
-    author: "Sophia Lee",
-    time: "Yesterday",
-    type: "Story",
-    title: "I quit my job with no backup plan and it somehow worked out",
-    replies: 203,
-    views: "61,782",
-    image: null,
-    subscribed: false,
-  },
-  {
-    id: 7,
-    author: "Noah Williams",
-    time: "5 hours ago",
-    type: "Confession",
-    title: "I pretend to understand crypto when my friends talk about it",
-    replies: 41,
-    views: "14,296",
-    image: null,
-    subscribed: false,
-  },
-  {
-    id: 8,
-    author: "Emily Carter",
-    time: "6 hours ago",
-    type: "Cosplay",
-    title: "Rate my first League of Legends cosplay (be honest)",
-    replies: 156,
-    views: "38,440",
-    image: "https://images.unsplash.com/photo-1611605698335-6f52c9b5d8c6",
-    subscribed: true,
-  },
-  {
-    id: 9,
-    author: "Arjun Patel",
-    time: "Today",
-    type: "Event",
-    title: "Community meetup recap — photos, highlights, and what we learned",
-    replies: 33,
-    views: "7,902",
-    image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
-    subscribed: false,
-  },
-  {
-    id: 10,
-    author: "Luna Rivers",
-    time: "2 days ago",
-    type: "Manga",
-    title: "Top 5 underrated romance manga you should read this year",
-    replies: 98,
-    views: "45,670",
-    image: "https://images.unsplash.com/photo-1541963463532-d68292c34b19",
-    subscribed: true,
-  },
-];
-
 export default function GistHome() {
+  const dispatch = useDispatch();
+  const [activeFilter, setActiveFilter] = useState('');
+  const { gists, creators, creatorsLoaded, isLoading, error } = useSelector((state) => state.gist);
+
+  useEffect(() => {
+    dispatch(fetchGists(activeFilter));
+  }, [dispatch, activeFilter]);
+
+  useEffect(() => {
+    if (!creatorsLoaded) dispatch(fetchCreators());
+  }, [dispatch, creatorsLoaded]);
+
   return (
     <div className="bg-black text-white min-h-screen px-4 py-10 pt-25 font-sans">
       
@@ -130,10 +32,10 @@ export default function GistHome() {
         {/* LEFT SIDEBAR */}
         <div className="space-y-6 text-gray-400 text-sm pt-10">
           <div className="space-y-3">
-            <div className="hover:text-white cursor-pointer border-b border-gray-600 flex items-center gap-4 pb-2"><IoMdHome />Home</div>
-            <div className="hover:text-white cursor-pointer border-b border-gray-600 flex items-center gap-4 pb-2"><FaFire />Popular</div>
-            <div className="hover:text-white cursor-pointer border-b border-gray-600 flex items-center gap-4 pb-2"><CiClock2 />Recents</div>
-            <div className="hover:text-white cursor-pointer border-b border-gray-600 flex items-center gap-4 pb-2"><BsFillPersonPlusFill />Join</div>
+            <div onClick={() => setActiveFilter('')} className="hover:text-white cursor-pointer border-b border-gray-600 flex items-center gap-4 pb-2"><IoMdHome />Home</div>
+            <div onClick={() => setActiveFilter('popular')} className="hover:text-white cursor-pointer border-b border-gray-600 flex items-center gap-4 pb-2"><FaFire />Popular</div>
+            <div onClick={() => setActiveFilter('recent')} className="hover:text-white cursor-pointer border-b border-gray-600 flex items-center gap-4 pb-2"><CiClock2 />Recents</div>
+            <div onClick={() => setActiveFilter('joined')} className="hover:text-white cursor-pointer border-b border-gray-600 flex items-center gap-4 pb-2"><BsFillPersonPlusFill />Join</div>
             <div className="hover:text-white cursor-pointer border-b border-gray-600 flex items-center gap-4 pb-2"><FaMagnifyingGlass />Discover</div>
           </div>
         </div>
@@ -142,7 +44,9 @@ export default function GistHome() {
         {/* MAIN CONTENT */}
         <div className="space-y-6">
 
-          {gistData.map((thread, i) => (
+          {isLoading && <div className="text-center py-10">Loading...</div>}
+          {error && <div className="text-center py-10 text-red-500">{error}</div>}
+          {!isLoading && !error && gists && gists.map((thread, i) => (
             <div
               key={i}
               className="
@@ -176,6 +80,7 @@ export default function GistHome() {
                 <div className="ml-auto flex items-center gap-3">
 
                   <button
+                    onClick={() => dispatch(toggleJoinGist(thread.id))}
                     className="
                     text-xs
                     px-4 py-1
@@ -207,7 +112,10 @@ export default function GistHome() {
                   {/* STATS */}
                   <div className="flex gap-3 mt-4 text-xs text-gray-400">
 
-                    <button className="flex items-center gap-1 px-3 py-1 bg-[#1a1a1a] rounded-full hover:bg-[#222]">
+                    <button 
+                      onClick={() => dispatch(starGist(thread.id))}
+                      className="flex items-center gap-1 px-3 py-1 bg-[#1a1a1a] rounded-full hover:bg-[#222]"
+                    >
                       <Star size={14} />
                       {thread.stars}
                     </button>
@@ -246,17 +154,20 @@ export default function GistHome() {
           {/* Gifts */}
           <div className="bg-[#DF28E2]/10 border border-[#222] bg- p-5">
             <h4 className="mb-4 font-semibold">Gifts</h4>
-            {["Mux Michel", "Danish Javed", "Mux Michel", "Danish Javed"].map(
-              (name, i) => (
-                <div key={i} className="flex items-center gap-3 mb-4">
+            {creators && creators.map(
+              (creator) => (
+                <div key={creator.id} className="flex items-center gap-3 mb-4">
                   <div className="w-9 h-9 bg-gray-700 rounded-full"></div>
 
                   <div className="flex-1 text-sm">
-                    <div>{name}</div>
-                    <div className="text-gray-500 text-xs">112.45k threads</div>
+                    <div>{creator.name}</div>
+                    <div className="text-gray-500 text-xs">{creator.threads} threads</div>
                   </div>
 
-                  <button className="text-xs px-3 py-1 bg-purple-600 hover:bg-purple-500">
+                  <button 
+                    onClick={() => dispatch(subscribeCreator(creator.id))}
+                    className="text-xs px-3 py-1 bg-purple-600 hover:bg-purple-500"
+                  >
                     Subscribe
                   </button>
 
