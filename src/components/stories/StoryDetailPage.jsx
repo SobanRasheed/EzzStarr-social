@@ -20,7 +20,7 @@ function ThreadSpoolIcon({ className }) {
 }
 
 /* ── Mock Data ─────────────────────────────── */
-const PARTS = [1,2,3,4,5].map(n => ({
+const PARTS = [1, 2, 3, 4, 5].map(n => ({
   id: n,
   label: `Part ${n}`,
   date: "8 May 2025",
@@ -42,14 +42,14 @@ const THREADS = Array.from({ length: 4 }).map((_, i) => ({
 }));
 
 const RECOMMENDED = [
-  { id:1, title:"Infidel", author:"Aaron Campbell", genre:"Horror", image:"https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?q=80&w=400&auto=format&fit=crop" },
-  { id:2, title:"H.G. Wells: The Science Fiction", author:"H.G. Wells", genre:"Sci-fi, Action, Mystery", image:"https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=400&auto=format&fit=crop" },
-  { id:3, title:"H.G. Wells: The Science Fiction", author:"H.G. Wells", genre:"Sci-fi, Action, Mystery", image:"https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=400&auto=format&fit=crop" },
-  { id:4, title:"A Cyberpunk Ghost Story", author:"S.S.", genre:"Sci-fi Action", image:"https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=400&auto=format&fit=crop" },
-  { id:5, title:"Neon Dragons - A Cyberpunk", author:"Isekai LitRPG", genre:"Action, Mystery", image:"https://images.unsplash.com/photo-1560762484-813fc97650a0?q=80&w=400&auto=format&fit=crop" },
-  { id:6, title:"H.G. Wells: The Science Fiction", author:"H.G. Wells", genre:"Sci-fi, Action, Mystery", image:"https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=400&auto=format&fit=crop" },
-  { id:7, title:"H.G. Wells: The Science Fiction", author:"H.G. Wells", genre:"Sci-fi, Action, Mystery", image:"https://images.unsplash.com/photo-1504192010706-dd7f569ee2be?q=80&w=400&auto=format&fit=crop" },
-  { id:8, title:"H.G. Wells: The Science Fiction", author:"H.G. Wells", genre:"Sci-fi, Action, Mystery", image:"https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=400&auto=format&fit=crop" },
+  { id: 1, title: "Infidel", author: "Aaron Campbell", genre: "Horror", image: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?q=80&w=400&auto=format&fit=crop" },
+  { id: 2, title: "H.G. Wells: The Science Fiction", author: "H.G. Wells", genre: "Sci-fi, Action, Mystery", image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=400&auto=format&fit=crop" },
+  { id: 3, title: "H.G. Wells: The Science Fiction", author: "H.G. Wells", genre: "Sci-fi, Action, Mystery", image: "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=400&auto=format&fit=crop" },
+  { id: 4, title: "A Cyberpunk Ghost Story", author: "S.S.", genre: "Sci-fi Action", image: "https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=400&auto=format&fit=crop" },
+  { id: 5, title: "Neon Dragons - A Cyberpunk", author: "Isekai LitRPG", genre: "Action, Mystery", image: "https://images.unsplash.com/photo-1560762484-813fc97650a0?q=80&w=400&auto=format&fit=crop" },
+  { id: 6, title: "H.G. Wells: The Science Fiction", author: "H.G. Wells", genre: "Sci-fi, Action, Mystery", image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=400&auto=format&fit=crop" },
+  { id: 7, title: "H.G. Wells: The Science Fiction", author: "H.G. Wells", genre: "Sci-fi, Action, Mystery", image: "https://images.unsplash.com/photo-1504192010706-dd7f569ee2be?q=80&w=400&auto=format&fit=crop" },
+  { id: 8, title: "H.G. Wells: The Science Fiction", author: "H.G. Wells", genre: "Sci-fi, Action, Mystery", image: "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=400&auto=format&fit=crop" },
 ];
 
 const STORY_CONTENT = `Jim Caviezel, an American professor known for his vocal opposition to militant uprisings in the Middle East, had been invited to Cairo by an old friend, a fellow scholar. The invitation seemed innocent enough at first, a chance to speak out about the growing political unrest in the region. Little did Jim know, his visit would soon plunge him into a nightmare.
@@ -64,21 +64,23 @@ With a heart full of fear and determination, Sarah packed her bags and booked th
 
 Arriving in Cairo, Sarah was met with a chaotic city, streets crowded with people protesting against the government. She could feel the tension in the air, thick with anger and distrust. The last thing she wanted was to draw attention to herself, but she had no choice. Her first stop was the American embassy, hoping they could help. But even there, the officials seemed distant, overwhelmed by the growing unrest.
 
-Sarah was not one to be easily deterred. She refused to accept the embassy's formalities and red tape. The security team provided her with some guidance, but it was clear they couldn't offer much help in a city so gripped by violence. She decided to take matters into her own hands. She knew that Jim was a man of principles, someone who would never give up easily.
+Sarah was not one to be easily deterred. She refused to accept the embassy's formalities and red tape. The security team provided her with some guidance, but it was clear they couldn't offer much help in a city so gripped by violence. She decided to take matters into her own hands. She knew that Jim was a man of principles, someone who would never give up easily. That meant, in her heart, she believed he was still alive.
 
-Sarah's only lead was a few blurry details from the news reports and a cryptic message from Jim's colleague. The message mentioned something about a hidden safe house, a place where Jim might be held. Sarah's heart raced. The name of the place didn't ring any bells, but it was her only chance.`;
+Sarah's only lead was a few blurry details from the news reports and a cryptic message from Jim's colleague, who had last seen him before the abduction. The message mentioned something about a hidden safe house, a place where Jim might be held. Sarah's heart raced. The name of the place didn't ring any bells, but it was her only chance.
 
-/* ── Stat Pill ─────────────────────────── */
+Without wasting any more time, Sarah hired a local guide to help her navigate the city's underground network. The guide, a man named Tariq, was cautious but willing to help. He had seen the aftermath of the uprisings firsthand and understood the gravity of the situation. The two of them set off into the labyrinthine streets of Cairo, weaving through crowds and back alleys, always on the lookout for danger.`;
+
+/* ── Stat Pill (redesigned to match reference) ────── */
 function StatPill({ children, cyan, active, onClick }) {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all cursor-pointer
+      className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer
         ${cyan
-          ? "bg-[#00e5ff]/15 text-[#00e5ff] hover:bg-[#00e5ff]/25"
+          ? "bg-[#01F1E3] text-black"
           : active
-            ? "bg-[#00e5ff]/15 text-[#00e5ff]"
-            : "bg-[#1c1c1e] text-white/60 hover:bg-[#2a2a2a] hover:text-white"
+            ? "bg-[#2a2a2e] text-[#01F1E3] ring-1 ring-[#01F1E3]/40"
+            : "bg-[#1c1c1e]/80 text-white/60 hover:bg-[#2a2a2e] hover:text-white"
         }`}
     >
       {children}
@@ -94,16 +96,15 @@ function PartCard({ part, isActive, onClick }) {
   return (
     <div
       onClick={onClick}
-      className={`flex items-center gap-3 hover:bg-[#141414] transition-colors rounded-lg p-2.5 cursor-pointer border ${
-        isActive ? "bg-[#141414] border-[#14FF00]/30" : "bg-[#0d0d0d] border-white/5"
-      }`}
+      className={`flex items-center gap-3 hover:bg-[#141414] transition-colors rounded-lg p-2.5 cursor-pointer border ${isActive ? "bg-[#141414] border-[#14FF00]/30" : "bg-[#0d0d0d] border-white/5"
+        }`}
     >
       <img src={part.image} alt={part.label} className="w-12 h-14 object-cover rounded shrink-0" />
       <div className="flex-1 min-w-0">
         <p className="text-white text-sm font-semibold">{part.label}</p>
         <p className="text-white/40 text-[11px] mt-0.5">{part.date}</p>
         <div className="flex items-center gap-3 mt-1.5 text-[10px]">
-          <button onClick={e => { e.stopPropagation(); setStarred(!starred); setStarCount(p => starred ? p-1 : p+1); }}
+          <button onClick={e => { e.stopPropagation(); setStarred(!starred); setStarCount(p => starred ? p - 1 : p + 1); }}
             className={`flex items-center gap-1 transition-colors ${starred ? "text-yellow-400" : "text-white/40 hover:text-yellow-400"}`}>
             <Star className={`w-3 h-3 ${starred ? "fill-yellow-400" : ""}`} />{starCount}
           </button>
@@ -124,11 +125,13 @@ function GistThreadCard({ thread }) {
   const [replyCount, setReplyCount] = useState(thread.replies);
 
   return (
-    <div className="bg-[#1a1a1a] border border-white/5 rounded-xl p-4 hover:bg-[#1e1e1e] transition-colors">
+    <div className="bg-[#1a1a1a]/60 border border-white/5 rounded-xl p-4 hover:bg-[#1e1e1e] transition-colors">
+      {/* Header row */}
       <div className="flex justify-between items-start mb-2">
         <div className="flex items-center gap-2 text-xs flex-wrap">
           <img src="https://i.pravatar.cc/28?u=mikasa" alt="" className="w-6 h-6 rounded-full shrink-0" />
           <span className="text-white text-[11px] font-semibold">{thread.author}</span>
+          <span className="text-white/40 text-[9px]">•</span>
           <span className="text-white/30 bg-white/8 px-1.5 py-0.5 rounded text-[9px]">{thread.category}</span>
           <span className="text-white/30 text-[9px]">• {thread.time}</span>
         </div>
@@ -137,26 +140,32 @@ function GistThreadCard({ thread }) {
           <button className="text-white/40 hover:text-white"><MoreHorizontal className="w-3.5 h-3.5" /></button>
         </div>
       </div>
+
+      {/* Story reference */}
       {thread.hasStoryRef && (
         <div className="flex items-center gap-2 mb-2 bg-white/5 rounded-lg p-2">
           <img src="https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?q=80&w=60&auto=format&fit=crop" className="w-8 h-10 rounded object-cover shrink-0" alt="" />
           <div>
             <p className="text-white/80 text-[11px] font-semibold">Infidel</p>
-            <p className="text-[#14FF00] text-[9px]">In Story</p>
+            <p className="text-[#14FF00] text-[9px]">• Story</p>
           </div>
           <span className="text-white/40 text-[9px] ml-auto">{thread.storyPart}</span>
         </div>
       )}
+
+      {/* Content + image */}
       <div className="flex gap-3 items-start">
         <p className="text-[12px] text-white/80 leading-snug flex-1">{thread.content}</p>
-        {thread.image && <img src={thread.image} alt="" className="w-12 h-14 object-cover rounded shrink-0" />}
+        {thread.image && <img src={thread.image} alt="" className="w-14 h-16 object-cover rounded shrink-0" />}
       </div>
+
+      {/* Stats row */}
       <div className="flex items-center gap-4 mt-3 text-[10px] text-white/40">
-        <button onClick={() => { setStarred(!starred); setStarCount(p => starred ? p-1 : p+1); }}
+        <button onClick={() => { setStarred(!starred); setStarCount(p => starred ? p - 1 : p + 1); }}
           className={`flex items-center gap-1 transition-colors ${starred ? "text-yellow-400" : "hover:text-yellow-400"}`}>
           <Star className={`w-3 h-3 ${starred ? "fill-yellow-400" : ""}`} />{starCount}
         </button>
-        <button onClick={() => { setReplied(!replied); setReplyCount(p => replied ? p-1 : p+1); }}
+        <button onClick={() => { setReplied(!replied); setReplyCount(p => replied ? p - 1 : p + 1); }}
           className={`flex items-center gap-1 transition-colors ${replied ? "text-blue-400" : "hover:text-white"}`}>
           <MessageCircle className="w-3 h-3" />{replyCount}
         </button>
@@ -171,8 +180,8 @@ function GistThreadCard({ thread }) {
   );
 }
 
-/* ── Comments Panel ────────────────────── */
-function CommentsPanel({ onClose }) {
+/* ── Inline Comments Panel ────────────────────── */
+function InlineCommentsPanel({ onClose }) {
   const [text, setText] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -183,20 +192,20 @@ function CommentsPanel({ onClose }) {
   };
 
   return (
-    <div className="fixed top-0 right-0 h-full w-[340px] bg-[#111] border-l border-white/8 z-50 flex flex-col shadow-2xl">
+    <div className="w-[320px] shrink-0 bg-[#111111] border-l border-white/8 flex flex-col self-stretch rounded-r-xl">
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-white/8 shrink-0 mt-16">
-        <h3 className="text-white font-bold text-lg">Comments</h3>
+      <div className="flex items-center justify-between px-5 py-4 border-b border-white/8 shrink-0">
+        <h3 className="text-white font-bold text-base">Comments</h3>
         <button onClick={onClose} className="text-white/40 hover:text-white transition-colors">
           <X className="w-5 h-5" />
         </button>
       </div>
 
       {/* Body */}
-      <div className="flex-1 overflow-y-auto px-5 py-4">
+      <div className="flex-1 overflow-y-auto px-5 py-4 min-h-[400px]">
         {comments.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center gap-4">
-            {/* Decorative alien/avatar illustration */}
+          <div className="flex flex-col items-center justify-center h-full text-center gap-4 py-12">
+            {/* Alien/avatar illustration */}
             <div className="relative w-24 h-24">
               <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-4xl shadow-lg shadow-purple-500/30">
                 👾
@@ -206,7 +215,7 @@ function CommentsPanel({ onClose }) {
             </div>
             <div>
               <p className="text-white font-semibold text-base">Start the discussion</p>
-              <p className="text-white/40 text-sm mt-1">Looking to share your thoughts and start the conversation</p>
+              <p className="text-white/40 text-sm mt-1 leading-snug">Looking to share your thoughts and start the conversation</p>
             </div>
           </div>
         ) : (
@@ -247,8 +256,8 @@ function CommentsPanel({ onClose }) {
   );
 }
 
-/* ── Gist / Threads Panel ─────────────── */
-function GistPanel({ onClose }) {
+/* ── Inline Gist / Threads Panel ─────────────── */
+function InlineGistPanel({ onClose }) {
   const [threadText, setThreadText] = useState("");
   const [localThreads, setLocalThreads] = useState(THREADS);
 
@@ -268,10 +277,10 @@ function GistPanel({ onClose }) {
   };
 
   return (
-    <div className="fixed top-0 right-0 h-full w-[380px] bg-[#111] border-l border-white/8 z-50 flex flex-col shadow-2xl">
+    <div className="w-[340px] shrink-0 bg-[#111111] border-l border-white/8 flex flex-col self-stretch rounded-r-xl">
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-white/8 shrink-0 mt-16">
-        <button className="flex items-center gap-1.5 text-white font-bold text-lg hover:text-white/80 transition-colors">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-white/8 shrink-0">
+        <button className="flex items-center gap-1.5 text-white font-bold text-base hover:text-white/80 transition-colors">
           Gist <span className="text-sm text-white/50">▼</span>
         </button>
         <button onClick={onClose} className="text-white/40 hover:text-white transition-colors">
@@ -280,7 +289,7 @@ function GistPanel({ onClose }) {
       </div>
 
       {/* Thread list */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
+      <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3 min-h-[400px]">
         {localThreads.map(t => <GistThreadCard key={t.id} thread={t} />)}
       </div>
 
@@ -296,7 +305,7 @@ function GistPanel({ onClose }) {
           />
           <button
             onClick={submit}
-            className="w-8 h-8 rounded-lg bg-[#00e5ff] hover:bg-[#00c8e0] flex items-center justify-center transition-colors shrink-0"
+            className="w-8 h-8 rounded-lg bg-[#01F1E3] hover:bg-[#00c8e0] flex items-center justify-center transition-colors shrink-0"
           >
             <Send className="w-4 h-4 text-black" />
           </button>
@@ -311,35 +320,32 @@ export default function StoryDetailPage({ story, onBack }) {
   const [activePart, setActivePart] = useState(1);
 
   /* Stats state */
-  const [viewCount]   = useState(42312);
+  const [viewCount] = useState(42312);
   const [starCount, setStarCount] = useState(5);
-  const [starred, setStarred]     = useState(false);
-  const [commentCount]            = useState(124);
+  const [starred, setStarred] = useState(false);
+  const [commentCount] = useState(124);
 
   /* Panel state */
   const [showComments, setShowComments] = useState(false);
-  const [showThreads,  setShowThreads]  = useState(false);
+  const [showThreads, setShowThreads] = useState(false);
 
   /* Boost state */
   const [boosted, setBoosted] = useState(false);
-  const [loved,   setLoved]   = useState(false);
 
   const coverImg = story?.image || "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?q=80&w=600&auto=format&fit=crop";
-  const title    = story?.title  || "Infidel";
-  const author   = story?.author || "Aaron Campbell";
-  const genres   = story?.genres?.length > 0 ? story.genres : story?.genre ? [story.genre] : ["Horror", "Thriller"];
-  const content  = story?.content || STORY_CONTENT;
+  const title = story?.title || "Infidel";
+  const author = story?.author || "Aaron Campbell";
+  const genres = story?.genres?.length > 0 ? story.genres : story?.genre ? [story.genre] : ["Horror", "Thriller"];
+  const content = story?.content || STORY_CONTENT;
 
   /* Toggle panels (mutually exclusive) */
   const toggleComments = () => { setShowComments(p => !p); setShowThreads(false); };
-  const toggleThreads  = () => { setShowThreads(p => !p);  setShowComments(false); };
+  const toggleThreads = () => { setShowThreads(p => !p); setShowComments(false); };
+
+  const panelOpen = showComments || showThreads;
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
-
-      {/* Side panels */}
-      {showComments && <CommentsPanel onClose={() => setShowComments(false)} />}
-      {showThreads  && <GistPanel     onClose={() => setShowThreads(false)}  />}
 
       {/* ── Full hero blurred background ── */}
       <div className="relative w-full" style={{ minHeight: "100vh" }}>
@@ -358,16 +364,17 @@ export default function StoryDetailPage({ story, onBack }) {
         )}
 
         {/* ── Main two-column layout ── */}
-        <div className="relative z-10 max-w-[1200px] mx-auto px-6 pt-32 pb-6">
+        <div className={`relative z-10 mx-auto px-6 pt-32 pb-6 transition-all duration-300 ${panelOpen ? "max-w-[1400px]" : "max-w-[1200px]"}`}>
           <div className="flex gap-8 items-start">
 
-            {/* ══ LEFT SIDEBAR ══ */}
-            <div className="w-[240px] shrink-0 flex flex-col">
+            {/* ══ LEFT SIDEBAR — hidden when panel is open ══ */}
+            {!panelOpen && <div className="w-[240px] shrink-0 flex flex-col">
 
               {/* Cover image — with yellow glow when boosted */}
-              <div className={`rounded-lg overflow-hidden shadow-2xl transition-all duration-500 ${
-                boosted ? "shadow-[0_0_60px_20px_rgba(234,179,8,0.55)]" : "shadow-black/60"
-              }`}>
+              <div className={`rounded-lg overflow-hidden transition-all duration-500 ${boosted
+                ? "shadow-[0_0_50px_15px_rgba(234,179,8,0.5),0_0_100px_30px_rgba(234,179,8,0.25)]"
+                : "shadow-2xl shadow-black/60"
+                }`}>
                 <img src={coverImg} alt={title} className="w-full aspect-[2/3] object-cover block" />
               </div>
               <p className="text-white/40 text-[10px] mt-2">Artist: {author}</p>
@@ -385,10 +392,10 @@ export default function StoryDetailPage({ story, onBack }) {
                 {/* Boost → Heart after boosting */}
                 {boosted ? (
                   <button
-                    onClick={() => { setBoosted(false); setLoved(false); }}
-                    className="flex items-center justify-center bg-[#1a1a1a] hover:bg-[#222] border-y border-r border-white/10 h-[36px] px-4 transition-colors"
+                    onClick={() => setBoosted(false)}
+                    className="flex items-center justify-center bg-[#1a1a1a] hover:bg-[#222] border-y border-r border-white/10 h-[36px] w-[42px] transition-colors shrink-0"
                   >
-                    <Heart className="w-4 h-4 fill-red-500 text-red-500" />
+                    <Heart className="w-5 h-5 text-white/60" />
                   </button>
                 ) : (
                   <button
@@ -402,8 +409,8 @@ export default function StoryDetailPage({ story, onBack }) {
 
               {/* Earn badge — appears only after boosting */}
               {boosted && (
-                <p className="text-[#00e5ff] text-[13px] font-semibold mt-3">
-                  Earn 0.00005 $SPCA
+                <p className="text-[#01F1E3] text-[13px] font-semibold mt-3">
+                  Earn <span className="text-white font-bold">0.00005</span> <span className="text-[#01F1E3] font-bold">$SPCA</span>
                 </p>
               )}
 
@@ -426,7 +433,7 @@ export default function StoryDetailPage({ story, onBack }) {
 
               {/* Parts */}
               <div className="mt-5">
-                <p className="text-[#00e5ff] text-sm font-semibold mb-3">Parts</p>
+                <p className="text-[#01F1E3] text-sm font-semibold mb-3">Parts</p>
                 <div className="flex flex-col gap-2">
                   {PARTS.map(part => (
                     <PartCard
@@ -438,43 +445,45 @@ export default function StoryDetailPage({ story, onBack }) {
                   ))}
                 </div>
               </div>
-            </div>
+            </div>}
 
-            {/* ══ RIGHT PANEL ══ */}
-            <div className="flex-1 min-w-0">
-              <div className="bg-[#0e0e0e]/85 backdrop-blur-sm rounded-xl p-6 border border-white/5">
+            {/* ══ RIGHT CONTENT AREA (story + inline panel) ══ */}
+            <div className="flex-1 min-w-0 flex">
+
+              {/* Story content container */}
+              <div className={`flex-1 min-w-0 bg-[#0e0e0e]/85 backdrop-blur-sm p-6 border border-white/5 transition-all duration-300 ${panelOpen ? "rounded-l-xl" : "rounded-xl"}`}>
 
                 {/* Top row: genres + stats */}
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
                   {/* Genre tags — sharp square corners */}
                   <div className="flex gap-2 flex-wrap">
                     {genres.map(g => (
-                      <span key={g} className="bg-[#14FF00] text-black text-[12px] font-black px-4 py-1.5" style={{ borderRadius: 0 }}>
+                      <span key={g} className="bg-[#14FF00] text-black text-[13px] font-black px-5 py-1.5" style={{ borderRadius: 0 }}>
                         {g}
                       </span>
                     ))}
                   </div>
 
-                  {/* Stats row — exactly 5 pills: Views | Stars | Comments | Share | Threads */}
+                  {/* Stats row — 5 rounded pills matching reference */}
                   <div className="flex items-center gap-2 flex-wrap">
                     <StatPill cyan>
-                      <Eye className="w-3 h-3" /> {viewCount.toLocaleString()}
+                      <Eye className="w-4 h-4" /> {viewCount.toLocaleString()}
                     </StatPill>
                     <StatPill
                       active={starred}
-                      onClick={() => { setStarred(!starred); setStarCount(p => starred ? p-1 : p+1); }}
+                      onClick={() => { setStarred(!starred); setStarCount(p => starred ? p - 1 : p + 1); }}
                     >
-                      <Star className={`w-3 h-3 ${starred ? "fill-yellow-400 text-yellow-400" : ""}`} /> {starCount}
+                      <Star className={`w-4 h-4 ${starred ? "fill-yellow-400 text-yellow-400" : ""}`} /> {starCount}
                     </StatPill>
                     <StatPill active={showComments} onClick={toggleComments}>
-                      <MessageCircle className={`w-3 h-3 ${showComments ? "text-[#00e5ff]" : ""}`} /> ({commentCount})
+                      <MessageCircle className={`w-4 h-4 ${showComments ? "text-[#01F1E3]" : ""}`} /> ({commentCount})
                     </StatPill>
-                    <StatPill onClick={() => { if (navigator.clipboard) navigator.clipboard.writeText(window.location.href).catch(() => {}); }}>
-                      <Share2 className="w-3 h-3" />
+                    <StatPill onClick={() => { if (navigator.clipboard) navigator.clipboard.writeText(window.location.href).catch(() => { }); }}>
+                      <Share2 className="w-4 h-4" />
                     </StatPill>
                     {/* Threads / Gist button — spool icon */}
                     <StatPill active={showThreads} onClick={toggleThreads}>
-                      <ThreadSpoolIcon className="w-3.5 h-3.5" />
+                      <ThreadSpoolIcon className="w-4.5 h-4.5" />
                     </StatPill>
                   </div>
                 </div>
@@ -510,6 +519,10 @@ export default function StoryDetailPage({ story, onBack }) {
                   </button>
                 </div>
               </div>
+
+              {/* ── Inline side panels (appear next to story, not as overlays) ── */}
+              {showComments && <InlineCommentsPanel onClose={() => setShowComments(false)} />}
+              {showThreads && <InlineGistPanel onClose={() => setShowThreads(false)} />}
             </div>
           </div>
         </div>
@@ -562,9 +575,9 @@ export default function StoryDetailPage({ story, onBack }) {
               <div className="absolute inset-0 flex flex-col items-center justify-start pt-8 p-5 text-center z-10">
                 <h3 className="text-5xl font-black text-yellow-400 tracking-widest drop-shadow-lg">SPICA</h3>
                 <div className="relative w-full mt-2">
-                  {["SPICA","SPICA","SPICA","SPICA"].map((txt,i) => (
+                  {["SPICA", "SPICA", "SPICA", "SPICA"].map((txt, i) => (
                     <p key={i} className="text-[28px] font-black leading-tight tracking-widest"
-                      style={{ color: i%2===0 ? "rgba(216,180,254,0.15)" : "rgba(139,92,246,0.2)" }}>{txt}</p>
+                      style={{ color: i % 2 === 0 ? "rgba(216,180,254,0.15)" : "rgba(139,92,246,0.2)" }}>{txt}</p>
                   ))}
                 </div>
                 <div className="w-28 h-28 rounded-full mt-2 overflow-hidden border-2 border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.4)]">
@@ -589,7 +602,7 @@ export default function StoryDetailPage({ story, onBack }) {
       {/* ── Recommended From Ezzstar ── */}
       <div className="max-w-[1200px] mx-auto px-6 mt-24 pb-20">
         <h2 className="text-3xl font-bold text-center text-white mb-10">
-          Recommended From <span className="text-[#00e5ff]">Ezzstar</span>
+          Recommended From <span className="text-[#01F1E3]">Ezzstar</span>
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {RECOMMENDED.map(s => (
@@ -610,18 +623,18 @@ function ThreadStatsRow({ thread }) {
 
   return (
     <div className="flex items-center gap-5 mt-4 text-[11px] text-white/40 font-medium">
-      <button onClick={() => { setStarred(!starred); setStarCount(p => starred ? p-1 : p+1); }}
+      <button onClick={() => { setStarred(!starred); setStarCount(p => starred ? p - 1 : p + 1); }}
         className={`flex items-center gap-1.5 transition-colors ${starred ? "text-yellow-400" : "hover:text-yellow-400"}`}>
         <Star className={`w-3.5 h-3.5 ${starred ? "fill-yellow-400" : ""}`} />{starCount}
       </button>
-      <button onClick={() => { setReplied(!replied); setReplyCount(p => replied ? p-1 : p+1); }}
+      <button onClick={() => { setReplied(!replied); setReplyCount(p => replied ? p - 1 : p + 1); }}
         className={`flex items-center gap-1.5 transition-colors ${replied ? "text-blue-400" : "hover:text-white"}`}>
         <MessageCircle className="w-3.5 h-3.5" />{replyCount}
       </button>
       <button className="flex items-center gap-1.5 hover:text-white transition-colors">
         <Eye className="w-3.5 h-3.5" />{thread.views}
       </button>
-      <button onClick={() => { if (navigator.clipboard) navigator.clipboard.writeText(window.location.href).catch(() => {}); }}
+      <button onClick={() => { if (navigator.clipboard) navigator.clipboard.writeText(window.location.href).catch(() => { }); }}
         className="flex items-center gap-1.5 hover:text-white transition-colors">
         <Share2 className="w-3.5 h-3.5" />
       </button>
