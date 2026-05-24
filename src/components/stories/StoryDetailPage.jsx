@@ -379,30 +379,30 @@ export default function StoryDetailPage({ story, onBack }) {
               </div>
               <p className="text-white/40 text-[10px] mt-2">Artist: {author}</p>
 
-              {/* Action buttons — same row, flat (no rounded-full) */}
-              <div className="flex items-stretch mt-4 w-full overflow-hidden rounded-sm">
-                <button className="flex items-center justify-center gap-1.5 bg-[#111] hover:bg-[#1a1a1a] border-y border-l border-white/10 h-[36px] px-3 text-[11px] font-semibold text-white/80 transition-colors whitespace-nowrap flex-1">
-                  <span className="w-2 h-2 rounded-full bg-[#14FF00] shrink-0" />
+              {/* Action buttons — same row, flat */}
+              <div className="flex items-stretch mt-4 w-full overflow-hidden rounded-md h-[42px] border border-white/5">
+                <button className="flex items-center justify-center gap-2 bg-[#121212] hover:bg-[#1a1a1a] px-3 text-[13px] font-medium text-[#f5f5f5] transition-colors whitespace-nowrap flex-[1.1]">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#14FF00] shrink-0" />
                   Listen Audio
                 </button>
-                <button className="flex items-center justify-center gap-1.5 bg-[#4a3080] hover:bg-[#5a3a90] border border-[#6040a0]/50 h-[36px] px-3 text-[11px] font-bold text-white transition-colors whitespace-nowrap flex-1">
-                  <DollarSign className="w-3.5 h-3.5 shrink-0" />
+                <button className="flex items-center justify-center gap-1.5 bg-[#4c3286] hover:bg-[#5a3a90] px-3 text-[13px] font-bold text-white transition-colors whitespace-nowrap flex-[1.1]">
+                  <DollarSign className="w-4 h-4 shrink-0" strokeWidth={2.5} />
                   Tip Author
                 </button>
                 {/* Boost → Heart after boosting */}
                 {boosted ? (
                   <button
                     onClick={() => setBoosted(false)}
-                    className="flex items-center justify-center bg-[#1a1a1a] hover:bg-[#222] border-y border-r border-white/10 h-[36px] w-[42px] transition-colors shrink-0"
+                    className="flex items-center justify-center bg-[#1a1a1a] hover:bg-[#222] px-3 transition-colors shrink-0 flex-[0.8]"
                   >
                     <Heart className="w-5 h-5 text-white/60" />
                   </button>
                 ) : (
                   <button
                     onClick={() => setBoosted(true)}
-                    className="flex items-center justify-center gap-1.5 bg-[#14FF00] hover:bg-[#10dd00] border border-[#14FF00] h-[36px] px-3 text-[11px] font-bold text-black transition-colors whitespace-nowrap flex-1"
+                    className="flex items-center justify-center gap-1 bg-[#14FF00] hover:bg-[#10dd00] px-3 text-[14px] font-bold text-black transition-colors whitespace-nowrap flex-[0.8]"
                   >
-                    <Zap className="w-3.5 h-3.5 shrink-0 fill-black" /> Boost
+                    <Zap className="w-4 h-4 shrink-0 fill-black text-black" /> Boost
                   </button>
                 )}
               </div>
@@ -451,49 +451,55 @@ export default function StoryDetailPage({ story, onBack }) {
             <div className="flex-1 min-w-0 flex">
 
               {/* Story content container */}
-              <div className={`flex-1 min-w-0 bg-[#0e0e0e]/85 backdrop-blur-sm p-6 border border-white/5 transition-all duration-300 ${panelOpen ? "rounded-l-xl" : "rounded-xl"}`}>
-
-                {/* Top row: genres + stats */}
-                <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-                  {/* Genre tags — sharp square corners */}
-                  <div className="flex gap-2 flex-wrap">
-                    {genres.map(g => (
-                      <span key={g} className="bg-[#14FF00] text-black text-[13px] font-black px-5 py-1.5" style={{ borderRadius: 0 }}>
-                        {g}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Stats row — 5 rounded pills matching reference */}
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <StatPill cyan>
-                      <Eye className="w-4 h-4" /> {viewCount.toLocaleString()}
-                    </StatPill>
-                    <StatPill
-                      active={starred}
-                      onClick={() => { setStarred(!starred); setStarCount(p => starred ? p - 1 : p + 1); }}
-                    >
-                      <Star className={`w-4 h-4 ${starred ? "fill-yellow-400 text-yellow-400" : ""}`} /> {starCount}
-                    </StatPill>
-                    <StatPill active={showComments} onClick={toggleComments}>
-                      <MessageCircle className={`w-4 h-4 ${showComments ? "text-[#01F1E3]" : ""}`} /> ({commentCount})
-                    </StatPill>
-                    <StatPill onClick={() => { if (navigator.clipboard) navigator.clipboard.writeText(window.location.href).catch(() => { }); }}>
-                      <Share2 className="w-4 h-4" />
-                    </StatPill>
-                    {/* Threads / Gist button — spool icon */}
-                    <StatPill active={showThreads} onClick={toggleThreads}>
-                      <ThreadSpoolIcon className="w-4.5 h-4.5" />
-                    </StatPill>
-                  </div>
+              <div className={`relative flex-1 min-w-0 bg-[#0e0e0e]/85 backdrop-blur-sm p-6 border border-white/5 overflow-hidden transition-all duration-300 ${panelOpen ? "rounded-l-xl" : "rounded-xl"}`}>
+                
+                {/* Background profile/cover pic watermark */}
+                <div className="absolute inset-0 z-0 pointer-events-none opacity-5 flex items-center justify-center">
+                  <img src={coverImg} alt="Story Background" className="w-[150%] h-[150%] object-cover blur-[2px]" />
                 </div>
 
-                {/* Title — with rocket icon when boosted */}
-                <h1 className="text-3xl font-bold text-white mb-5 flex items-center gap-2 flex-wrap">
-                  {title}
-                  <span className="text-white/50 font-normal text-xl">(Part-{activePart})</span>
-                  {boosted && <Rocket className="w-6 h-6 text-yellow-400 fill-yellow-400" />}
-                </h1>
+                <div className="relative z-10">
+                  {/* Top row: genres + stats */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+                    {/* Genre tags — sharp square corners */}
+                    <div className="flex gap-2 flex-wrap">
+                      {genres.map(g => (
+                        <span key={g} className="bg-[#14FF00] text-black text-[13px] font-black px-5 py-1.5" style={{ borderRadius: 0 }}>
+                          {g}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Stats row — 5 rounded pills matching reference */}
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <StatPill cyan>
+                        <Eye className="w-4 h-4" /> {viewCount.toLocaleString()}
+                      </StatPill>
+                      <StatPill
+                        active={starred}
+                        onClick={() => { setStarred(!starred); setStarCount(p => starred ? p - 1 : p + 1); }}
+                      >
+                        <Star className={`w-4 h-4 ${starred ? "fill-yellow-400 text-yellow-400" : ""}`} /> {starCount}
+                      </StatPill>
+                      <StatPill active={showComments} onClick={toggleComments}>
+                        <MessageCircle className={`w-4 h-4 ${showComments ? "text-[#01F1E3]" : ""}`} /> ({commentCount})
+                      </StatPill>
+                      <StatPill onClick={() => { if (navigator.clipboard) navigator.clipboard.writeText(window.location.href).catch(() => { }); }}>
+                        <Share2 className="w-4 h-4" />
+                      </StatPill>
+                      {/* Threads / Gist button — spool icon */}
+                      <StatPill active={showThreads} onClick={toggleThreads}>
+                        <ThreadSpoolIcon className="w-4.5 h-4.5" />
+                      </StatPill>
+                    </div>
+                  </div>
+
+                  {/* Title — with rocket icon when boosted */}
+                  <h1 className="text-3xl font-normal text-white mb-5 flex items-center gap-2 flex-wrap">
+                    {title}
+                    <span className="text-white/50 font-normal text-xl">(Part-{activePart})</span>
+                    {boosted && <Rocket className="w-6 h-6 text-yellow-400 fill-yellow-400" />}
+                  </h1>
 
                 {/* Story content */}
                 <div className="space-y-4 text-white/75 text-[14px] leading-7">
@@ -502,21 +508,22 @@ export default function StoryDetailPage({ story, onBack }) {
                   ))}
                 </div>
 
-                {/* Pagination */}
-                <div className="flex items-center justify-center gap-3 mt-8">
-                  <button
-                    onClick={() => setActivePart(p => Math.max(1, p - 1))}
-                    className="w-8 h-8 rounded-full bg-white/8 hover:bg-white/15 flex items-center justify-center transition-colors"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <span className="text-white/70 text-sm font-medium">Part {activePart} of {PARTS.length}</span>
-                  <button
-                    onClick={() => setActivePart(p => Math.min(PARTS.length, p + 1))}
-                    className="w-8 h-8 rounded-full bg-white/8 hover:bg-white/15 flex items-center justify-center transition-colors"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+                  {/* Pagination */}
+                  <div className="flex items-center justify-center gap-3 mt-8">
+                    <button
+                      onClick={() => setActivePart(p => Math.max(1, p - 1))}
+                      className="w-8 h-8 rounded-full bg-white/8 hover:bg-white/15 flex items-center justify-center transition-colors"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <span className="text-white/70 text-sm font-medium">Part {activePart} of {PARTS.length}</span>
+                    <button
+                      onClick={() => setActivePart(p => Math.min(PARTS.length, p + 1))}
+                      className="w-8 h-8 rounded-full bg-white/8 hover:bg-white/15 flex items-center justify-center transition-colors"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -530,7 +537,7 @@ export default function StoryDetailPage({ story, onBack }) {
 
       {/* ── Story Threads ── */}
       <div className="max-w-[1200px] mx-auto px-6 mt-20">
-        <h2 className="text-3xl font-bold text-center text-white mb-10">Story Threads</h2>
+        <h2 className="text-3xl font-normal text-center text-white mb-10">Story Threads</h2>
         <div className="flex gap-8">
           <div className="flex-1 flex flex-col gap-4">
             {THREADS.map(t => (
@@ -601,7 +608,7 @@ export default function StoryDetailPage({ story, onBack }) {
 
       {/* ── Recommended From Ezzstar ── */}
       <div className="max-w-[1200px] mx-auto px-6 mt-24 pb-20">
-        <h2 className="text-3xl font-bold text-center text-white mb-10">
+        <h2 className="text-3xl font-normal text-center text-white mb-10">
           Recommended From <span className="text-[#01F1E3]">Ezzstar</span>
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
