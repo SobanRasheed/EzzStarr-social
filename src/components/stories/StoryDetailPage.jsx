@@ -379,30 +379,36 @@ export default function StoryDetailPage({ story, onBack }) {
               </div>
               <p className="text-white/40 text-[10px] mt-2">Artist: {author}</p>
 
-              {/* Action buttons — same row, flat */}
-              <div className="flex items-stretch mt-4 w-full overflow-hidden rounded-md h-[42px] border border-white/5">
-                <button className="flex items-center justify-center gap-2 bg-[#121212] hover:bg-[#1a1a1a] px-3 text-[13px] font-medium text-[#f5f5f5] transition-colors whitespace-nowrap flex-[1.1]">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#14FF00] shrink-0" />
-                  Listen Audio
-                </button>
-                <button className="flex items-center justify-center gap-1.5 bg-[#4c3286] hover:bg-[#5a3a90] px-3 text-[13px] font-bold text-white transition-colors whitespace-nowrap flex-[1.1]">
-                  <DollarSign className="w-4 h-4 shrink-0" strokeWidth={2.5} />
-                  Tip Author
-                </button>
-                {/* Boost → Heart after boosting */}
-                {boosted ? (
+              {/* Action buttons */}
+              <div className="flex items-center mt-4 w-full h-[42px]">
+                {/* Left group: Listen + Tip (and Boost if unboosted) */}
+                <div className={`flex items-stretch h-full overflow-hidden border border-white/5 ${boosted ? "rounded-md flex-1" : "rounded-md w-full"}`}>
+                  <button className="flex items-center justify-center gap-2 bg-[#121212] hover:bg-[#1a1a1a] px-3 text-[13px] font-medium text-[#f5f5f5] transition-colors whitespace-nowrap flex-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#14FF00] shrink-0" />
+                    Listen Audio
+                  </button>
+                  <button className="flex items-center justify-center gap-1.5 bg-[#4c3286] hover:bg-[#5a3a90] px-3 text-[13px] font-bold text-white transition-colors whitespace-nowrap flex-1">
+                    <DollarSign className="w-4 h-4 shrink-0" strokeWidth={2.5} />
+                    Tip Author
+                  </button>
+                  {/* Unboosted Boost Button is attached */}
+                  {!boosted && (
+                    <button
+                      onClick={() => setBoosted(true)}
+                      className="flex items-center justify-center bg-[#14FF00] hover:bg-[#10dd00] w-[42px] shrink-0 transition-colors"
+                    >
+                      <Zap className="w-4 h-4 shrink-0 fill-black text-black" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Boosted Heart Button is separate */}
+                {boosted && (
                   <button
                     onClick={() => setBoosted(false)}
-                    className="flex items-center justify-center bg-[#1a1a1a] hover:bg-[#222] px-3 transition-colors shrink-0 flex-[0.8]"
+                    className="flex items-center justify-center bg-white hover:bg-gray-200 w-[42px] h-[42px] rounded-full shrink-0 ml-3 transition-colors shadow-lg"
                   >
-                    <Heart className="w-5 h-5 text-white/60" />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setBoosted(true)}
-                    className="flex items-center justify-center gap-1 bg-[#14FF00] hover:bg-[#10dd00] px-3 text-[14px] font-bold text-black transition-colors whitespace-nowrap flex-[0.8]"
-                  >
-                    <Zap className="w-4 h-4 shrink-0 fill-black text-black" /> Boost
+                    <Heart className="w-5 h-5 text-black" />
                   </button>
                 )}
               </div>
