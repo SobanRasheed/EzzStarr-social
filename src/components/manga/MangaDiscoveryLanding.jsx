@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchManga } from "../../store/slices/mangaSlice";
 import MangaCard from "../reuseable comps/MangaCard";
-import { Search, ChevronRight } from "lucide-react";
+import { Search, ChevronRight, Eye, Star, MessageCircle } from "lucide-react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 /* =========================
    🎨 STYLES
@@ -44,21 +45,35 @@ const RankBadge = ({ rank, badge }) => {
   );
 };
 
-const TopBoostedItem = ({ item }) => (
-  <div className="py-3 px-3 border-b border-white/10 hover:bg-white/5 flex gap-3">
-    <img src={item.thumbnail} className="w-14 h-20 object-cover rounded" />
-    <div className="flex-1">
-      <h3 className="text-white text-xs font-semibold">{item.title}</h3>
-      <p className="text-gray-400 text-xs">{item.author}</p>
-      <div className="text-gray-400 text-xs flex gap-2 mt-1">
-        <span>👁 {item.views}</span>
-        <span>⭐ {item.stars}</span>
-        <span>💬 {item.comments}</span>
-      </div>
-    </div>
-    <RankBadge rank={item.rank} badge={item.badge} />
+const Stat = ({ icon, value }) => (
+  <div className="flex items-center gap-1 bg-white/10 hover:bg-white/20 transition px-1.5 py-0.5 rounded-full text-xs">
+    {icon}
+    <span>{value}</span>
   </div>
 );
+const TopBoostedItem = ({ item }) => {
+  const navigate = useNavigate();
+  const handleClick = (id) => {
+    console.log("clicked")
+    navigate(`/manga/${id}`, { state: id });
+  };
+  return (
+    <div onClick={() => handleClick(item.id)} className="py-3 px-3  border-b border-white/10 hover:bg-white/5 flex gap-3">
+      <img src={item.thumbnail} className="w-16 h-22 object-contain rounded" />
+      <div className="flex-1 flex flex-col ">
+        <h3 className="text-white text-xs font-semibold">{item.title}</h3>
+        <p className="text-gray-400 text-xs">by ~ {item.author}</p>
+        <div className="text-gray-400 mt-auto text-xs flex gap-2 ">
+          <Stat icon={<Eye className="w-3 h-4" />} value={item.views} />
+          <Stat icon={<Star className="w-3 h-4" />} value={item.stars} />
+          <Stat icon={<MessageCircle className="w-3 h-4" />} value={item.comments} />
+          <Stat icon={<img src="/icons/thread.svg" alt="Image" className="h-5" />} value={item.comments} />
+        </div>
+      </div>
+      <RankBadge rank={item.rank} badge={item.badge} />
+    </div>
+  );
+}
 
 const MangaSection = ({ title, mangaList }) => (
   <section className="mb-12">
@@ -149,9 +164,9 @@ const MangaDiscoveryLanding = () => {
               ? `${import.meta.env.VITE_API_URL}/api/manga/cover?mangaId=${manga.id}&fileName=${coverFileName}`
               : 'https://via.placeholder.com/120x180?text=No+Cover';
             const title = manga.attributes?.title?.en ||
-                          manga.attributes?.title?.en_jp ||
-                          Object.values(manga.attributes?.title || {})[0] ||
-                          'Untitled';
+              manga.attributes?.title?.en_jp ||
+              Object.values(manga.attributes?.title || {})[0] ||
+              'Untitled';
             const followedCount = manga.attributes?.followedCount || 0;
             const score = manga.attributes?.rating?.bayesian || 0;
             return {
@@ -208,9 +223,9 @@ const MangaDiscoveryLanding = () => {
             ? `${import.meta.env.VITE_API_URL}/api/manga/cover?mangaId=${manga.id}&fileName=${coverFileName}`
             : 'https://via.placeholder.com/120x180?text=No+Cover';
           const title = manga.attributes?.title?.en ||
-                        manga.attributes?.title?.en_jp ||
-                        Object.values(manga.attributes?.title || {})[0] ||
-                        'Untitled';
+            manga.attributes?.title?.en_jp ||
+            Object.values(manga.attributes?.title || {})[0] ||
+            'Untitled';
           const followedCount = manga.attributes?.followedCount || 0;
           const score = manga.attributes?.rating?.bayesian || 0;
           return {
@@ -226,6 +241,7 @@ const MangaDiscoveryLanding = () => {
           };
         });
         setTopManga(transformed);
+        console.log(transformed)
       } catch (e) {
         console.error("Failed to fetch top manga:", e);
         setTopMangaError(e.message);
@@ -267,61 +283,59 @@ const MangaDiscoveryLanding = () => {
 
         {/* RIGHT */}
         <aside className="hidden lg:block w-96">
-          <div className="bg-[#1a1a05] rounded-lg sticky top-20">
-            {/* Search input with dropdown */}
-            <div className="p-4 border-b border-white/10 relative" ref={dropdownRef}>
-              <input
-                value={sidebarSearchQuery}
-                onChange={(e) => setSidebarSearchQuery(e.target.value)}
-                onFocus={() => {
-                  if (searchResults && searchResults.length > 0) setShowDropdown(true);
-                }}
-                placeholder="Search manga..."
-                className="w-full bg-transparent border-b border-white/30 text-white outline-none focus:border-yellow-500 transition"
-              />
+          <div className="p-4 border-b border-white/10 relative" ref={dropdownRef}>
+            <input
+              value={sidebarSearchQuery}
+              onChange={(e) => setSidebarSearchQuery(e.target.value)}
+              onFocus={() => {
+                if (searchResults && searchResults.length > 0) setShowDropdown(true);
+              }}
+              placeholder="Search manga..."
+              className="w-full bg-transparent border-b border-white/30 text-white outline-none focus:border-yellow-500 transition"
+            />
 
-              {/* Dropdown */}
-              {showDropdown && (
-                <div className="absolute left-0 right-0 top-full mt-2 bg-[#2a2a15] rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto">
-                  {isSearching ? (
-                    <div className="p-4 text-gray-400 text-sm text-center">Searching...</div>
-                  ) : searchError ? (
-                    <div className="p-4 text-red-400 text-sm text-center">{searchError}</div>
-                  ) : searchResults?.length === 0 ? (
-                    <div className="p-4 text-gray-400 text-sm text-center">No results found.</div>
-                  ) : (
-                    searchResults.slice(0, 10).map((item) => (
-                      <div
-                        key={item.id}
-                        className="py-2 px-3 hover:bg-white/10 cursor-pointer transition"
-                        onClick={() => {
-                          // Navigate to manga detail page (adjust as needed)
-                          window.location.href = `/manga/${item.id}`;
-                          setShowDropdown(false);
-                        }}
-                      >
-                        <div className="flex gap-3 items-center">
-                          <img
-                            src={item.thumbnail}
-                            className="w-10 h-14 object-cover rounded"
-                            onError={(e) => (e.target.src = 'https://via.placeholder.com/120x180?text=No+Cover')}
-                          />
-                          <div className="flex-1">
-                            <h3 className="text-white text-sm font-semibold">{item.title}</h3>
-                            <p className="text-gray-400 text-xs">{item.author}</p>
-                            <div className="text-gray-400 text-xs flex gap-2 mt-1">
-                              <span>👁 {item.views}</span>
-                              <span>⭐ {item.stars}</span>
-                            </div>
+            {/* Dropdown */}
+            {showDropdown && (
+              <div className="absolute left-0 right-0 top-full mt-2 bg-[#2a2a15] rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto">
+                {isSearching ? (
+                  <div className="p-4 text-gray-400 text-sm text-center">Searching...</div>
+                ) : searchError ? (
+                  <div className="p-4 text-red-400 text-sm text-center">{searchError}</div>
+                ) : searchResults?.length === 0 ? (
+                  <div className="p-4 text-gray-400 text-sm text-center">No results found.</div>
+                ) : (
+                  searchResults.slice(0, 10).map((item) => (
+                    <div
+                      key={item.id}
+                      className="py-2 px-3 hover:bg-white/10 cursor-pointer transition"
+                      onClick={() => {
+                        // Navigate to manga detail page (adjust as needed)
+                        window.location.href = `/manga/${item.id}`;
+                        setShowDropdown(false);
+                      }}
+                    >
+                      <div className="flex gap-3 items-center">
+                        <img
+                          src={item.thumbnail}
+                          className="w-10 h-14 object-cover rounded"
+                          onError={(e) => (e.target.src = 'https://via.placeholder.com/120x180?text=No+Cover')}
+                        />
+                        <div className="flex-1">
+                          <h3 className="text-white text-sm font-semibold">{item.title}</h3>
+                          <p className="text-gray-400 text-xs">{item.author}</p>
+                          <div className="text-gray-400 text-xs flex gap-2 mt-1">
+                            <span>👁 {item.views}</span>
+                            <span>⭐ {item.stars}</span>
                           </div>
                         </div>
                       </div>
-                    ))
-                  )}
-                </div>
-              )}
-            </div>
-
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
+          <div className="bg-[#1a1a05] rounded-lg sticky top-20">
             {/* Top 10 list */}
             {isTopMangaLoading ? (
               Array(10).fill(0).map((_, i) => (
