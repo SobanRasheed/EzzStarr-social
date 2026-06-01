@@ -1,9 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import StoriesFilters from "../components/stories/StoriesFilters";
 import StoriesGrid from "../components/stories/StoriesGrid";
 import StoryDetailPage from "../components/stories/StoryDetailPage";
+import { fetchStory } from "../store/slices/storySlice";
 
 const STORIES_API_URL = `${import.meta.env.VITE_API_URL}/api/stories`;
 
@@ -75,11 +76,16 @@ function groupByGenre(stories) {
 }
 
 export default function StoriesPage() {
+  const dispatch = useDispatch();
   const {
     stories: reduxStories,
     isLoading,
     error,
   } = useSelector((state) => state.story);
+
+  useEffect(() => {
+    dispatch(fetchStory());
+  }, [dispatch]);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
@@ -153,9 +159,9 @@ export default function StoriesPage() {
       setSelectedStory(detailedStory);
     } catch {
       console.warn("Backend failed, using mock detailed story");
-      const found = MOCK_STORIES.find((s) => s.id === Number(storyId));
+      const found = MOCK_STORIES.find((s) => String(s.id) === String(storyId));
       setSelectedStory({
-        id: Number(storyId),
+        id: storyId,
         title: found?.title || "Untitled Story",
         author: found?.author || "Unknown",
         genre: found?.genre || "General",
@@ -185,7 +191,7 @@ export default function StoriesPage() {
       setSelectedStory(null);
       return;
     }
-    if (selectedStory?.id === Number(storyId)) return;
+    if (selectedStory && String(selectedStory.id) === String(storyId)) return;
     fetchStoryDetail(storyId);
   }, [searchParams, selectedStory?.id]);
 

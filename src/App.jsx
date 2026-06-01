@@ -98,6 +98,69 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: "onboarding/role",
+        async lazy() {
+          const module = await import("./pages/OnboardingRole");
+          return { Component: module.default };
+        },
+      },
+      {
+        path: "onboarding/profile",
+        async lazy() {
+          const module = await import("./pages/OnboardingProfile");
+          return { Component: module.default };
+        },
+      },
+      {
+        path: "wallet",
+        async lazy() {
+          const module = await import("./pages/WalletPage");
+          return { Component: module.default };
+        },
+      },
+      {
+        path: "notifications",
+        async lazy() {
+          const module = await import("./pages/NotificationsPage");
+          return { Component: module.default };
+        },
+      },
+      {
+        path: "profile",
+        async lazy() {
+          const module = await import("./pages/ProfilePage");
+          return { Component: module.default };
+        },
+      },
+      {
+        path: "admin",
+        async lazy() {
+          const module = await import("./pages/AdminDashboard");
+          return { Component: module.default };
+        },
+      },
+      {
+        path: "gists/:id",
+        async lazy() {
+          const module = await import("./pages/GistDetailPage");
+          return { Component: module.default };
+        },
+      },
+      {
+        path: "gists/topics/:topicId",
+        async lazy() {
+          const module = await import("./pages/GistTopicPage");
+          return { Component: module.default };
+        },
+      },
+      {
+        path: "boosts/create",
+        async lazy() {
+          const module = await import("./pages/BoostCreatePage");
+          return { Component: module.default };
+        },
+      },
+      {
         path: "*",
         element: <div>Page Not Found</div>,
       },

@@ -1,56 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchGists } from "../../store/slices/gistSlice";
 import PostCard from "./PostCard";
 import { FaPaperclip } from "react-icons/fa";
 import { FaMagnifyingGlass, FaChevronDown } from "react-icons/fa6";
 
-const gistData = [
-  {
-    id: 1,
-    author: "Kelly Wearstler",
-    avatar: "https://i.pravatar.cc/40?img=10",
-    time: "about 1 hour ago",
-    type: "Confession",
-    title: "New Apex Legend cheat brings smurfing in low ranked lobbies to a whole new level Visit New",
-    replies: 18,
-    views: "12K",
-    stars: 8,
-    images: [
-      "https://picsum.photos/id/1018/800/600",
-      "https://picsum.photos/id/1015/800/600",
-      "https://picsum.photos/id/1019/800/600"
-    ],
-  },
-  {
-    id: 2,
-    author: "Danish Javed",
-    avatar: "https://i.pravatar.cc/40?img=11",
-    time: "about 1 hour ago",
-    type: "Confession",
-    title: "New Apex Legend cheat brings smurfing in low ranked lobbies to a whole new level Visit https://www.youtube.com/watch?v=D_H1PoXURLS&list=RGMnMsy2soFlB&index=9",
-    replies: 124,
-    views: "42K",
-    stars: 5,
-    images: ["https://picsum.photos/id/1025/800/600"],
-  },
-  {
-    id: 3,
-    author: "Mux Michel",
-    avatar: "https://i.pravatar.cc/40?img=12",
-    time: "about 1 hour ago",
-    type: "Confession",
-    title: "New Apex Legend cheat brings smurfing in low ranked lobbies to a whole new level Visit New",
-    replies: 67,
-    views: "9K",
-    stars: 12,
-    images: [
-      "https://picsum.photos/id/1043/800/600",
-      "https://picsum.photos/id/1044/800/600",
-      "https://picsum.photos/id/1045/800/600"
-    ],
-  },
-];
+export default function FeedColumn({ activeFilter }) {
+  const dispatch = useDispatch();
+  const { gists, isLoading, error } = useSelector((state) => state.gist);
 
-export default function FeedColumn() {
+  useEffect(() => {
+    dispatch(fetchGists(activeFilter));
+  }, [dispatch, activeFilter]);
+
   return (
     <div className="w-full max-w-[1200px] flex-1 min-w-0 lg:border-l lg:border-r border-[rgba(255,255,255,0.25)] backdrop-blur-[36px] flex flex-col items-center">
       
@@ -95,11 +57,36 @@ export default function FeedColumn() {
 
       {/* Feed Posts */}
       <div className="w-full flex flex-col items-center pb-20">
-        {gistData.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
+        {isLoading && <div className="text-center py-10 text-white/60">Loading Gists...</div>}
+        {error && <div className="text-center py-10 text-red-500">{error}</div>}
+        
+        {!isLoading && !error && gists && gists.map((gist, i) => {
+          // Adapt the database gist properties to match the PostCard expectations
+          const post = {
+            id: gist.id || gist._id || String(i),
+            author: gist.author || "Anonymous",
+            avatar: gist.avatar || `https://i.pravatar.cc/40?img=${hashStringToInt(gist.id || gist._id || String(i)) % 70}`,
+            time: gist.time || "some time ago",
+            type: gist.type || "Gist",
+            title: gist.title || "No Title",
+            images: gist.image ? [gist.image] : [],
+            stars: gist.stars || 0,
+            replies: gist.replies || 0,
+            views: gist.views || 0,
+          };
+          return <PostCard key={post.id} post={post} />;
+        })}
       </div>
 
     </div>
   );
+}
+
+// Simple helper to deterministically hash an ID to an avatar index
+function hashStringToInt(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return Math.abs(hash);
 }

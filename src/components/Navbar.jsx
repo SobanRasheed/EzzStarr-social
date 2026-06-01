@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchWallet } from "../store/slices/walletSlice";
 import LoginModal from "../components/LoginModal";
 import logo from "../assets/logo.png";
 import {
@@ -11,11 +13,24 @@ import {
   FaBars,
 } from "react-icons/fa6";
 import { PiTelegramLogo } from "react-icons/pi";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes as FaTimesIcon } from "react-icons/fa";
+import WalletWidget from "./WalletWidget";
+import NotificationBell from "./NotificationBell";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  
+  const dispatch = useDispatch();
+  const { wallet } = useSelector((state) => state.wallet);
+  const isLoggedIn = !!localStorage.getItem("token");
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(fetchWallet());
+    }
+  }, [dispatch, isLoggedIn]);
+
   const linkClass = ({ isActive }) =>
     `text-sm transition relative leading-none ${isActive ? "text-gray-400 before:absolute before:top-1/2 before:-left-1 before:-right-1 before:h-[1px] before:bg-gray-400 before:-translate-y-1/2" : "text-white hover:text-gray-300"
     }`;
@@ -65,18 +80,23 @@ const Navbar = () => {
               <div className="w-px h-5 bg-white/10 mx-1" />
             </div>
 
+            {isLoggedIn && wallet && (
+              <WalletWidget utilityBalance={wallet.utilityBalance} earnedBalance={wallet.earnedBalance} />
+            )}
+            {isLoggedIn && <NotificationBell />}
+
             <FaMagnifyingGlass className="hover:text-white text-white cursor-pointer transition" />
             {/* Avatar */}
-            <div onClick={() => setIsLoginOpen(true)} className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold text-white cursor-pointer">
+            <NavLink to={isLoggedIn ? "/profile" : "#"} onClick={() => !isLoggedIn && setIsLoginOpen(true)} className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold text-white cursor-pointer">
               <img className="w-7" src="pfp.svg" alt="" />
-            </div>
+            </NavLink>
 
             {/* Hamburger (Mobile Only) */}
             <button
               className="md:hidden text-white text-xl"
               onClick={() => setIsOpen(!isOpen)}
             >
-              {isOpen ? <FaTimes /> : <FaBars />}
+              {isOpen ? <FaTimesIcon /> : <FaBars />}
             </button>
           </div>
         </div>

@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { toggleJoinGist, starGist } from "../../store/slices/gistSlice";
 import { Share2, Eye, MessageCircle, Star } from "lucide-react";
 
 // The Carrossel component logic for media rendering
@@ -23,9 +25,6 @@ const MediaGrid = ({ images }) => {
   }
 
   if (images.length >= 3) {
-    // Logic from spec: left vertical (approx 248px), middle (397px), right (478px) -> we'll use flex proportions
-    // Total approx width = 1172 - 48 (padding) = 1124px.
-    // Proportions: 22%, 35%, 43%
     return (
       <div className="flex gap-2 w-full h-[377px] mt-4 rounded-[4px] overflow-hidden">
         <div className="flex-[2.2] h-full">
@@ -43,6 +42,8 @@ const MediaGrid = ({ images }) => {
 };
 
 export default function PostCard({ post }) {
+  const dispatch = useDispatch();
+
   return (
     <div className="w-full flex flex-col p-4 sm:p-6 gap-4 bg-[rgba(28,28,30,0.5)] rounded-[8px] border border-[rgba(223,40,226,0.3)] backdrop-blur-[36px] mb-6">
       
@@ -66,7 +67,10 @@ export default function PostCard({ post }) {
         </div>
 
         <div className="flex items-center gap-3">
-          <button className="bg-[#8E0CA3] hover:bg-purple-700 text-white text-[12px] font-medium px-4 py-1.5 rounded-full transition-colors">
+          <button 
+            onClick={() => dispatch(toggleJoinGist(post.id))}
+            className="bg-[#8E0CA3] hover:bg-purple-700 text-white text-[12px] font-medium px-4 py-1.5 rounded-full transition-colors cursor-pointer"
+          >
             Join
           </button>
           <button className="text-gray-400 hover:text-white">
@@ -99,19 +103,22 @@ export default function PostCard({ post }) {
         </div>
 
         {/* Buttons */}
-        <button className="flex items-center gap-1.5 bg-[rgba(255,255,255,0.1)] backdrop-blur-[27px] rounded-[27px] px-3 py-1 hover:bg-[rgba(255,255,255,0.15)] transition text-gray-300">
+        <button 
+          onClick={() => dispatch(starGist(post.id))}
+          className="flex items-center gap-1.5 bg-[rgba(255,255,255,0.1)] backdrop-blur-[27px] rounded-[27px] px-3 py-1 hover:bg-[rgba(255,255,255,0.15)] transition text-gray-300 cursor-pointer"
+        >
           <Star size={16} />
-          <span className="font-inter text-[12px]">{post.stars || 5}</span>
+          <span className="font-inter text-[12px]">{post.stars || 0}</span>
         </button>
 
         <button className="flex items-center gap-1.5 bg-[rgba(255,255,255,0.1)] backdrop-blur-[27px] rounded-[27px] px-3 py-1 hover:bg-[rgba(255,255,255,0.15)] transition text-gray-300">
           <MessageCircle size={16} />
-          <span className="font-inter text-[12px]">{post.replies}</span>
+          <span className="font-inter text-[12px]">{post.replies || 0}</span>
         </button>
 
         <button className="flex items-center gap-1.5 bg-[rgba(255,255,255,0.1)] backdrop-blur-[27px] rounded-[27px] px-3 py-1 hover:bg-[rgba(255,255,255,0.15)] transition text-gray-300">
           <Eye size={16} />
-          <span className="font-inter text-[12px]">{post.views}</span>
+          <span className="font-inter text-[12px]">{post.views || 0}</span>
         </button>
 
         <button className="flex items-center justify-center w-[30px] h-[30px] bg-[rgba(255,255,255,0.1)] backdrop-blur-[27px] rounded-[6px] hover:bg-[rgba(255,255,255,0.15)] transition text-gray-300 ml-auto">
