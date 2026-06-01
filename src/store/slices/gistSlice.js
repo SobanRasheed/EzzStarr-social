@@ -1,5 +1,37 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+export const fetchGist = createAsyncThunk(
+  "gist/fetchGist",
+  async (id, thunkAPI) => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/gists/${id}`);
+    const data = await res.json();
+    if (!res.ok) {
+      return thunkAPI.rejectWithValue(data.error || "Failed to fetch gist");
+    }
+    return data; // returns { gist, topics }
+  }
+);
+
+export const createTopic = createAsyncThunk(
+  "gist/createTopic",
+  async ({ gistId, title, body }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/gists/${gistId}/topics`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+      body: JSON.stringify({ title, body }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      return thunkAPI.rejectWithValue(data.error || "Failed to create topic");
+    }
+    return data.topic;
+  }
+);
+
 export const fetchGists = createAsyncThunk(
   "gist/fetchGists",
   async (filter, thunkAPI) => {
@@ -59,10 +91,39 @@ const gistSlice = createSlice({
     error: null,
     isLoaded: false,
     creatorsLoaded: false,
+    currentGist: null,
+    topics: [],
+    loading: false,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // fetchGist
+      .addCase(fetchGist.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchGist.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentGist = action.payload.gist;
+        state.topics = action.payload.topics;
+      })
+      .addCase(fetchGist.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch gist";
+      })
+      // createTopic
+      .addCase(createTopic.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createTopic.fulfilled, (state, action) => {
+        state.loading = false;
+        state.topics.unshift(action.payload);
+      })
+      .addCase(createTopic.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to create topic";
+      })
       // fetchGists
       .addCase(fetchGists.pending, (state) => {
         state.isLoading = true;
