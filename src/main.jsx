@@ -18,22 +18,21 @@ const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <WagmiProvider config={wagmiConfig}>
-        <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider >
-            <Suspense
-              fallback={
-                <div className="fixed inset-0 flex items-center justify-center bg-black text-white">
-                  <Loader />
-                </div>
-              }
-            >
+      <Provider store={store}>
+    <Suspense
+      fallback={
+        <div className="fixed inset-0 flex items-center justify-center bg-black text-white">
+          <Loader />
+        </div>
+      }>
+        <WagmiProvider config={wagmiConfig}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider >
               <RouterProvider router={router} />
-            </Suspense>
-          </RainbowKitProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
-    </Provider>
-  </React.StrictMode>
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
+    </Suspense>
+      </Provider>
+  </React.StrictMode >
 );

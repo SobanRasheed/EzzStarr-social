@@ -21,7 +21,7 @@ const MangaCard = ({
     navigate(`/manga/${id}`, { state: id });
   };
   return (
-    <div onClick={() => handleClick(id)} className="group relative w-full bg-[#1C1C1E80] rounded-sm overflow-hidden text-white flex flex-col md:flex-row transition hover:shadow-xl">
+    <div onClick={() => handleClick(id)} className="group cursor-pointer relative w-full bg-[#1C1C1E80] rounded-sm overflow-hidden text-white flex flex-col md:flex-row transition hover:shadow-xl">
       {/* ❤️ Heart */}
       <button
         onClick={(e) => {

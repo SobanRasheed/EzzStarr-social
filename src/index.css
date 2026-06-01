@@ -6,11 +6,20 @@
   --font-sf: 'SF Pro Display', sans-serif;
   --font-satoshi: 'Satoshi', sans-serif;
   --font-inter: 'Inter', sans-serif;
+  
+  --color-base: #010101;
+  --color-surface: rgba(28, 28, 30, 0.5);
+  --color-cyan: #01F1E3;
+  --color-magenta: #EF00F4;
+  --color-purple: #8E0CA3;
+  --color-text-secondary: #999999;
 }
 
-body,html{
+body,html {
     max-width: 100vw;
+    background-color: var(--color-base);
+    color: #FFFFFF;
 }
-html,body{
-overflow-x: hidden;    
+html,body {
+    overflow-x: hidden;    
 }

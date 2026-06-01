@@ -1,23 +1,26 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchManga, fetchChapters } from "../../store/slices/mangaSlice";
+import { fetchChapters } from "../../store/slices/mangaSlice";
 import HomeManga from "../homepage/HomeManga";
+import axios from "axios";
+import { Heart, Share2, Eye, MessageCircle, Star, Share } from "lucide-react";
 
 /* =========================
-   🧩 SMALL COMPONENTS (unchanged)
+   🧩 SMALL COMPONENTS
 ========================= */
 
-const Stat = ({ value }) => (
-  <div className="flex items-center gap-1 px-2 py-1 bg-white/10 rounded-full text-gray-300 text-xs">
-    ⭐ <span>{value}</span>
+const Stat = ({ icon, value }) => (
+  <div className="flex items-center gap-1 bg-white/10 hover:bg-white/20 transition px-1.5 py-1 rounded-full text-xs">
+    {icon}
+    <span>{value}</span>
   </div>
 );
 
 const ChapterRow = ({ ch, index, manga, onClick }) => (
   <div
     onClick={onClick}
-    className="flex cursor-pointer items-center justify-between px-4 py-3 rounded-lg border-b border-white/10 hover:bg-white/5 transition"
+    className="flex cursor-pointer items-center justify-between px-4 py-2 border-b border-white/10 hover:bg-white/5 transition"
   >
     <div className="flex gap-4 items-center">
       <span className="text-xs text-gray-500 w-10">
@@ -43,9 +46,11 @@ const ChapterRow = ({ ch, index, manga, onClick }) => (
       </div>
     </div>
     <div className="flex gap-2">
-      <Stat value="5" />
-      <Stat value="124" />
-      <Stat value="24k" />
+      <Stat icon={<Star className="w-3 h-4" />} value={"1.2k"} />
+      <Stat icon={<MessageCircle className="w-3 h-4" />} value={"1.2k"} />
+      <Stat icon={<Share2 className="w-3 h-4" />} value={""} />
+      <Stat icon={<img src="/icons/thread.svg" alt="Image" className="h-5" />} value={"1.2k"} />
+      <Stat icon={<Eye className="w-3 h-4" />} value={"1.2k"} />
     </div>
   </div>
 );
@@ -59,53 +64,66 @@ const MangaDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { mangas, chapters, isLoading } = useSelector((state) => state.manga);
-  const manga = mangas.find((m) => String(m.id) === String(id));
-  const isPlatform = manga?.isPlatform || false;
-  const cacheKey = `${id}-${isPlatform}`;
-  const mangaChapters = chapters[cacheKey] || [];
-
-  // Determine if chapters are currently being loaded
-  // We can't rely on isLoading alone because it's also used for manga list.
-  // We'll track a separate local state or use a ref, but simplest is to check:
-  // if manga exists and chapters[cacheKey] is undefined and fetch is pending?
-  // However, Redux doesn't expose pending status per action easily.
-  // For now, we'll assume chapters are loading if manga exists and mangaChapters is empty and we haven't attempted fetch.
-  // But we already dispatch fetchChapters if missing, so we can add a local loading flag.
-
+  const { chapters } = useSelector((state) => state.manga);
+  const [manga, setManga] = useState(null);
+  const [loadingManga, setLoadingManga] = useState(true);
   const [chaptersLoading, setChaptersLoading] = useState(false);
 
-  useEffect(() => {
-    if (!manga) {
-      dispatch(fetchManga());
-    }
-  }, [manga, dispatch]);
+  const cacheKey = manga ? `${id}-${manga.isPlatform}` : id;
+  const mangaChapters = chapters[cacheKey] || [];
 
+  // ✅ Fetch manga by ID if not found in Redux state
   useEffect(() => {
-    if (id && manga && !chapters[cacheKey]) {
+    const fetchMangaById = async () => {
+      setLoadingManga(true);
+      try {
+        // First try platform endpoint (your own database)
+        let response = await axios.get(`${import.meta.env.VITE_API_URL}/api/manga/${id}`);
+        setManga({ ...response.data.data, isPlatform: true });
+      } catch (err) {
+        // If not found (404), try external MangaDex endpoint
+        if (err.response?.status === 404) {
+          try {
+            const extResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/manga/external/${id}`);
+            setManga({ ...extResponse.data, isPlatform: false });
+          } catch (extErr) {
+            console.error("Failed to fetch external manga:", extErr);
+            setManga(null);
+          }
+        } else {
+          console.error("Failed to fetch manga:", err);
+          setManga(null);
+        }
+      } finally {
+        setLoadingManga(false);
+      }
+    };
+    fetchMangaById();
+  }, [id]);
+
+  // Fetch chapters after manga is loaded
+  useEffect(() => {
+    if (manga && id && !chapters[cacheKey]) {
       setChaptersLoading(true);
-      dispatch(fetchChapters({ mangaId: id, isPlatform })).finally(() => {
+      dispatch(fetchChapters({ mangaId: id, isPlatform: manga.isPlatform })).finally(() => {
         setChaptersLoading(false);
       });
     }
-  }, [manga, id, chapters, cacheKey, dispatch, isPlatform]);
+  }, [manga, id, chapters, cacheKey, dispatch]);
 
-  // For MangaDex chapters, filter only integer chapters
+  // Filter and sort chapters
   const displayChapters = (() => {
     let chaptersList = mangaChapters;
-    if (!isPlatform) {
+    if (manga && !manga.isPlatform) {
       chaptersList = mangaChapters.filter(ch => {
         const num = Number(ch.chapter);
         return !isNaN(num) && num > 0;
       });
     }
-    // Sort ascending by chapter number
     return [...chaptersList].sort((a, b) => Number(a.chapter) - Number(b.chapter));
   })();
 
-  /* =========================
-     📄 PAGINATION
-  ========================= */
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const CHAPTERS_PER_PAGE = 10;
   const totalPages = Math.ceil((displayChapters?.length || 0) / CHAPTERS_PER_PAGE);
@@ -115,37 +133,36 @@ const MangaDetails = () => {
   );
 
   // Loading states
-  if (isLoading && !manga) {
+  if (loadingManga) {
     return <div className="text-white p-10">Loading manga details...</div>;
   }
-
   if (!manga) {
     return <div className="text-white p-10">Manga not found</div>;
   }
 
-  const coverUrl = manga.imageUrl
-    ? `${import.meta.env.VITE_API_URL}${manga.imageUrl}`
+  const coverUrl = manga.coverUrl
+    ? `${import.meta.env.VITE_API_URL}${manga.coverUrl}`
     : "/fallback-cover.jpg";
 
   return (
     <div className="bg-black text-white min-h-screen">
-      {/* HERO (unchanged) */}
+      {/* HERO SECTION */}
       <div className="relative h-screen flex items-center justify-around px-10">
         <div
           className="absolute inset-0 bg-cover bg-top opacity-30"
           style={{ backgroundImage: `url(${coverUrl})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
         <div className="relative z-10 max-w-3xl">
-          <h1 className="text-5xl font-bold mb-4">{manga.title}</h1>
-          <p className="text-gray-300 mb-6">{manga.description}</p>
+          <h1 className="text-5xl font-bold max-w-3xl mb-4">{manga.title}</h1>
+          <p className="text-gray-300 line-clamp-3 mb-6">{manga.description}</p>
           <div className="flex gap-4">
             {paginatedChapters.length > 0 && (
               <button
                 onClick={() => navigate(`/manga/read/${paginatedChapters[0].id}`)}
-                className="bg-cyan-400 text-black px-4 py-2 rounded"
+                className="bg-cyan-300 text-black px-4 py-1 "
               >
-                Read First {isPlatform ? "Episode" : "Chapter"}
+                Open Manga
               </button>
             )}
             <button className="border border-white p-2 rounded-full">❤️</button>
@@ -157,45 +174,44 @@ const MangaDetails = () => {
         </div>
       </div>
 
-      {/* MAIN */}
+      {/* MAIN CONTENT */}
       <div className="flex gap-10 px-10 py-10">
-        {/* LEFT - CHAPTERS/EPISODES */}
+        {/* LEFT: CHAPTERS / EPISODES */}
         <div className="flex-1">
           <h2 className="text-2xl font-bold mb-8">
-            {isPlatform ? "Episodes" : "Chapters"}
+            {manga.isPlatform ? "Episodes" : "Chapters"}
           </h2>
 
-          {/* Chapters Loader */}
           {chaptersLoading && (
             <div className="flex justify-center py-10">
               <div className="w-8 h-8 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
             </div>
           )}
 
-          {/* No chapters message */}
           {!chaptersLoading && paginatedChapters.length === 0 && (
             <p className="text-gray-400">No chapters available</p>
           )}
 
-          {/* Chapters list */}
           {!chaptersLoading && paginatedChapters.length > 0 && (
             <>
               {paginatedChapters.map((ch, idx) => {
                 const globalIndex = (currentPage - 1) * CHAPTERS_PER_PAGE + idx;
                 return (
+                  <div className="p-4 bg-amber-50/5">
                   <ChapterRow
                     key={ch.id}
                     ch={ch}
                     manga={manga}
                     index={globalIndex}
                     onClick={() => navigate(`/manga/read/${ch.id}`)}
-                  />
+                    />
+                    </div>
                 );
               })}
               <div className="flex justify-center gap-3 mt-6">
                 <button
                   disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => p - 1)}
+                  onClick={() => setCurrentPage(p => p - 1)}
                   className="px-3 py-1 bg-white/10 rounded disabled:opacity-30"
                 >
                   Prev
@@ -205,7 +221,7 @@ const MangaDetails = () => {
                 </span>
                 <button
                   disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => p + 1)}
+                  onClick={() => setCurrentPage(p => p + 1)}
                   className="px-3 py-1 bg-white/10 rounded disabled:opacity-30"
                 >
                   Next
@@ -215,14 +231,14 @@ const MangaDetails = () => {
           )}
         </div>
 
-        {/* RIGHT SIDEBAR (unchanged) */}
+        {/* RIGHT: SIDEBAR */}
         <div className="w-96 space-y-2">
           <div className="bg-purple-800/20 px-5 py-3 border border-white/10">
             <h3 className="font-semibold mb-4">About the Manga</h3>
             <p className="text-sm text-gray-400">Author: {manga.author}</p>
             <p className="text-sm text-gray-400">Genre: {manga.genre}</p>
             <p className="text-sm text-gray-400">
-              {isPlatform ? "Episodes" : "Chapters"}: {displayChapters.length}
+              {manga.isPlatform ? "Episodes" : "Chapters"}: {displayChapters.length}
             </p>
           </div>
           <div className="bg-purple-800/20 px-5 py-3 border border-white/10">
@@ -244,7 +260,7 @@ const MangaDetails = () => {
         </div>
       </div>
 
-      {/* RECOMMENDED */}
+      {/* RECOMMENDED SECTION */}
       <div>
         <HomeManga title="Recommended For You" />
       </div>

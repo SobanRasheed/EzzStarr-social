@@ -8,17 +8,34 @@ export default function StoryCard({
   author,
   genre,
   genres,
-  reward,
   onClick,
   hasGlow = false,
 }) {
   const [liked, setLiked] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [starred, setStarred] = useState(false);
+  const [starCount, setStarCount] = useState(5);
+  const [commentCount] = useState(0);
+  const [shareCount, setShareCount] = useState(0);
 
   const genreText = genres?.length > 0 ? genres.join(", ") : genre || "";
   const imgSrc =
     image ||
     (imageUrl ? `${import.meta.env.VITE_API_URL}${imageUrl}` : "");
+
+  const handleStar = (e) => {
+    e.stopPropagation();
+    setStarred(!starred);
+    setStarCount(prev => starred ? prev - 1 : prev + 1);
+  };
+
+  const handleShare = (e) => {
+    e.stopPropagation();
+    setShareCount(prev => prev + 1);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href).catch(() => {});
+    }
+  };
 
   return (
     <div
@@ -40,22 +57,6 @@ export default function StoryCard({
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-
-        {/* Earn Badge - top left */}
-        <div
-          className={`absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-medium backdrop-blur-sm ${
-            hasGlow
-              ? "bg-yellow-500/90 text-black"
-              : "bg-[#d946ef]/90 text-white"
-          }`}
-        >
-          <span
-            className={`w-1.5 h-1.5 rounded-full inline-block shrink-0 ${
-              hasGlow ? "bg-black/50" : "bg-white/60"
-            }`}
-          />
-          Earn 0.00005 SPCA
-        </div>
 
         {/* Heart Icon - top right */}
         <button
@@ -99,16 +100,28 @@ export default function StoryCard({
 
       {/* Stats bar at the bottom of the card */}
       <div className="flex items-center justify-center gap-4 py-2.5 px-3 bg-[#0a0a0a] border-t border-white/5">
-        <button className="flex items-center gap-1 text-white/40 hover:text-white text-[11px] transition-colors">
-          <Star className="w-3.5 h-3.5" /> 5
+        <button
+          onClick={handleStar}
+          className={`flex items-center gap-1 text-[11px] transition-colors ${starred ? "text-yellow-400" : "text-white/40 hover:text-yellow-400"}`}
+        >
+          <Star className={`w-3.5 h-3.5 ${starred ? "fill-yellow-400" : ""}`} /> {starCount}
         </button>
-        <button className="flex items-center gap-1 text-white/40 hover:text-white text-[11px] transition-colors">
-          <MessageCircle className="w-3.5 h-3.5" /> 0
+        <button
+          onClick={(e) => e.stopPropagation()}
+          className="flex items-center gap-1 text-white/40 hover:text-white text-[11px] transition-colors"
+        >
+          <MessageCircle className="w-3.5 h-3.5" /> {commentCount}
         </button>
-        <button className="flex items-center gap-1 text-white/40 hover:text-white text-[11px] transition-colors">
-          <Share2 className="w-3.5 h-3.5" /> 0
+        <button
+          onClick={handleShare}
+          className="flex items-center gap-1 text-white/40 hover:text-white text-[11px] transition-colors"
+        >
+          <Share2 className="w-3.5 h-3.5" /> {shareCount}
         </button>
-        <button className="flex items-center gap-1 text-white/40 hover:text-white text-[11px] transition-colors">
+        <button
+          onClick={(e) => e.stopPropagation()}
+          className="flex items-center gap-1 text-white/40 hover:text-white text-[11px] transition-colors"
+        >
           <PenLine className="w-3.5 h-3.5" /> 0
         </button>
       </div>
