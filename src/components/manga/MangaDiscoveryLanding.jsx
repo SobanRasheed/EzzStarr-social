@@ -86,7 +86,7 @@ const MangaSection = ({ title, mangaList }) => (
     <div className="grid grid-cols-2 gap-6">
       {mangaList.map((manga) => (
         <div key={manga.id} className="relative">
-          <MangaCard {...manga} stars={4} comments={120} reward={"0.0015 $SPCA"} views={"23k"} />
+          <MangaCard {...manga} stars={4} comments={120} views={"23k"} />
         </div>
       ))}
     </div>

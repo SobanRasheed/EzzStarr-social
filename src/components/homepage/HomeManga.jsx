@@ -44,7 +44,6 @@ const HomeManga = ({title}) => {
               {...manga}
               stars={4}
               comments={120}
-              reward={"0.0015 $SPCA"}
               views={"23k"}
             />
           ))

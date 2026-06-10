@@ -7,7 +7,7 @@ const MangaCard = ({
   title,
   author,
   genre,
-  reward,
+
   stars,
   comments,
   views = "23k",
@@ -75,15 +75,7 @@ const MangaCard = ({
           </p>
         </div>
 
-        <div>
-          <p className="text-xs relative mt-1 text-[#DF28E2]">
-            Earn {reward}
-            {boosted && (
-              <button className="absolute bottom-0 right-0 bg-[#ffea00] px-3 py-1  text-black text-sm">
-                ⚡ Boost
-              </button>
-            )}
-          </p>
+
           {/* 📊 Stats */}
           <div className="my-1 flex flex-wrap gap-1">
             <hr className="w-full text-gray-800 mb-1" />

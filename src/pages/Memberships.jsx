@@ -7,7 +7,7 @@ export default function SpicaMembership() {
 
   const features = {
     free: [
-      { text: 'Earn ', highlight: billingCycle === 'yearly' ? '0.00006 SPCA' : '0.00005 SPCA', textAfter: ' Token per quiz.', available: true },
+      { text: 'Earn ', highlight: billingCycle === 'yearly' ? '0.00006 SPCA' : '0.00005 SPCA', textAfter: ' Token per story read.', available: true },
       { text: '', highlight: 'Creators Earn SPCA', textAfter: ' for every content they publish.', available: true },
       { text: '', highlight: 'AI Voice Narrator', textAfter: ' brings every chapter to life.', available: false },
       { text: '', highlight: 'Generate image visuals', textAfter: ' from scenes inside stories.', available: false },
@@ -17,7 +17,7 @@ export default function SpicaMembership() {
       { text: 'Receive ', highlight: '0 SPCA', textAfter: ' each month.', available: false }
     ],
     star: [
-      { text: 'Earn ', highlight: billingCycle === 'yearly' ? '0.00018 SPCA' : '0.00015 SPCA', textAfter: billingCycle === 'yearly' ? ' Token per quiz (3x Free tier).' : ' Token per quiz (3x Free tier).', available: true },
+      { text: 'Earn ', highlight: billingCycle === 'yearly' ? '0.00018 SPCA' : '0.00015 SPCA', textAfter: billingCycle === 'yearly' ? ' Token per story read (3x Free tier).' : ' Token per story read (3x Free tier).', available: true },
       { text: '', highlight: 'Creators earn 20%', textAfter: ' more SPCA on every published content + 2x visibility boost.', available: true },
       { text: '', highlight: 'AI Voice Narrator', textAfter: ' brings every chapter to life.', available: true },
       { text: '', highlight: 'Generate image visuals', textAfter: ' from scenes inside stories.', available: true },
