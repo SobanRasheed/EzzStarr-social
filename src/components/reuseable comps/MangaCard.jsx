@@ -104,7 +104,6 @@ const MangaCard = ({
             <Stat icon={<img src="/icons/thread.svg" alt="Image" className="h-5" />} value={comments} />
             <hr className="w-full text-gray-800 mt-1" />
           </div>
-        </div>
 
       </div>
     </div>
