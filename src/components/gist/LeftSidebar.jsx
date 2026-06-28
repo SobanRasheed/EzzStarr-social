@@ -12,6 +12,7 @@ export default function LeftSidebar({ activeFilter, setActiveFilter }) {
     { name: "Recent", filter: "recent", icon: <CiClock2 size={20} /> },
     { name: "Joined", filter: "joined", icon: <BsFillPersonPlusFill size={20} /> },
     { name: "Discover", filter: "discover", icon: <FaMagnifyingGlass size={20} /> },
+    { name: "4chan Boards", filter: "4chan", icon: <FaMagnifyingGlass size={20} /> },
   ];
 
   return (

@@ -19,9 +19,23 @@ export default function StoryCard({
   const [shareCount, setShareCount] = useState(0);
 
   const genreText = genres?.length > 0 ? genres.join(", ") : genre || "";
-  const imgSrc =
-    image ||
-    (imageUrl ? `${import.meta.env.VITE_API_URL}${imageUrl}` : "");
+  const getStoryImageUrl = (path) => {
+    if (!path) return "";
+    if (
+      path.startsWith("http://") ||
+      path.startsWith("https://") ||
+      path.startsWith("data:")
+    ) {
+      return path;
+    }
+    const baseUrl = import.meta.env.VITE_API_URL || "";
+    if (path.startsWith("/")) {
+      return `${baseUrl}${path}`;
+    }
+    return `${baseUrl}/${path}`;
+  };
+
+  const imgSrc = getStoryImageUrl(image || imageUrl);
 
   const handleStar = (e) => {
     e.stopPropagation();

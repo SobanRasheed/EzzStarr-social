@@ -1,6 +1,22 @@
 import { useState } from "react";
 import { Heart, Share2, Eye, MessageCircle, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+const getCoverImageUrl = (path) => {
+  if (!path) return "/fallback-cover.jpg";
+  if (
+    path.startsWith("http://") ||
+    path.startsWith("https://") ||
+    path.startsWith("data:")
+  ) {
+    return path;
+  }
+  const baseUrl = import.meta.env.VITE_API_URL || "";
+  if (path.startsWith("/")) {
+    return `${baseUrl}${path}`;
+  }
+  return `${baseUrl}/${path}`;
+};
+
 const MangaCard = ({
   id,
   imageUrl,
@@ -12,13 +28,16 @@ const MangaCard = ({
   comments,
   views = "23k",
   description,
+  isPlatform,
+  source,
 }) => {
   const [isLiked, setIsLiked] = useState(false);
   const boosted=false;
   const navigate = useNavigate();
 
   const handleClick = (id) => {
-    navigate(`/manga/${id}`, { state: id });
+    const src = isPlatform ? "platform" : (source || "mangadex");
+    navigate(`/manga/${id}?source=${src}`);
   };
   return (
     <div onClick={() => handleClick(id)} className="group cursor-pointer relative w-full bg-[#1C1C1E80] rounded-sm overflow-hidden text-white flex flex-col md:flex-row transition hover:shadow-xl">
@@ -39,7 +58,7 @@ const MangaCard = ({
       {/* 🖼 Image */}
       <div className="w-full md:w-40 h-60 flex-shrink-0">
         <img
-          src={`${import.meta.env.VITE_API_URL}${imageUrl}`}
+          src={getCoverImageUrl(imageUrl)}
           alt={title}
           className="w-full h-full"
         />

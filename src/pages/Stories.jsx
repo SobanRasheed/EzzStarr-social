@@ -95,8 +95,87 @@ export default function StoriesPage() {
   const [isLoadingSelectedStory, setIsLoadingSelectedStory] = useState(false);
   const [selectedStoryError, setSelectedStoryError] = useState("");
 
+  // External APIs State
+  const [source, setSource] = useState("platform"); // 'platform', 'openlibrary', 'zyla'
+  const [localStories, setLocalStories] = useState([]);
+  const [localLoading, setLocalLoading] = useState(false);
+  const [localError, setLocalError] = useState("");
+
+  // Fetch local external stories
+  useEffect(() => {
+    if (source === "platform") {
+      setLocalStories([]);
+      return;
+    }
+
+    const fetchExternalStories = async () => {
+      setLocalLoading(true);
+      setLocalError("");
+      try {
+        let url = "";
+        if (source === "openlibrary") {
+          const query = search.trim() || "fantasy";
+          url = `${import.meta.env.VITE_API_URL}/api/stories/openlibrary/search?${
+            search.trim() ? `q=${encodeURIComponent(query)}` : `subject=${encodeURIComponent(query)}`
+          }&limit=20`;
+        } else if (source === "zyla") {
+          url = `${import.meta.env.VITE_API_URL}/api/stories/zyla/novels?limit=20`;
+        }
+
+        const res = await fetch(url);
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.message || `HTTP error! status: ${res.status}`);
+        }
+        const result = await res.json();
+        const dataList = result.data || [];
+
+        const mapped = dataList.map((item) => {
+          if (source === "openlibrary") {
+            return {
+              id: item.id,
+              title: item.title,
+              author: item.author,
+              genre: item.subjects?.[0] || "Fiction",
+              genres: item.subjects || ["Fiction"],
+              image: item.coverUrl || "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600&auto=format&fit=crop",
+              reward: "0.00005 SPCA",
+              source: "openlibrary"
+            };
+          } else {
+            return {
+              id: item.id,
+              title: item.title || item.name || "Untitled Novel",
+              author: item.author || "Unknown",
+              genre: item.genre || item.category || "Novel",
+              genres: item.genres || [item.genre || "Novel"],
+              image: item.cover_image || item.image_url || "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=600&auto=format&fit=crop",
+              reward: "0.00005 SPCA",
+              source: "zyla"
+            };
+          }
+        });
+
+        setLocalStories(mapped);
+      } catch (err) {
+        console.error("Error fetching external stories:", err);
+        setLocalError(err.message);
+      } finally {
+        setLocalLoading(false);
+      }
+    };
+
+    const delayDebounce = setTimeout(() => {
+      fetchExternalStories();
+    }, 400);
+
+    return () => clearTimeout(delayDebounce);
+  }, [source, search]);
+
   const stories =
-    error || reduxStories.length === 0 ? MOCK_STORIES : reduxStories;
+    source === "platform"
+      ? (error || reduxStories.length === 0 ? MOCK_STORIES : reduxStories)
+      : localStories;
 
   const genres = [
     "All",
@@ -123,12 +202,13 @@ export default function StoriesPage() {
       story.author.toLowerCase().includes(search.toLowerCase());
     const matchesGenre =
       !selectedGenre ||
+      selectedGenre === "All" ||
       (story.genre &&
         story.genre.toLowerCase().includes(selectedGenre.toLowerCase())) ||
       (story.genres ?? []).some(
         (g) => g.toLowerCase() === selectedGenre.toLowerCase()
       );
-    const matchesAuthor = !selectedAuthor || story.author === selectedAuthor;
+    const matchesAuthor = !selectedAuthor || selectedAuthor === "All" || story.author === selectedAuthor;
 
     return matchesSearch && matchesGenre && matchesAuthor;
   });
@@ -152,13 +232,69 @@ export default function StoriesPage() {
       setIsLoadingSelectedStory(true);
       setSelectedStoryError("");
 
-      const response = await fetch(`${STORIES_API_URL}/${storyId}`);
-      if (!response.ok) throw new Error("Failed to fetch story details");
+      const activeStoryCard = localStories.find(s => String(s.id) === String(storyId));
+      const activeSource = activeStoryCard?.source || source;
 
-      const detailedStory = await response.json();
+      let detailedStory = null;
+      if (activeSource === "openlibrary") {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stories/openlibrary/work/${storyId}`);
+        if (!response.ok) throw new Error("Failed to fetch OpenLibrary book details");
+        const resJson = await response.json();
+        const data = resJson.data || {};
+        
+        const desc = typeof data.description === 'string' ? data.description : (data.description?.value || 'No description available.');
+        const coverId = data.covers?.[0];
+        const coverUrl = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg` : (activeStoryCard?.image || "");
+
+        detailedStory = {
+          id: storyId,
+          title: data.title || activeStoryCard?.title || "Untitled",
+          author: activeStoryCard?.author || "Unknown",
+          genre: activeStoryCard?.genre || "General",
+          image: coverUrl,
+          reward: "0.00005 SPCA",
+          views: 1000,
+          rating: 4.5,
+          chapters: 1,
+          synopsis: desc,
+          content: desc,
+          parts: [
+            { id: 1, title: "Read Book Online", duration: "External Link" }
+          ],
+          source: "openlibrary"
+        };
+      } else if (activeSource === "zyla") {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stories/zyla/novels/${storyId}`);
+        if (!response.ok) throw new Error("Failed to fetch Zyla novel details");
+        const resJson = await response.json();
+        const data = resJson.data || {};
+        
+        detailedStory = {
+          id: storyId,
+          title: data.title || activeStoryCard?.title || "Untitled Novel",
+          author: data.author || activeStoryCard?.author || "Unknown",
+          genre: data.genre || activeStoryCard?.genre || "Novel",
+          image: data.cover_image || data.image_url || activeStoryCard?.image || "",
+          reward: "0.00005 SPCA",
+          views: 2400,
+          rating: 4.7,
+          chapters: data.chapters || 1,
+          synopsis: data.description || data.synopsis || "No description available.",
+          content: data.description || data.synopsis || "No content available.",
+          parts: [
+            { id: 1, title: "Read Chapter 1", duration: "10 min" }
+          ],
+          source: "zyla"
+        };
+      } else {
+        const response = await fetch(`${STORIES_API_URL}/${storyId}`);
+        if (!response.ok) throw new Error("Failed to fetch story details");
+        detailedStory = await response.json();
+      }
+
       setSelectedStory(detailedStory);
-    } catch {
-      console.warn("Backend failed, using mock detailed story");
+    } catch (err) {
+      console.warn("Backend failed, using mock detailed story", err);
       const found = MOCK_STORIES.find((s) => String(s.id) === String(storyId));
       setSelectedStory({
         id: storyId,
@@ -211,6 +347,9 @@ export default function StoriesPage() {
     );
   }
 
+  const activeLoading = source === "platform" ? isLoading : localLoading;
+  const activeError = source === "platform" ? error : localError;
+
   /* ── Main stories listing ──────────────────────────── */
   return (
     <div
@@ -219,6 +358,27 @@ export default function StoriesPage() {
     >
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl mb-6 tracking-tight text-white font-sf">Search</h1>
+
+        {/* SOURCE TABS */}
+        <div className="flex gap-4 mb-8 border-b border-white/10 pb-4">
+          {["platform", "openlibrary", "zyla"].map((src) => (
+            <button
+              key={src}
+              onClick={() => {
+                setSource(src);
+                setSelectedGenre("");
+                setSelectedAuthor("");
+              }}
+              className={`text-sm font-bold uppercase tracking-wider px-4 py-2 border transition ${
+                source === src
+                  ? "border-[#DF28E2] text-[#DF28E2] bg-[#DF28E2]/10"
+                  : "border-white/10 text-gray-400 hover:text-white hover:border-white/30"
+              }`}
+            >
+              {src === "platform" ? "Ezzstar Stories" : src === "openlibrary" ? "Open Library" : "Zyla Novels"}
+            </button>
+          ))}
+        </div>
 
         <StoriesFilters
           search={search}
@@ -231,8 +391,8 @@ export default function StoriesPage() {
           onAuthorChange={setSelectedAuthor}
         />
 
-        {error ? (
-          <p className="text-red-400 text-sm mt-8">{error}</p>
+        {activeError ? (
+          <p className="text-red-400 text-sm mt-8">{activeError}</p>
         ) : null}
         {selectedStoryError ? (
           <p className="text-red-400 text-sm mb-4">{selectedStoryError}</p>
@@ -241,7 +401,7 @@ export default function StoriesPage() {
           <p className="text-white/60 text-sm mb-4">Loading story...</p>
         ) : null}
 
-        {isLoading ? (
+        {activeLoading ? (
           <div className="grid grid-cols-4 gap-4">
             {Array.from({ length: 8 }).map((_, index) => (
               <div
