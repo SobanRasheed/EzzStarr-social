@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChapters } from "../../store/slices/mangaSlice";
 import HomeManga from "../homepage/HomeManga";
@@ -17,6 +17,102 @@ const Stat = ({ icon, value }) => (
   </div>
 );
 
+/* =========================
+   💡 HELPER FUNCTIONS
+========================= */
+
+const getCoverImageUrl = (path) => {
+  if (!path) return "/fallback-cover.jpg";
+  if (
+    path.startsWith("http://") ||
+    path.startsWith("https://") ||
+    path.startsWith("data:")
+  ) {
+    return path;
+  }
+  const baseUrl = import.meta.env.VITE_API_URL || "";
+  if (path.startsWith("/")) {
+    return `${baseUrl}${path}`;
+  }
+  return `${baseUrl}/${path}`;
+};
+
+const normalizeMangaData = (rawData, source) => {
+  if (!rawData) return null;
+  
+  if (source === "platform") {
+    // Platform manga from database
+    return {
+      id: rawData._id || rawData.id,
+      title: rawData.title || "Untitled",
+      description: rawData.description || "No description available.",
+      coverUrl: rawData.coverImage || "/fallback-cover.jpg",
+      author: rawData.author?.username || (typeof rawData.author === "string" ? rawData.author : "Platform Creator"),
+      genre: Array.isArray(rawData.genres) ? rawData.genres.join(", ") : (rawData.genre || "N/A"),
+      isPlatform: true,
+      source: "platform",
+    };
+  } else if (source === "jikan") {
+    const title = rawData.title || rawData.title_english || "Untitled";
+    const description = rawData.synopsis || "No description available.";
+    const coverUrl = rawData.images?.jpg?.large_image_url || rawData.images?.jpg?.image_url || "/fallback-cover.jpg";
+    const authorName = rawData.authors?.map(a => a.name).join(", ") || "Unknown";
+    const genres = rawData.genres?.map(g => g.name).join(", ") || "N/A";
+    return {
+      id: rawData.mal_id,
+      title,
+      description,
+      coverUrl,
+      author: authorName,
+      genre: genres,
+      isPlatform: false,
+      source: "jikan",
+    };
+  } else if (source === "zyla") {
+    const title = rawData.title || rawData.name || "Untitled";
+    const description = rawData.description || rawData.synopsis || "No description available.";
+    const coverUrl = rawData.cover_image || rawData.image_url || "/fallback-cover.jpg";
+    const authorName = rawData.author || "Unknown";
+    const genres = Array.isArray(rawData.genres) ? rawData.genres.join(", ") : (rawData.genre || "N/A");
+    return {
+      id: rawData.id,
+      title,
+      description,
+      coverUrl,
+      author: authorName,
+      genre: genres,
+      isPlatform: false,
+      source: "zyla",
+    };
+  } else {
+    // External MangaDex manga
+    const title = rawData.attributes?.title?.en ||
+      rawData.attributes?.title?.en_jp ||
+      Object.values(rawData.attributes?.title || {})[0] ||
+      "Untitled";
+    const description = rawData.attributes?.description?.en || "No description available.";
+    
+    const authorRel = rawData.relationships?.find(rel => rel.type === "author");
+    const authorName = authorRel?.attributes?.name || "Unknown";
+
+    const genres = rawData.attributes?.tags
+      ?.filter(tag => tag.attributes?.group === "genre")
+      ?.map(tag => tag.attributes?.name?.en)
+      ?.join(", ") || "N/A";
+
+    return {
+      id: rawData.id,
+      title,
+      description,
+      coverUrl: rawData.coverUrl || "/fallback-cover.jpg",
+      author: authorName,
+      genre: genres,
+      isPlatform: false,
+      source: "mangadex",
+    };
+  }
+};
+
 const ChapterRow = ({ ch, index, manga, onClick }) => (
   <div
     onClick={onClick}
@@ -27,7 +123,7 @@ const ChapterRow = ({ ch, index, manga, onClick }) => (
         #{String(index + 1).padStart(3, "0")}
       </span>
       <img
-        src={`${import.meta.env.VITE_API_URL}${manga.imageUrl}`}
+        src={getCoverImageUrl(manga.coverUrl)}
         className="w-14 h-20 object-cover rounded"
         alt="cover"
       />
@@ -63,6 +159,8 @@ const MangaDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+  const routeSource = searchParams.get("source") || "platform";
 
   const { chapters } = useSelector((state) => state.manga);
   const [manga, setManga] = useState(null);
@@ -72,38 +170,51 @@ const MangaDetails = () => {
   const cacheKey = manga ? `${id}-${manga.isPlatform}` : id;
   const mangaChapters = chapters[cacheKey] || [];
 
-  // ✅ Fetch manga by ID if not found in Redux state
+  // ✅ Fetch manga by ID
   useEffect(() => {
     const fetchMangaById = async () => {
       setLoadingManga(true);
       try {
-        // First try platform endpoint (your own database)
-        let response = await axios.get(`${import.meta.env.VITE_API_URL}/api/manga/${id}`);
-        setManga({ ...response.data.data, isPlatform: true });
-      } catch (err) {
-        // If not found (404), try external MangaDex endpoint
-        if (err.response?.status === 404) {
-          try {
-            const extResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/manga/external/${id}`);
-            setManga({ ...extResponse.data, isPlatform: false });
-          } catch (extErr) {
-            console.error("Failed to fetch external manga:", extErr);
-            setManga(null);
-          }
+        if (routeSource === "jikan") {
+          let response = await axios.get(`${import.meta.env.VITE_API_URL}/api/manga/jikan/${id}`);
+          setManga(normalizeMangaData(response.data.data, "jikan"));
+        } else if (routeSource === "zyla") {
+          let response = await axios.get(`${import.meta.env.VITE_API_URL}/api/manga/zyla/${id}`);
+          setManga(normalizeMangaData(response.data.data, "zyla"));
+        } else if (routeSource === "mangadex") {
+          let response = await axios.get(`${import.meta.env.VITE_API_URL}/api/manga/external/${id}`);
+          setManga(normalizeMangaData(response.data, "mangadex"));
         } else {
-          console.error("Failed to fetch manga:", err);
-          setManga(null);
+          // platform or autodetect
+          try {
+            let response = await axios.get(`${import.meta.env.VITE_API_URL}/api/manga/${id}`);
+            if (response.data && response.data.success && response.data.data) {
+              setManga(normalizeMangaData(response.data.data, "platform"));
+            } else {
+              throw new Error("Failed to get platform manga data");
+            }
+          } catch (err) {
+            console.log("Manga not found on platform or server error, trying external MangaDex fallback:", err.message);
+            const extResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/manga/external/${id}`);
+            setManga(normalizeMangaData(extResponse.data, "mangadex"));
+          }
         }
+      } catch (err) {
+        console.error("Failed to fetch manga:", err);
+        setManga(null);
       } finally {
         setLoadingManga(false);
       }
     };
     fetchMangaById();
-  }, [id]);
+  }, [id, routeSource]);
 
   // Fetch chapters after manga is loaded
   useEffect(() => {
     if (manga && id && !chapters[cacheKey]) {
+      if (manga.source === "jikan" || manga.source === "zyla") {
+        return;
+      }
       setChaptersLoading(true);
       dispatch(fetchChapters({ mangaId: id, isPlatform: manga.isPlatform })).finally(() => {
         setChaptersLoading(false);
@@ -113,6 +224,14 @@ const MangaDetails = () => {
 
   // Filter and sort chapters
   const displayChapters = (() => {
+    if (manga && (manga.source === "jikan" || manga.source === "zyla")) {
+      return Array.from({ length: 5 }).map((_, i) => ({
+        id: `mock-${i + 1}`,
+        chapter: String(i + 1),
+        title: `Chapter ${i + 1}`,
+        createdAt: new Date().toISOString(),
+      }));
+    }
     let chaptersList = mangaChapters;
     if (manga && !manga.isPlatform) {
       chaptersList = mangaChapters.filter(ch => {
@@ -132,6 +251,16 @@ const MangaDetails = () => {
     currentPage * CHAPTERS_PER_PAGE
   );
 
+  const handleOpenChapter = (chapterId) => {
+    if (manga.source === "jikan") {
+      window.open(`https://myanimelist.net/manga/${id}`, "_blank");
+    } else if (manga.source === "zyla") {
+      window.open(`https://kitsu.io/manga/${id}`, "_blank");
+    } else {
+      navigate(`/manga/read/${chapterId}`);
+    }
+  };
+
   // Loading states
   if (loadingManga) {
     return <div className="text-white p-10">Loading manga details...</div>;
@@ -140,9 +269,7 @@ const MangaDetails = () => {
     return <div className="text-white p-10">Manga not found</div>;
   }
 
-  const coverUrl = manga.coverUrl
-    ? `${import.meta.env.VITE_API_URL}${manga.coverUrl}`
-    : "/fallback-cover.jpg";
+  const coverUrl = getCoverImageUrl(manga.coverUrl);
 
   return (
     <div className="bg-black text-white min-h-screen">
@@ -159,10 +286,10 @@ const MangaDetails = () => {
           <div className="flex gap-4">
             {paginatedChapters.length > 0 && (
               <button
-                onClick={() => navigate(`/manga/read/${paginatedChapters[0].id}`)}
+                onClick={() => handleOpenChapter(paginatedChapters[0].id)}
                 className="bg-cyan-300 text-black px-4 py-1 "
               >
-                Open Manga
+                {manga.source === "jikan" ? "View on MyAnimeList" : manga.source === "zyla" ? "External Link" : "Open Manga"}
               </button>
             )}
             <button className="border border-white p-2 rounded-full">❤️</button>
@@ -203,7 +330,7 @@ const MangaDetails = () => {
                     ch={ch}
                     manga={manga}
                     index={globalIndex}
-                    onClick={() => navigate(`/manga/read/${ch.id}`)}
+                    onClick={() => handleOpenChapter(ch.id)}
                     />
                     </div>
                 );

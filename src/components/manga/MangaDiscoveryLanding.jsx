@@ -55,7 +55,7 @@ const TopBoostedItem = ({ item }) => {
   const navigate = useNavigate();
   const handleClick = (id) => {
     console.log("clicked")
-    navigate(`/manga/${id}`, { state: id });
+    navigate(`/manga/${id}?source=mangadex`, { state: id });
   };
   return (
     <div onClick={() => handleClick(item.id)} className="py-3 px-3  border-b border-white/10 hover:bg-white/5 flex gap-3">
@@ -75,7 +75,7 @@ const TopBoostedItem = ({ item }) => {
   );
 }
 
-const MangaSection = ({ title, mangaList }) => (
+const MangaSection = ({ title, mangaList, source }) => (
   <section className="mb-12">
     <div className="flex justify-between mb-6">
       <h2 className="text-white text-3xl font-bold">{title}</h2>
@@ -86,7 +86,14 @@ const MangaSection = ({ title, mangaList }) => (
     <div className="grid grid-cols-2 gap-6">
       {mangaList.map((manga) => (
         <div key={manga.id} className="relative">
-          <MangaCard {...manga} stars={4} comments={120} reward={"0.0015 $SPCA"} views={"23k"} />
+          <MangaCard 
+            {...manga} 
+            stars={4} 
+            comments={120} 
+            reward={"0.0015 $SPCA"} 
+            views={"23k"} 
+            source={manga.source || source}
+          />
         </div>
       ))}
     </div>
@@ -125,6 +132,12 @@ const MangaDiscoveryLanding = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
+  // External APIs State
+  const [source, setSource] = useState("mangadex"); // 'mangadex', 'jikan', 'zyla'
+  const [localMangas, setLocalMangas] = useState([]);
+  const [localLoading, setLocalLoading] = useState(false);
+  const [localError, setLocalError] = useState(null);
+
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -136,7 +149,7 @@ const MangaDiscoveryLanding = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Debounced search
+  // Debounced search (sensitive to active source)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (!sidebarSearchQuery.trim()) {
@@ -149,26 +162,52 @@ const MangaDiscoveryLanding = () => {
         setIsSearching(true);
         setSearchError(null);
         try {
-          const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/manga/search?q=${encodeURIComponent(sidebarSearchQuery)}`
-          );
-          if (!response.ok) throw new Error(`Search failed: ${response.status}`);
-          const data = await response.json();
+          let url = "";
+          if (source === "jikan") {
+            url = `${import.meta.env.VITE_API_URL}/api/manga/jikan/search?q=${encodeURIComponent(sidebarSearchQuery)}`;
+          } else {
+            url = `${import.meta.env.VITE_API_URL}/api/manga/search?q=${encodeURIComponent(sidebarSearchQuery)}`;
+          }
+
+           const response = await fetch(url);
+           if (!response.ok) {
+             const errData = await response.json().catch(() => ({}));
+             throw new Error(errData.message || `Search failed: ${response.status}`);
+           }
+           const data = await response.json();
           const resultsList = data.data || [];
+          
           const transformed = resultsList.map((manga, idx) => {
+            if (source === "jikan") {
+              const author = manga.authors?.map(a => a.name).join(", ") || "Unknown";
+              return {
+                id: manga.mal_id,
+                rank: idx + 1,
+                title: manga.title || manga.title_english || "Untitled",
+                author,
+                views: manga.members ? manga.members.toLocaleString() : "0",
+                stars: manga.score ? Math.round(manga.score / 2) : 0,
+                comments: "0",
+                thumbnail: manga.images?.jpg?.image_url || "https://via.placeholder.com/120x180?text=No+Cover",
+                badge: null,
+                source: "jikan"
+              };
+            }
+            // Default (MangaDex / Platform)
             const authorRel = manga.relationships?.find(rel => rel.type === 'author');
-            const authorName = authorRel?.attributes?.name || 'Unknown';
+            const authorName = authorRel?.attributes?.name || manga.author || 'Unknown';
             const coverRel = manga.relationships?.find(rel => rel.type === 'cover_art');
             const coverFileName = coverRel?.attributes?.fileName;
             const coverUrl = coverFileName
               ? `${import.meta.env.VITE_API_URL}/api/manga/cover?mangaId=${manga.id}&fileName=${coverFileName}`
-              : 'https://via.placeholder.com/120x180?text=No+Cover';
+              : (manga.coverUrl || 'https://via.placeholder.com/120x180?text=No+Cover');
             const title = manga.attributes?.title?.en ||
               manga.attributes?.title?.en_jp ||
+              manga.title ||
               Object.values(manga.attributes?.title || {})[0] ||
               'Untitled';
-            const followedCount = manga.attributes?.followedCount || 0;
-            const score = manga.attributes?.rating?.bayesian || 0;
+            const followedCount = manga.attributes?.followedCount || manga.views || 0;
+            const score = manga.attributes?.rating?.bayesian || manga.rating || 0;
             return {
               id: manga.id,
               rank: idx + 1,
@@ -179,6 +218,7 @@ const MangaDiscoveryLanding = () => {
               comments: '0',
               thumbnail: coverUrl,
               badge: null,
+              source: manga.source || "mangadex",
             };
           });
           setSearchResults(transformed);
@@ -194,12 +234,78 @@ const MangaDiscoveryLanding = () => {
       performSearch();
     }, 500);
     return () => clearTimeout(timeoutId);
-  }, [sidebarSearchQuery]);
+  }, [sidebarSearchQuery, source]);
 
   // Fetch top 10 manga (initial load)
   useEffect(() => {
     dispatch(fetchManga());
   }, [dispatch]);
+
+  // Fetch local external mangas when source is Jikan or Zyla
+  useEffect(() => {
+    if (source === "mangadex") {
+      setLocalMangas([]);
+      return;
+    }
+
+    const fetchExternalMangas = async () => {
+      setLocalLoading(true);
+      setLocalError(null);
+      try {
+        let url = "";
+        if (source === "jikan") {
+          url = `${import.meta.env.VITE_API_URL}/api/manga/jikan/top?limit=12`;
+        } else if (source === "zyla") {
+          url = `${import.meta.env.VITE_API_URL}/api/manga/zyla?limit=12`;
+        }
+
+        const res = await fetch(url);
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.message || `HTTP error! status: ${res.status}`);
+        }
+        const result = await res.json();
+        const dataList = result.data || [];
+
+        const mapped = dataList.map((item) => {
+          if (source === "jikan") {
+            const genres = item.genres?.map(g => g.name).join(", ") || "N/A";
+            const author = item.authors?.map(a => a.name).join(", ") || "Unknown";
+            return {
+              id: item.mal_id,
+              title: item.title || item.title_english || "Untitled",
+              author,
+              genre: genres,
+              imageUrl: item.images?.jpg?.large_image_url || item.images?.jpg?.image_url || "/fallback-cover.jpg",
+              description: item.synopsis || "No description available.",
+              isPlatform: false,
+              source: "jikan",
+            };
+          } else {
+            // zyla
+            return {
+              id: item.id || item.mal_id,
+              title: item.title || item.name || "Untitled",
+              author: item.author || "Unknown",
+              genre: Array.isArray(item.genres) ? item.genres.join(", ") : (item.genre || "N/A"),
+              imageUrl: item.cover_image || item.image_url || "/fallback-cover.jpg",
+              description: item.description || item.synopsis || "No description available.",
+              isPlatform: false,
+              source: "zyla",
+            };
+          }
+        });
+        setLocalMangas(mapped);
+      } catch (err) {
+        console.error("Error fetching external mangas:", err);
+        setLocalError(err.message);
+      } finally {
+        setLocalLoading(false);
+      }
+    };
+
+    fetchExternalMangas();
+  }, [source]);
 
   const [isTopMangaLoading, setIsTopMangaLoading] = useState(true);
   const [topMangaError, setTopMangaError] = useState(null);
@@ -274,9 +380,9 @@ const MangaDiscoveryLanding = () => {
             </div>
           ) : (
             <>
-              <MangaSection title="Daily Updates" mangaList={mangas.slice(0, 6)} />
-              <MangaSection title="Popular Manga" mangaList={mangas.slice(0, 6)} />
-              <MangaSection title="Recommended Manga" mangaList={mangas.slice(6, 12)} />
+              <MangaSection title="Daily Updates" mangaList={mangas.slice(0, 6)} source={source} />
+              <MangaSection title="Popular Manga" mangaList={mangas.slice(0, 6)} source={source} />
+              <MangaSection title="Recommended Manga" mangaList={mangas.slice(6, 12)} source={source} />
             </>
           )}
         </div>
@@ -309,8 +415,7 @@ const MangaDiscoveryLanding = () => {
                       key={item.id}
                       className="py-2 px-3 hover:bg-white/10 cursor-pointer transition"
                       onClick={() => {
-                        // Navigate to manga detail page (adjust as needed)
-                        window.location.href = `/manga/${item.id}`;
+                        window.location.href = `/manga/${item.id}?source=${item.source || source}`;
                         setShowDropdown(false);
                       }}
                     >
