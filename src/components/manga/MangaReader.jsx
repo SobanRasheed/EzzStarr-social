@@ -33,7 +33,9 @@ const MangaReader = () => {
           throw new Error(data.message || "No pages found");
         }
 
-        setPages(data.pagesDataSaver);
+        const rawPages = data.pagesDataSaver?.length ? data.pagesDataSaver : data.pages;
+        const securePages = (rawPages || []).map(url => url.replace(/^http:\/\//i, "https://"));
+        setPages(securePages);
       } catch (err) {
         console.error("Reader error:", err);
         setError(err.message);
