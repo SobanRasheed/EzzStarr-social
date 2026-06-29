@@ -95,7 +95,12 @@ const MangaReader = () => {
       <div className="pt-20 flex flex-col items-center gap-4">
         {pages.map((src, index) => {
           const hasFailed = failedIndices[index];
-          const displaySrc = hasFailed && fallbackPages[index] ? fallbackPages[index] : src;
+          const displaySrc = 
+            hasFailed === "proxy"
+              ? `${import.meta.env.VITE_API_URL}/api/manga/page-proxy?url=${encodeURIComponent(fallbackPages[index] || src)}`
+              : hasFailed && fallbackPages[index] 
+                ? fallbackPages[index] 
+                : src;
           
           return (
             <img
@@ -109,6 +114,9 @@ const MangaReader = () => {
                 if (!hasFailed && fallbackPages[index]) {
                   console.log(`Page ${index + 1} failed to load from primary server. Retrying with fallback source...`);
                   setFailedIndices(prev => ({ ...prev, [index]: true }));
+                } else if (hasFailed !== "proxy") {
+                  console.log(`Page ${index + 1} fallback failed. Retrying through backend proxy...`);
+                  setFailedIndices(prev => ({ ...prev, [index]: "proxy" }));
                 }
               }}
             />
