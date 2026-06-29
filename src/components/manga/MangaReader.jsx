@@ -6,6 +6,8 @@ const MangaReader = () => {
   const navigate = useNavigate();
 
   const [pages, setPages] = useState([]);
+  const [fallbackPages, setFallbackPages] = useState([]);
+  const [failedIndices, setFailedIndices] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -34,8 +36,13 @@ const MangaReader = () => {
         }
 
         const rawPages = data.pagesDataSaver?.length ? data.pagesDataSaver : data.pages;
+        const rawFallback = data.pagesDataSaver?.length ? data.pages : [];
+
         const securePages = (rawPages || []).map(url => url.replace(/^http:\/\//i, "https://"));
+        const secureFallback = (rawFallback || []).map(url => url.replace(/^http:\/\//i, "https://"));
+
         setPages(securePages);
+        setFallbackPages(secureFallback);
       } catch (err) {
         console.error("Reader error:", err);
         setError(err.message);
@@ -86,16 +93,27 @@ const MangaReader = () => {
         <div />
       </div>
       <div className="pt-20 flex flex-col items-center gap-4">
-        {pages.map((src, index) => (
-          <img
-            key={index}
-            src={src}
-            alt={`page-${index + 1}`}
-            className="max-w-3xl w-full object-contain rounded"
-            loading="lazy"
-            referrerPolicy="no-referrer"
-          />
-        ))}
+        {pages.map((src, index) => {
+          const hasFailed = failedIndices[index];
+          const displaySrc = hasFailed && fallbackPages[index] ? fallbackPages[index] : src;
+          
+          return (
+            <img
+              key={index}
+              src={displaySrc}
+              alt={`page-${index + 1}`}
+              className="max-w-3xl w-full object-contain rounded"
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              onError={() => {
+                if (!hasFailed && fallbackPages[index]) {
+                  console.log(`Page ${index + 1} failed to load from primary server. Retrying with fallback source...`);
+                  setFailedIndices(prev => ({ ...prev, [index]: true }));
+                }
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );
