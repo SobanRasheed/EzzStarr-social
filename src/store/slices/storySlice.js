@@ -3,15 +3,28 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchStory = createAsyncThunk(
   "story/fetchStory",
   async (_, thunkAPI) => {
-    const state = thunkAPI.getState();
+    try {
+      const state = thunkAPI.getState();
 
-    if (state.story.isLoaded) {
-      return state.story.stories;
+      if (state.story.isLoaded) {
+        return state.story.stories;
+      }
+
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/stories`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        return thunkAPI.rejectWithValue(data.message || "Failed to fetch stories");
+      }
+
+      if (!Array.isArray(data)) {
+        return thunkAPI.rejectWithValue("Invalid stories data format");
+      }
+
+      return data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
     }
-
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/stories`);
-    const data = await res.json();
-    return data;
   }
 );
 
@@ -35,9 +48,9 @@ const storySlice = createSlice({
         state.stories = action.payload;
         state.isLoaded = true;
       })
-      .addCase(fetchStory.rejected, (state) => {
+      .addCase(fetchStory.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = "Failed to fetch story";
+        state.error = action.payload || "Failed to fetch story";
       });
   },
 });
