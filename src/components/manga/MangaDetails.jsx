@@ -86,25 +86,27 @@ const normalizeMangaData = (rawData, source) => {
     };
   } else {
     // External MangaDex manga
-    const title = rawData.attributes?.title?.en ||
-      rawData.attributes?.title?.en_jp ||
-      Object.values(rawData.attributes?.title || {})[0] ||
+    const data = rawData.original || rawData;
+    const title = data.attributes?.title?.en ||
+      data.attributes?.title?.en_jp ||
+      Object.values(data.attributes?.title || {})[0] ||
+      data.title ||
       "Untitled";
-    const description = rawData.attributes?.description?.en || "No description available.";
+    const description = data.attributes?.description?.en || data.description || "No description available.";
     
-    const authorRel = rawData.relationships?.find(rel => rel.type === "author");
-    const authorName = authorRel?.attributes?.name || "Unknown";
+    const authorRel = data.relationships?.find(rel => rel.type === "author");
+    const authorName = authorRel?.attributes?.name || data.author || "Unknown";
 
-    const genres = rawData.attributes?.tags
+    const genres = data.attributes?.tags
       ?.filter(tag => tag.attributes?.group === "genre")
       ?.map(tag => tag.attributes?.name?.en)
-      ?.join(", ") || "N/A";
+      ?.join(", ") || (Array.isArray(data.genres) ? data.genres.join(", ") : data.genre) || "N/A";
 
     return {
-      id: rawData.id,
+      id: data.id || rawData.id,
       title,
       description,
-      coverUrl: rawData.coverUrl || "/fallback-cover.jpg",
+      coverUrl: rawData.coverUrl || data.coverUrl || "/fallback-cover.jpg",
       author: authorName,
       genre: genres,
       isPlatform: false,
@@ -128,9 +130,14 @@ const ChapterRow = ({ ch, index, manga, onClick }) => (
         alt="cover"
       />
       <div>
-        <h3 className="font-semibold text-white">
+        <h3 className="font-semibold text-white flex items-center gap-2">
           {manga.isPlatform ? `Episode ${ch.episodeNumber}` : `Chapter ${ch.chapter}`}
           {ch.title ? ` - ${ch.title}` : ""}
+          {ch.translatedLanguage && ch.translatedLanguage !== "en" && (
+            <span className="text-[10px] bg-white/20 text-gray-300 px-1.5 py-0.5 rounded uppercase font-normal">
+              {ch.translatedLanguage}
+            </span>
+          )}
         </h3>
         <p className="text-gray-400 text-xs">
           {ch.publishAt
