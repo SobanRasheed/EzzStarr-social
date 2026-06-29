@@ -91,6 +91,7 @@ const MangaReader = () => {
             alt={`page-${index + 1}`}
             className="max-w-3xl w-full object-contain rounded"
             loading="lazy"
+            referrerPolicy="no-referrer"
           />
         ))}
       </div>
