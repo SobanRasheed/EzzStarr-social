@@ -40,17 +40,17 @@ export default function HomeHero() {
       <div className="pointer-events-none absolute inset-x-0 top-0 z-[-1] h-32 bg-gradient-to-b from-black/40 to-transparent" />
 
       {/* ── Hero content ── */}
-      <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center gap-5 px-4">
+      <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-3 px-4">
 
         {/* Main headline */}
         <h1
-          className="font-inter leading-tight tracking-tight font-medium text-white text-3xl sm:text-4xl md:text-[48px]"
+          className="font-inter leading-tight tracking-tight font-medium text-white text-2xl sm:text-3xl md:text-[38px]"
         >
           A New World Awaits You!
         </h1>
 
         {/* Sub-headline */}
-        <p className="max-w-2xl font-inter text-[14px] md:text-[16px] text-white/85 leading-relaxed">
+        <p className="max-w-xl font-inter text-[12px] md:text-[13px] text-white/85 leading-relaxed">
           Earn{" "}
           <span className="font-bold text-white">0.00015 SPCA</span>{" "}
           every time you read your favorite{" "}
@@ -61,10 +61,10 @@ export default function HomeHero() {
         </p>
 
         {/* CTA buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
-          {/* Primary button — solid yellow/golden block */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mt-1">
+          {/* Primary button — solid magenta block */}
           <button
-            className="bg-[#F5A623] hover:bg-[#e6991a] px-10 py-3 text-black text-sm font-medium cursor-pointer rounded transition-colors duration-200"
+            className="bg-[#DF28E2] hover:bg-[#c020c4] px-7 py-2 text-white text-xs font-medium cursor-pointer transition-colors duration-200"
           >
             Connect Wallet
           </button>
@@ -76,12 +76,12 @@ export default function HomeHero() {
             rel="noopener noreferrer"
           >
             <button
-              className="flex items-center gap-2 cursor-pointer text-white border border-white/20 px-5 py-2.5 text-[14px] bg-transparent font-medium rounded backdrop-blur-sm hover:bg-white/5 transition-colors duration-200"
+              className="flex items-center gap-2 cursor-pointer text-white border border-white/20 px-4 py-2 text-[12px] bg-transparent font-medium backdrop-blur-sm hover:bg-white/5 transition-colors duration-200"
             >
               <img
                 src="spica-coin.png"
-                width={24}
-                height={24}
+                width={20}
+                height={20}
                 alt="SPCA Coin"
                 className="rounded-full"
               />
