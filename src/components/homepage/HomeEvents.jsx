@@ -96,6 +96,36 @@ const tagColors = {
   Showcase: "bg-purple-500/20 text-purple-500",
 };
 
+const getLogoIcon = (logoStr) => {
+  if (logoStr === "ESL") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-7 h-7">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+  if (logoStr === "EZZ STAR") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-7 h-7">
+        <rect x="2" y="6" width="20" height="12" rx="2" />
+        <path d="M6 12h4m-2-2v4M15 11v.01M18 13v.01" strokeLinecap="round" />
+      </svg>
+    );
+  }
+  if (logoStr === "AX") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-7 h-7">
+        <path d="M12 22a10 10 0 1 1 10-10 10.02 10.02 0 0 1-10 10Z" />
+        <circle cx="7.5" cy="10.5" r="1.5" fill="currentColor" stroke="none" />
+        <circle cx="10.5" cy="7.5" r="1.5" fill="currentColor" stroke="none" />
+        <circle cx="14.5" cy="7.5" r="1.5" fill="currentColor" stroke="none" />
+        <circle cx="17.5" cy="11.5" r="1.5" fill="currentColor" stroke="none" />
+      </svg>
+    );
+  }
+  return <span className="text-[12px] font-bold leading-tight px-1">{logoStr}</span>;
+};
+
 export default function HomeEvents() {
   return (
     <section className="bg-black text-white py-20 font-sans">
@@ -124,10 +154,10 @@ export default function HomeEvents() {
               {/* Logo & Title */}
               <div className="flex gap-3 mb-3">
                 <div 
-                  className="rounded-full w-[56px] h-[56px] flex flex-col items-center justify-center shrink-0 -mt-[28px] z-10 shadow-lg text-center"
+                  className="rounded-full w-[56px] h-[56px] flex flex-col items-center justify-center shrink-0 -mt-[17px] z-10 shadow-lg text-center"
                   style={{ backgroundColor: event.logoBg, color: event.logoText }}
                 >
-                  <span className="text-[12px] font-bold leading-tight px-1">{event.logo}</span>
+                  {getLogoIcon(event.logo)}
                 </div>
 
                 <div className="pt-2">
