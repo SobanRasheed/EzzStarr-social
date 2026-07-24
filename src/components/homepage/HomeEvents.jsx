@@ -83,14 +83,14 @@ export default function HomeEvents() {
       <div className="max-w-6xl mx-auto px-6 md:px-[60px]">
         <h2 className="text-4xl font-semibold mb-14 text-center">Events</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {events.map((event, i) => (
           <div
             key={i}
             className="bg-[#0b0b0b] overflow-hidden flex flex-col h-full ring-1 ring-white/5 hover:-translate-y-1 transition"
           >
             {/* Image */}
-            <div className="relative h-[240px]">
+            <div className="relative h-[180px]">
               <img
                 src={event.image}
                 alt={event.title}
@@ -102,10 +102,10 @@ export default function HomeEvents() {
             </div>
 
             {/* Content */}
-            <div className="flex flex-col flex-1 px-6 pt-5 pb-6">
+            <div className="flex flex-col flex-1 px-5 pt-3 pb-5">
 
-              <div className="flex gap-2">
-                <div className={`rounded-full relative -top-10 w-18 h-18 bg-yellow-500 backdrop-blur flex items-center justify-center text-sm font-bold`}>
+              <div className="flex gap-3">
+                <div className={`rounded-full relative -top-8 w-14 h-14 bg-yellow-500 backdrop-blur flex items-center justify-center text-sm font-bold shrink-0`}>
                   {event.logo}
                 </div>
 
