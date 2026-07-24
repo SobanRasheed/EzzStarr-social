@@ -102,11 +102,11 @@ export default function HomeEvents() {
       <div className="max-w-[1100px] mx-auto px-6">
         <h2 className="text-[32px] font-semibold mb-12 text-center text-white">Events</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {events.map((event, i) => (
           <div
             key={i}
-            className="bg-[#111111] overflow-hidden flex flex-col h-full rounded-sm ring-1 ring-white/5"
+            className="bg-[#111111] overflow-hidden flex flex-col h-full rounded-none ring-1 ring-white/5"
           >
             {/* Image */}
             <div className="relative h-[150px] shrink-0">
