@@ -99,17 +99,17 @@ const tagColors = {
 export default function HomeEvents() {
   return (
     <section className="bg-black text-white py-20 font-sans">
-      <div className="max-w-[1100px] mx-auto px-6">
+      <div className="max-w-[1600px] mx-auto px-6">
         <h2 className="text-[32px] font-semibold mb-12 text-center text-white">Events</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
         {events.map((event, i) => (
           <div
             key={i}
-            className="bg-[#111111] overflow-hidden flex flex-col h-full rounded-sm ring-1 ring-white/5"
+            className="bg-[#111111] overflow-hidden flex flex-col w-[490px] h-[575px] rounded-sm ring-1 ring-white/5"
           >
             {/* Image */}
-            <div className="relative h-[200px] shrink-0">
+            <div className="relative h-[270px] shrink-0">
               <img
                 src={event.image}
                 alt={event.title}
@@ -119,27 +119,27 @@ export default function HomeEvents() {
             </div>
 
             {/* Content */}
-            <div className="flex flex-col flex-1 px-5 pt-0 pb-5">
+            <div className="flex flex-col flex-1 px-[24px] pt-0 pb-6">
 
               {/* Logo & Title */}
-              <div className="flex gap-3 mb-4">
+              <div className="flex gap-4 mb-6">
                 <div 
-                  className="rounded-full w-[64px] h-[64px] flex flex-col items-center justify-center shrink-0 -mt-[32px] z-10 shadow-lg text-center"
+                  className="rounded-full w-[80px] h-[80px] flex flex-col items-center justify-center shrink-0 -mt-[40px] z-10 shadow-lg text-center"
                   style={{ backgroundColor: event.logoBg, color: event.logoText }}
                 >
-                  <span className="text-[14px] font-bold leading-tight px-1">{event.logo}</span>
+                  <span className="text-[16px] font-bold leading-tight px-1">{event.logo}</span>
                 </div>
 
-                <div className="pt-3">
-                  <h3 className="text-[16px] font-semibold leading-tight mb-2 text-white">
+                <div className="pt-4">
+                  <h3 className="text-[20px] font-semibold leading-tight mb-3 text-white">
                     {event.title}
                   </h3>
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2.5">
                     {event.tags.map((tag, idx) => (
                       <span
                         key={idx}
-                        className={`text-[10px] rounded-full px-2 py-0.5 font-medium ${tagColors[tag] || "bg-gray-500/20 text-gray-400"}`}
+                        className={`text-[12px] rounded-full px-3 py-1 font-medium ${tagColors[tag] || "bg-gray-500/20 text-gray-400"}`}
                       >
                         {tag}
                       </span>
@@ -149,14 +149,14 @@ export default function HomeEvents() {
               </div>
 
               {/* Description */}
-              <p className="text-[13px] text-[#888888] leading-relaxed mb-6 line-clamp-2">
+              <p className="text-[15px] text-[#888888] leading-relaxed mb-8 line-clamp-2">
                 {event.desc}
               </p>
 
               {/* Meta info */}
-              <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-[12px] text-gray-300 mb-6">
-                <div className="flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <div className="grid grid-cols-2 gap-y-5 gap-x-4 text-[14px] text-gray-300 mb-8">
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                   <span>
                     {event.date.startsWith("Start") ? (
                       <span dangerouslySetInnerHTML={{ __html: event.date.replace('Start', '<strong class="text-white">Start</strong>') }} />
@@ -168,25 +168,25 @@ export default function HomeEvents() {
                   </span>
                 </div>
 
-                <div className="flex items-center gap-1.5">
-                  <img src="/spica-coin.png" className="w-4 h-4 rounded-full" alt="Spica" />
+                <div className="flex items-center gap-2">
+                  <img src="/spica-coin.png" className="w-5 h-5 rounded-full" alt="Spica" />
                   <span>{event.prize}</span>
                 </div>
 
-                <div className="flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                   <span>{event.joined}</span>
                 </div>
 
-                <div className="flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                   <span>{event.platform}</span>
                 </div>
               </div>
 
               {/* CTA */}
               <button
-                className={`mt-auto w-full h-[40px] text-[13px] font-medium transition ${
+                className={`mt-auto w-[442px] h-[46px] mx-auto text-[15px] font-medium transition ${
                   event.cta === "Register"
                     ? "bg-[#00FFFF] text-black hover:bg-[#00e5e5]"
                     : "bg-[#C4C4C4] text-black hover:bg-[#b0b0b0]"
