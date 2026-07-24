@@ -79,10 +79,11 @@ const tagColors = {
 
 export default function HomeEvents() {
   return (
-    <section className="bg-black text-white px-6 md:px-[60px] py-20">
-      <h2 className="text-4xl font-semibold mb-14 text-center">Events</h2>
+    <section className="bg-black text-white py-20">
+      <div className="max-w-6xl mx-auto px-6 md:px-[60px]">
+        <h2 className="text-4xl font-semibold mb-14 text-center">Events</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {events.map((event, i) => (
           <div
             key={i}
@@ -167,6 +168,7 @@ export default function HomeEvents() {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </section>
   );
