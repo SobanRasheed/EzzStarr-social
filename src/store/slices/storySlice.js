@@ -10,18 +10,19 @@ export const fetchStory = createAsyncThunk(
         return state.story.stories;
       }
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/stories`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/stories?limit=8`);
       const data = await res.json();
 
       if (!res.ok) {
         return thunkAPI.rejectWithValue(data.message || "Failed to fetch stories");
       }
 
-      if (!Array.isArray(data)) {
+      const storiesArray = Array.isArray(data) ? data : (data.data || []);
+      if (!Array.isArray(storiesArray)) {
         return thunkAPI.rejectWithValue("Invalid stories data format");
       }
 
-      return data;
+      return storiesArray;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }
