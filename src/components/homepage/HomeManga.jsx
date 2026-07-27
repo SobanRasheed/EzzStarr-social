@@ -2,6 +2,7 @@ import MangaCard from "../reuseable comps/MangaCard";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchManga } from "../../store/slices/mangaSlice";
+import { mockMangas } from "../../config/mockHomeData";
 
 const HomeManga = ({title}) => {
   const dispatch = useDispatch();
@@ -12,6 +13,10 @@ const HomeManga = ({title}) => {
   useEffect(() => {
     dispatch(fetchManga());
   }, [dispatch]);
+
+  // Dev fallback: show mock cards when the API is unavailable.
+  const displayMangas = error && mangas.length === 0 ? mockMangas : mangas;
+  const showError = error && displayMangas.length === 0;
 
   return (
     <div className="flex flex-col gap-2 mt-8 px-4 md:px-20 lg:px-3 pt-10 dark-bg-2 mx-16">
