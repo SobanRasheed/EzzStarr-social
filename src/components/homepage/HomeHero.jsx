@@ -4,7 +4,7 @@ export default function HomeHero() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   return (
-    <section className="relative isolate flex min-h-screen w-full items-end justify-center overflow-hidden text-center text-white pb-24">
+    <section className="relative isolate flex min-h-[1030px] w-full items-end justify-center overflow-hidden text-center text-white pb-[180px]">
 
       {/* ── Poster fallback ── */}
       <img
