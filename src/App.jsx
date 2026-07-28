@@ -28,6 +28,13 @@ const router = createBrowserRouter([
         },
       },
       {
+        path: "manga/search",
+        async lazy() {
+          const module = await import("./components/manga/MangaSearchPage");
+          return { Component: module.default };
+        },
+      },
+      {
         path: "Manga/:id",
         async lazy() {
           const module = await import("./components/manga/MangaDetails");
