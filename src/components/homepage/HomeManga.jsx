@@ -32,7 +32,7 @@ const HomeManga = ({title}) => {
                 className="animate-pulse bg-gray-700 rounded-lg h-[300px]"
               />
             ))
-        ) : error ? (
+        ) : showError ? (
           <div className="col-span-full text-center py-4">
             <p className="text-red-500 mb-4">{error}</p>
             <button
@@ -43,7 +43,7 @@ const HomeManga = ({title}) => {
             </button>
           </div>
         ) : (
-          mangas.map((manga) => (
+          displayMangas.map((manga) => (
             <MangaCard
               key={manga.id}
               {...manga}
