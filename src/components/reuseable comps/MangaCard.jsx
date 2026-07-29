@@ -40,7 +40,17 @@ const MangaCard = ({
     navigate(`/manga/${id}?source=${src}`);
   };
   return (
-    <div onClick={() => handleClick(id)} className="group cursor-pointer relative w-full bg-[#1C1C1E80] rounded-sm overflow-hidden text-white flex flex-col md:flex-row transition hover:shadow-xl">
+    <div
+      onClick={() => handleClick(id)}
+      className="group cursor-pointer relative bg-[#1C1C1E80] rounded-sm overflow-hidden text-white flex flex-row transition hover:shadow-xl"
+      style={{
+        maxWidth: "544px",
+        width: "100%",
+        height: "340px",
+        backdropFilter: "blur(36px)",
+        WebkitBackdropFilter: "blur(36px)",
+      }}
+    >
       {/* ❤️ Heart */}
       <button
         onClick={(e) => {
@@ -56,11 +66,11 @@ const MangaCard = ({
       </button>
 
       {/* 🖼 Image */}
-      <div className="w-full md:w-40 h-60 flex-shrink-0">
+      <div className="w-[180px] h-full flex-shrink-0">
         <img
           src={getCoverImageUrl(imageUrl)}
           alt={title}
-          className="w-full h-full"
+          className="w-full h-full object-cover"
         />
       </div>
 

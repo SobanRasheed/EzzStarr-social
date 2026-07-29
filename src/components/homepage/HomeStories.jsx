@@ -20,7 +20,14 @@ export default function HomeStories() {
   const displayStories = error && stories.length === 0 ? mockStories : stories;
   const showError = error && displayStories.length === 0;
   return (
-    <section className="mx-35 py-12 bg-black">
+    <section
+      className="flex flex-col items-center py-12"
+      style={{
+        padding: "48px 96px",
+        gap: "24px",
+        isolation: "isolate",
+      }}
+    >
       {/* Heading */}
       <h2 className="text-white text-5xl font-semibold text-center mb-10">
         Stories
@@ -30,13 +37,29 @@ export default function HomeStories() {
       {showError ? (
         <p className="text-center text-red-400 text-sm">{error}</p>
       ) : isLoading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="h-[280px] rounded-sm bg-zinc-800 animate-pulse" />
+        <div
+          className="w-full"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(220px, 320px))",
+            gap: "16px",
+            justifyContent: "center",
+          }}
+        >
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div key={index} className="rounded-xl bg-zinc-800 animate-pulse" style={{ aspectRatio: "2/3" }} />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+        <div
+          className="w-full"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(220px, 320px))",
+            gap: "16px",
+            justifyContent: "center",
+          }}
+        >
           {displayStories.map((story) => (
             <StoryCard
               key={story.id}

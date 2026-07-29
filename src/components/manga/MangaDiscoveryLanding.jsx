@@ -6,11 +6,31 @@ import { Search, ChevronRight, Eye, Star, MessageCircle, Rocket } from "lucide-r
 import { useNavigate } from "react-router-dom";
 import { mockMangas } from "../../config/mockHomeData";
 
+import promo1 from "../../assets/Stories banner promotions/1.png";
+import promo2 from "../../assets/Stories banner promotions/2.png";
+import promo3 from "../../assets/Stories banner promotions/3.png";
+import promo4 from "../../assets/Stories banner promotions/4.png";
+import promo5 from "../../assets/Stories banner promotions/5.png";
+import promo6 from "../../assets/Stories banner promotions/6.png";
+import promo7 from "../../assets/Stories banner promotions/7.png";
+
+const promoBanners = [
+  { id: 1, image: promo1, link: "#", alt: "Aliens, Baseball, and Civilization" },
+  { id: 2, image: promo2, link: "#", alt: "My Brother Died and Now the Grass is Overgrown" },
+  { id: 3, image: promo3, link: "#", alt: "Banner Promotion 3" },
+  { id: 4, image: promo4, link: "#", alt: "Banner Promotion 4" },
+  { id: 5, image: promo5, link: "#", alt: "Banner Promotion 5" },
+  { id: 6, image: promo6, link: "#", alt: "Banner Promotion 6" },
+  { id: 7, image: promo7, link: "#", alt: "Banner Promotion 7" },
+];
+
 /* ── Styles ── */
 const scrollStyles = `
-@keyframes scroll-left { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-.scroll-slow { animation: scroll-left 120s linear infinite; }
-.scroll-fast { animation: scroll-left 115s linear infinite; }
+@keyframes scroll-left  { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+@keyframes scroll-right { from{transform:translateX(-50%)} to{transform:translateX(0)} }
+.scroll-left-slow  { animation: scroll-left  40s linear infinite; }
+.scroll-right-fast { animation: scroll-right 35s linear infinite; }
+.scroll-left-slow:hover, .scroll-right-fast:hover { animation-play-state: paused; }
 `;
 
 /* ── Helpers ── */
@@ -67,17 +87,23 @@ const MangaSection = ({ title, mangaList, source }) => (
   </section>
 );
 
-const BannerRow = ({ banners, speed = "slow" }) => (
+const BannerRow = ({ items, direction = "left" }) => (
   <div className="overflow-hidden">
-    <div className={`flex w-max ${speed === "fast" ? "scroll-fast" : "scroll-slow"}`}>
-      {[...banners, ...banners].map((b, i) => (
-        <div key={`${b.id}-${i}`} className="shrink-0 h-48 aspect-[3/1] overflow-hidden">
+    <div className={`flex w-max gap-1 ${direction === "left" ? "scroll-left-slow" : "scroll-right-fast"}`}>
+      {[...items, ...items].map((b, i) => (
+        <a
+          key={`${b.id}-${i}`}
+          href={b.link}
+          onClick={(e) => { if (b.link === "#") e.preventDefault(); }}
+          className="shrink-0 h-[140px] overflow-hidden rounded-lg block hover:opacity-90 transition-opacity cursor-pointer"
+        >
           <img
-            src={b.imageUrl?.startsWith("http") ? b.imageUrl : `${import.meta.env.VITE_API_URL}${b.imageUrl}`}
-            alt={b.title}
-            className="w-full h-full object-cover p-0.5 rounded-md"
+            src={b.image}
+            alt={b.alt}
+            className="h-full w-auto object-cover"
+            draggable={false}
           />
-        </div>
+        </a>
       ))}
     </div>
   </div>
@@ -203,13 +229,11 @@ const MangaDiscoveryLanding = () => {
       {/* ── Ambient glow ── */}
       <div className="pointer-events-none absolute" style={{ width: 2328, height: 853, left: "calc(50% - 1164px)", top: "calc(50% - 426.5px - 3099px)", background: "linear-gradient(180deg,#060106 61.06%,rgba(6,1,6,0) 100%)", filter: "blur(54.75px)" }} />
 
-      {/* ── Banner rows (Hero) ── */}
-      {mangas.length > 0 && (
-        <section className="py-4 border-b border-white/10">
-          <BannerRow banners={[...mangas].reverse()} speed="fast" />
-          <BannerRow banners={mangas} speed="slow" />
-        </section>
-      )}
+      {/* ── Promotional Banner Marquee (Hero) ── */}
+      <section className="py-4 border-b border-white/10 flex flex-col gap-3">
+        <BannerRow items={promoBanners} direction="left" />
+        <BannerRow items={[...promoBanners].reverse()} direction="right" />
+      </section>
 
       {/* ── Search bar (right-aligned) ── */}
       <div className="flex justify-end px-11 py-2 border-b border-white/10" ref={dropdownRef}>

@@ -63,7 +63,7 @@ export default function StoryCard({
       }`}
     >
       {/* Image area */}
-      <div className="relative aspect-[3/4] w-full">
+      <div className="relative aspect-[2/3] w-full">
         <img
           src={imgSrc}
           alt={title}

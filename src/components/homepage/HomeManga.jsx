@@ -19,17 +19,24 @@ const HomeManga = ({title}) => {
   const showError = error && displayMangas.length === 0;
 
   return (
-    <div className="flex flex-col gap-2 mt-8 px-4 md:px-20 lg:px-3 pt-10 dark-bg-2 mx-16">
+    <section
+      className="flex flex-col items-center pt-10"
+      style={{ padding: "40px 96px 0", isolation: "isolate" }}
+    >
       <h1 className="text-white text-center text-5xl mb-8">{title}</h1>
 
-      <div className="grid grid-cols-2 xl:grid-cols-3 gap-2 w-full">
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 w-full"
+        style={{ justifyItems: "center" }}
+      >
         {isLoading ? (
           Array(9)
             .fill(0)
             .map((_, index) => (
               <div
                 key={index}
-                className="animate-pulse bg-gray-700 rounded-lg h-[300px]"
+                className="animate-pulse bg-gray-700 rounded-sm"
+                style={{ height: "340px", maxWidth: "544px", width: "100%" }}
               />
             ))
         ) : showError ? (
@@ -54,7 +61,7 @@ const HomeManga = ({title}) => {
           ))
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

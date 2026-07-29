@@ -52,8 +52,8 @@ export default function Home() {
       />
       <div className="relative z-[1]">
         <HomeHero />
-        <HomeStories />
         <HomeManga title="Manga" />
+        <HomeStories />
         <HomeGist />
         <HomeEvents />
       </div>
