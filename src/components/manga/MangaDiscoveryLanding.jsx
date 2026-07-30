@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchManga } from "../../store/slices/mangaSlice";
 import MangaCard from "../reuseable comps/MangaCard";
-import { Search, ChevronRight, Eye, Star, MessageCircle, Rocket } from "lucide-react";
+import { Search, ChevronRight, Eye, Star, MessageCircle, Rocket, Share2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { mockMangas } from "../../config/mockHomeData";
 
@@ -54,38 +54,229 @@ const TopItem = ({ item }) => {
   return (
     <div
       onClick={() => navigate(`/manga/${item.id}?source=mangadex`)}
-      className="flex gap-3 py-3 px-4 border-b border-white/10 hover:bg-white/5 cursor-pointer"
+      className="flex flex-row items-start cursor-pointer hover:opacity-80 transition-opacity"
+      style={{
+        padding: 0,
+        width: "552px",
+        height: "143px",
+        backdropFilter: "blur(36px)",
+        WebkitBackdropFilter: "blur(36px)",
+        alignSelf: "stretch",
+      }}
     >
-      <img src={item.thumbnail} className="w-16 h-[88px] object-cover rounded shrink-0" />
-      <div className="flex-1 min-w-0 flex flex-col gap-1">
-        <p className="text-white text-xs font-semibold line-clamp-2">{item.title}</p>
-        <p className="text-white/40 text-xs">by ~ {item.author}</p>
-        <div className="flex gap-1.5 mt-auto flex-wrap">
-          <Stat icon={<Eye className="w-3 h-3" />} value={item.views} />
-          <Stat icon={<Star className="w-3 h-3" />} value={item.stars} />
-          <Stat icon={<MessageCircle className="w-3 h-3" />} value={item.comments} />
+      {/* Cover image */}
+      <img
+        src={item.thumbnail}
+        alt={item.title}
+        className="shrink-0 object-cover"
+        style={{
+          width: "95px",
+          height: "143px",
+          boxShadow: "0px 4px 8px 3px rgba(0, 0, 0, 0.15)",
+          filter: "drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.3))",
+        }}
+      />
+
+      {/* Content area */}
+      <div
+        className="flex flex-col justify-between items-center"
+        style={{ padding: "12px 0", gap: "8px", width: "457px", height: "143px", flexGrow: 1 }}
+      >
+        {/* Top info block */}
+        <div className="flex flex-col items-start" style={{ padding: 0, gap: "10px", width: "457px", height: "72px", alignSelf: "stretch" }}>
+          {/* Title row + Price badge */}
+          <div className="flex flex-row justify-between items-center" style={{ padding: "0 12px", gap: "51px", width: "457px", height: "40px", alignSelf: "stretch" }}>
+            {/* Title */}
+            <div className="flex items-center min-w-0 flex-1" style={{ gap: "10px" }}>
+              <span
+                className="truncate"
+                style={{
+                  fontFamily: "'SF Pro Display', sans-serif",
+                  fontWeight: 400,
+                  fontSize: "24px",
+                  lineHeight: "29px",
+                  color: "#FFFFFF",
+                }}
+              >
+                {item.title}
+              </span>
+            </div>
+            {/* Price badge */}
+            <div
+              className="flex items-center justify-center shrink-0"
+              style={{
+                width: "40px",
+                height: "40px",
+                background: item.rank <= 3 ? "rgba(255, 214, 0, 0.85)" : "rgba(0, 0, 0, 0.25)",
+                borderRadius: "34px",
+                padding: "4px",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "'SF Pro Display', sans-serif",
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "19px",
+                  color: item.rank <= 3 ? "#000000" : "#FFFFFF",
+                }}
+              >
+                $
+              </span>
+            </div>
+          </div>
+
+          {/* Author */}
+          <div className="flex flex-col items-end" style={{ padding: "0 12px", gap: "8px", width: "457px", height: "22px", alignSelf: "stretch" }}>
+            <span
+              className="truncate"
+              style={{
+                width: "433px",
+                height: "22px",
+                fontFamily: "'Satoshi', sans-serif",
+                fontWeight: 400,
+                fontSize: "16px",
+                lineHeight: "22px",
+                color: "#FFFFFF",
+                opacity: 0.5,
+                alignSelf: "stretch",
+              }}
+            >
+              by {item.author}
+            </span>
+          </div>
+        </div>
+
+        {/* Interactions row */}
+        <div
+          className="flex flex-row items-center"
+          style={{ padding: "0 12px", gap: "8px", width: "457px", height: "32px", alignSelf: "stretch" }}
+        >
+          {/* Views pill */}
+          <div
+            className="flex items-center shrink-0"
+            style={{
+              padding: "4px 12px",
+              gap: "2px",
+              height: "32px",
+              background: "rgba(255, 255, 255, 0.1)",
+              backdropFilter: "blur(27px)",
+              WebkitBackdropFilter: "blur(27px)",
+              borderRadius: "27px",
+            }}
+          >
+            <Eye className="w-5 h-5 text-white" />
+            <span
+              style={{
+                fontFamily: "'Satoshi', sans-serif",
+                fontWeight: 500,
+                fontSize: "16px",
+                lineHeight: "22px",
+                color: "#FFFFFF",
+                marginLeft: "2px",
+              }}
+            >
+              {item.views}
+            </span>
+          </div>
+
+          {/* Star pill */}
+          <div
+            className="flex items-center shrink-0"
+            style={{
+              padding: "4px 12px 4px 8px",
+              gap: "4px",
+              height: "32px",
+              background: "rgba(255, 255, 255, 0.1)",
+              backdropFilter: "blur(27px)",
+              WebkitBackdropFilter: "blur(27px)",
+              borderRadius: "27px",
+            }}
+          >
+            <Star className="w-5 h-5 text-white" />
+            <span
+              style={{
+                fontFamily: "'Satoshi', sans-serif",
+                fontWeight: 500,
+                fontSize: "14px",
+                lineHeight: "16px",
+                color: "#FFFFFF",
+              }}
+            >
+              {item.stars}
+            </span>
+          </div>
+
+          {/* Comments pill */}
+          <div
+            className="flex items-center shrink-0"
+            style={{
+              padding: "4px 12px",
+              gap: "2px",
+              height: "32px",
+              background: "rgba(255, 255, 255, 0.1)",
+              backdropFilter: "blur(27px)",
+              WebkitBackdropFilter: "blur(27px)",
+              borderRadius: "27px",
+            }}
+          >
+            <MessageCircle className="w-6 h-6 text-white" />
+            <span
+              style={{
+                fontFamily: "'Satoshi', sans-serif",
+                fontWeight: 500,
+                fontSize: "14px",
+                lineHeight: "19px",
+                color: "#FFFFFF",
+                marginLeft: "2px",
+              }}
+            >
+              {item.comments || "24"}
+            </span>
+          </div>
+
+          {/* Share pill */}
+          <div
+            className="flex items-center shrink-0"
+            style={{
+              padding: "4px 12px",
+              gap: "2px",
+              height: "32px",
+              background: "rgba(255, 255, 255, 0.1)",
+              backdropFilter: "blur(27px)",
+              WebkitBackdropFilter: "blur(27px)",
+              borderRadius: "27px",
+            }}
+          >
+            <Share2 className="w-[18px] h-[18px] text-white" />
+          </div>
         </div>
       </div>
-      <RankBadge rank={item.rank} badge={item.badge} />
     </div>
   );
 };
 
-const MangaSection = ({ title, mangaList, source }) => (
-  <section className="mb-10">
-    <div className="flex justify-between items-center mb-5">
-      <h2 className="text-white text-2xl font-bold">{title}</h2>
-      <span className="text-white/40 flex items-center text-sm hover:text-white cursor-pointer transition">
-        see all <ChevronRight className="w-4 h-4" />
-      </span>
-    </div>
-    <div className="grid grid-cols-2 gap-4">
-      {mangaList.map((manga) => (
-        <MangaCard key={manga.id} {...manga} stars={4} comments={120} views="23k" source={manga.source || source} />
-      ))}
-    </div>
-  </section>
-);
+const MangaSection = ({ title, mangaList, source }) => {
+  const navigate = useNavigate();
+  return (
+    <section className="mb-10">
+      <div className="flex justify-between items-center mb-5">
+        <h2 className="text-white text-2xl font-bold">{title}</h2>
+        <span 
+          onClick={() => navigate('/manga/see-all')}
+          className="text-white/40 flex items-center text-sm hover:text-white cursor-pointer transition"
+        >
+          see all <ChevronRight className="w-4 h-4" />
+        </span>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        {mangaList.map((manga) => (
+          <MangaCard key={manga.id} {...manga} stars={4} comments={120} views="23k" source={manga.source || source} />
+        ))}
+      </div>
+    </section>
+  );
+};
 
 const BannerRow = ({ items, direction = "left" }) => (
   <div className="overflow-hidden">
@@ -294,19 +485,61 @@ const MangaDiscoveryLanding = () => {
         {/* RIGHT — sidebar */}
         <aside className="hidden lg:flex flex-col gap-6 w-[600px] shrink-0">
 
-          {/* Trending / Top 10 */}
-          <div className="border border-white/10 rounded-lg overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
-              <h3 className="text-white font-bold text-base">Trending</h3>
-              <Rocket className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+          {/* Trending section */}
+          <div
+            className="flex flex-col items-center rounded-lg overflow-hidden"
+            style={{
+              padding: "26px 24px",
+              gap: "10px",
+              width: "600px",
+              background: "linear-gradient(180deg, rgba(255, 214, 0, 0.135) 0%, rgba(255, 214, 0, 0.03) 100%)",
+              backdropFilter: "blur(27px)",
+              WebkitBackdropFilter: "blur(27px)",
+            }}
+          >
+            <div
+              className="flex items-center w-full"
+              style={{ padding: "0 0 12px 0", gap: "8px", height: "48px" }}
+            >
+              <h3
+                style={{
+                  fontFamily: "'SF Pro Display', sans-serif",
+                  fontWeight: 500,
+                  fontSize: "30px",
+                  lineHeight: "36px",
+                  letterSpacing: "-1px",
+                  color: "#FAFAFA",
+                  textAlign: "center",
+                  margin: 0,
+                }}
+              >
+                Top Boosted
+              </h3>
+              <Rocket
+                style={{
+                  width: "22.55px",
+                  height: "22.54px",
+                  transform: "rotate(-90deg)",
+                  color: "rgba(255, 214, 0, 0.9)",
+                  fill: "rgba(255, 214, 0, 0.9)",
+                }}
+              />
             </div>
             {isTopLoading ? (
               Array(5).fill(0).map((_, i) => (
-                <div key={i} className="flex gap-3 p-4 border-b border-white/10 animate-pulse">
-                  <div className="w-16 h-[88px] bg-white/10 rounded shrink-0" />
-                  <div className="flex-1 space-y-2 pt-1">
-                    <div className="h-3 bg-white/10 rounded w-3/4" />
-                    <div className="h-3 bg-white/10 rounded w-1/2" />
+                <div key={i} className="flex w-[552px] h-[143px] backdrop-blur-[36px] bg-white/[0.02] border border-white/10 rounded-lg overflow-hidden animate-pulse">
+                  <div className="w-[95px] h-full bg-white/10 shrink-0" />
+                  <div className="flex flex-col justify-between py-3 px-3 flex-1">
+                    <div className="flex justify-between items-start gap-4">
+                      <div className="w-3/4 h-8 bg-white/10 rounded" />
+                      <div className="shrink-0 w-10 h-10 bg-white/10 rounded-[34px]" />
+                    </div>
+                    <div className="w-1/2 h-5 bg-white/10 rounded mt-1" />
+                    <div className="flex items-center gap-2 mt-auto">
+                      <div className="w-[87px] h-8 bg-white/10 rounded-[27px]" />
+                      <div className="w-[54px] h-8 bg-white/10 rounded-[27px]" />
+                      <div className="w-[67px] h-8 bg-white/10 rounded-[27px]" />
+                    </div>
                   </div>
                 </div>
               ))
