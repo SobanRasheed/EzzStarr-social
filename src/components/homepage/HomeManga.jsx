@@ -26,8 +26,13 @@ const HomeManga = ({title}) => {
       <h1 className="text-white text-center text-5xl mb-8">{title}</h1>
 
       <div
-        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 w-full"
-        style={{ justifyItems: "center" }}
+        className="w-full"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(420px, 544px))",
+          gap: "16px",
+          justifyContent: "center",
+        }}
       >
         {isLoading ? (
           Array(9)
