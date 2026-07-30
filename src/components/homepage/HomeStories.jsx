@@ -41,7 +41,7 @@ export default function HomeStories() {
           className="w-full"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(220px, 320px))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(180px, 240px))",
             gap: "16px",
             justifyContent: "center",
           }}
@@ -55,7 +55,7 @@ export default function HomeStories() {
           className="w-full"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(220px, 320px))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(180px, 240px))",
             gap: "16px",
             justifyContent: "center",
           }}
