@@ -1,656 +1,1010 @@
 import { useState } from "react";
 import {
-  Eye, Star, MessageCircle, Share2,
-  MoreHorizontal, Zap, ChevronLeft, ChevronRight,
-  DollarSign, X, Send, Heart, Rocket
+  Eye,
+  Star,
+  MessageCircle,
+  Share2,
+  MoreHorizontal,
+  Rocket,
+  ChevronLeft,
+  ChevronRight,
+  DollarSign,
+  X,
+  Send,
+  Volume2,
 } from "lucide-react";
 import StoryCard from "../reuseable comps/StoryCard";
+import {
+  mockStoryDetail,
+  mockStoryParts,
+  mockStoryContent,
+  mockStoryThreads,
+  mockStoryRecommendations,
+} from "../../config/mockStoryDetail";
 
-/* ── Thread / Spool Icon ─────────────────── */
-function ThreadSpoolIcon({ className }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <ellipse cx="12" cy="5" rx="7" ry="2.5" />
-      <ellipse cx="12" cy="19" rx="7" ry="2.5" />
-      <line x1="5" y1="5" x2="5" y2="19" />
-      <line x1="19" y1="5" x2="19" y2="19" />
-      <ellipse cx="12" cy="12" rx="4" ry="1.5" />
-    </svg>
-  );
-}
+/* =========================================================================
+   Story detail page — Figma node 8475:95711
+   ("EzzStar Story Page_Before Login (before boosting)", 1920x6084)
 
-/* ── Mock Data ─────────────────────────────── */
-const PARTS = [1, 2, 3, 4, 5].map(n => ({
-  id: n,
-  label: `Part ${n}`,
-  date: "8 May 2025",
-  stars: 5,
-  comments: 2,
-  image: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?q=80&w=100&auto=format&fit=crop",
-}));
+   Layout is desktop-first at the design's 1920 grid: a 1520px content row
+   (445px left rail + 1039px story panel), then full-width Story Threads,
+   Recommended and the shared Footer.
 
-const THREADS = Array.from({ length: 4 }).map((_, i) => ({
-  id: i,
-  author: "Mikasa Yager",
-  category: "Confession",
-  time: "about 1 hour ago",
-  hasStoryRef: i === 1 || i === 2,
-  storyPart: i === 1 ? "Part 2" : "Part 3",
-  content: "New Apex Legend cheat brings smurfing in low ranked lobbies to a whole new level Visit New",
-  image: i % 2 === 0 ? "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?q=80&w=120&auto=format&fit=crop" : null,
-  stars: 5, replies: 12, views: "42K",
-}));
+   NOTE (for backend dev): every value falls back to ../../config/mockStoryDetail
+   only when the API hasn't supplied it, so real data takes over automatically.
+   Placeholders that still need wiring are marked "PLACEHOLDER".
+========================================================================= */
 
-const RECOMMENDED = [
-  { id: 1, title: "Infidel", author: "Aaron Campbell", genre: "Horror", image: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?q=80&w=400&auto=format&fit=crop" },
-  { id: 2, title: "H.G. Wells: The Science Fiction", author: "H.G. Wells", genre: "Sci-fi, Action, Mystery", image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=400&auto=format&fit=crop" },
-  { id: 3, title: "H.G. Wells: The Science Fiction", author: "H.G. Wells", genre: "Sci-fi, Action, Mystery", image: "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=400&auto=format&fit=crop" },
-  { id: 4, title: "A Cyberpunk Ghost Story", author: "S.S.", genre: "Sci-fi Action", image: "https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=400&auto=format&fit=crop" },
-  { id: 5, title: "Neon Dragons - A Cyberpunk", author: "Isekai LitRPG", genre: "Action, Mystery", image: "https://images.unsplash.com/photo-1560762484-813fc97650a0?q=80&w=400&auto=format&fit=crop" },
-  { id: 6, title: "H.G. Wells: The Science Fiction", author: "H.G. Wells", genre: "Sci-fi, Action, Mystery", image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=400&auto=format&fit=crop" },
-  { id: 7, title: "H.G. Wells: The Science Fiction", author: "H.G. Wells", genre: "Sci-fi, Action, Mystery", image: "https://images.unsplash.com/photo-1504192010706-dd7f569ee2be?q=80&w=400&auto=format&fit=crop" },
-  { id: 8, title: "H.G. Wells: The Science Fiction", author: "H.G. Wells", genre: "Sci-fi, Action, Mystery", image: "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=400&auto=format&fit=crop" },
-];
+/* Design tokens lifted from the Figma CSS */
+const SATOSHI = "Satoshi, sans-serif";
+const SF = "SF Pro Display, sans-serif";
+const INTER = "Inter, sans-serif";
+const CYAN = "#01F1E3";
+const GREEN = "#14FF00";
+const PURPLE = "#AD7AFF";
+const MUTED = "#999999";
 
-const STORY_CONTENT = `Jim Caviezel, an American professor known for his vocal opposition to militant uprisings in the Middle East, had been invited to Cairo by an old friend, a fellow scholar. The invitation seemed innocent enough at first, a chance to speak out about the growing political unrest in the region. Little did Jim know, his visit would soon plunge him into a nightmare.
+/* Thread / gist spool icon — /icons/thread.svg is the project's own glyph */
+const ThreadIcon = ({ size = 22 }) => (
+  <img
+    src="/icons/thread.svg"
+    alt=""
+    style={{ width: size, height: size }}
+    className="brightness-0 invert"
+  />
+);
 
-Upon arriving in Cairo, Jim's friend greeted him warmly, and they immediately began discussing the rising tensions in the country. The conversation, however, took a dark turn when Jim was ambushed by a group of armed men. Before he could react, they forced him into a black van, blindfolding him and taking him to an unknown location. His friend, who had appeared so genuine, was nowhere to be found. Jim was now a pawn in a game he didn't understand.
+/* ── Stat pill — Figma: rgba(255,255,255,.1) + blur(27), radius 27 ────── */
+const StatPill = ({ children, filled, active, onClick, title }) => (
+  <button
+    onClick={onClick}
+    title={title}
+    className="flex shrink-0 items-center transition-colors"
+    style={{
+      height: "32px",
+      padding: "4px 12px",
+      gap: "4px",
+      borderRadius: "27px",
+      background: filled ? CYAN : active ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.1)",
+      backdropFilter: "blur(27px)",
+      WebkitBackdropFilter: "blur(27px)",
+      color: filled ? "#000000" : "#FFFFFF",
+      fontFamily: SATOSHI,
+      fontWeight: 500,
+      fontSize: "14px",
+      lineHeight: "19px",
+    }}
+  >
+    {children}
+  </button>
+);
 
-Back in the United States, Jim's wife, Sarah, was preparing for a quiet weekend when the phone call came. Her heart sank as she listened to the news—Jim had been kidnapped in Cairo. The voice on the other end of the line, a frantic reporter, explained that Jim had been taken by a militant group. They believed he had information on the recent uprisings, and they wanted him to talk.
-
-Sarah's world shattered. She knew Jim well enough to know that he wouldn't give in to their demands. But the idea of him being held captive, possibly tortured, filled her with dread. She couldn't sit back and wait for someone else to save him. Sarah was determined. She was going to Cairo, no matter the cost.
-
-With a heart full of fear and determination, Sarah packed her bags and booked the earliest flight to Egypt. She barely had time to think as she hurried through airport security, her mind racing. She knew nothing about the city, its dangers, or the political climate that had led to Jim's abduction. But what she did know was that she loved him, and she wouldn't let him go without a fight.
-
-Arriving in Cairo, Sarah was met with a chaotic city, streets crowded with people protesting against the government. She could feel the tension in the air, thick with anger and distrust. The last thing she wanted was to draw attention to herself, but she had no choice. Her first stop was the American embassy, hoping they could help. But even there, the officials seemed distant, overwhelmed by the growing unrest.
-
-Sarah was not one to be easily deterred. She refused to accept the embassy's formalities and red tape. The security team provided her with some guidance, but it was clear they couldn't offer much help in a city so gripped by violence. She decided to take matters into her own hands. She knew that Jim was a man of principles, someone who would never give up easily. That meant, in her heart, she believed he was still alive.
-
-Sarah's only lead was a few blurry details from the news reports and a cryptic message from Jim's colleague, who had last seen him before the abduction. The message mentioned something about a hidden safe house, a place where Jim might be held. Sarah's heart raced. The name of the place didn't ring any bells, but it was her only chance.
-
-Without wasting any more time, Sarah hired a local guide to help her navigate the city's underground network. The guide, a man named Tariq, was cautious but willing to help. He had seen the aftermath of the uprisings firsthand and understood the gravity of the situation. The two of them set off into the labyrinthine streets of Cairo, weaving through crowds and back alleys, always on the lookout for danger.`;
-
-/* ── Stat Pill (redesigned to match reference) ────── */
-function StatPill({ children, cyan, active, onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer
-        ${cyan
-          ? "bg-[#01F1E3] text-black"
-          : active
-            ? "bg-[#2a2a2e] text-[#01F1E3] ring-1 ring-[#01F1E3]/40"
-            : "bg-[#1c1c1e]/80 text-white/60 hover:bg-[#2a2a2e] hover:text-white"
-        }`}
-    >
-      {children}
-    </button>
-  );
-}
-
-/* ── Part Card ─────────────────────────── */
-function PartCard({ part, isActive, onClick }) {
+/* ── Part row — Figma: 426x126, active = rgba(173,122,255,.1) radius 8 ── */
+const PartRow = ({ part, isActive, onClick }) => {
   const [starred, setStarred] = useState(false);
-  const [starCount, setStarCount] = useState(part.stars);
+  const [starCount, setStarCount] = useState(part.stars ?? 5);
 
   return (
     <div
       onClick={onClick}
-      className={`flex items-center gap-3 hover:bg-[#141414] transition-colors rounded-lg p-2.5 cursor-pointer border ${isActive ? "bg-[#141414] border-[#14FF00]/30" : "bg-[#0d0d0d] border-white/5"
-        }`}
+      className="flex cursor-pointer items-center transition-colors hover:bg-white/5"
+      style={{
+        width: "426px",
+        height: "126px",
+        padding: "10px",
+        gap: "120px",
+        borderRadius: "8px",
+        background: isActive ? "rgba(173, 122, 255, 0.1)" : "transparent",
+      }}
     >
-      <img src={part.image} alt={part.label} className="w-12 h-14 object-cover rounded shrink-0" />
-      <div className="flex-1 min-w-0">
-        <p className="text-white text-sm font-semibold">{part.label}</p>
-        <p className="text-white/40 text-[11px] mt-0.5">{part.date}</p>
-        <div className="flex items-center gap-3 mt-1.5 text-[10px]">
-          <button onClick={e => { e.stopPropagation(); setStarred(!starred); setStarCount(p => starred ? p - 1 : p + 1); }}
-            className={`flex items-center gap-1 transition-colors ${starred ? "text-yellow-400" : "text-white/40 hover:text-yellow-400"}`}>
-            <Star className={`w-3 h-3 ${starred ? "fill-yellow-400" : ""}`} />{starCount}
-          </button>
-          <button onClick={e => e.stopPropagation()} className="flex items-center gap-1 text-white/40 hover:text-white transition-colors">
-            <MessageCircle className="w-3 h-3" />({part.comments})
-          </button>
+      {/* Thumbnail + labels */}
+      <div className="flex shrink-0 items-center" style={{ gap: "6px" }}>
+        <img
+          src={part.thumbnail}
+          alt={part.label}
+          className="shrink-0 object-cover"
+          style={{ width: "66px", height: "106px" }}
+        />
+        <div className="flex flex-col justify-center" style={{ gap: "4px" }}>
+          <span
+            className="text-white"
+            style={{ fontFamily: SATOSHI, fontSize: "24px", lineHeight: "24px" }}
+          >
+            {part.label}
+          </span>
+          <span
+            className="text-white"
+            style={{ fontFamily: INTER, fontSize: "14px", lineHeight: "24px" }}
+          >
+            {part.date}
+          </span>
         </div>
+      </div>
+
+      {/* Star + comment pills */}
+      <div className="flex shrink-0 items-center" style={{ gap: "8px" }}>
+        <StatPill
+          onClick={(e) => {
+            e.stopPropagation();
+            setStarred((s) => !s);
+            setStarCount((c) => (starred ? c - 1 : c + 1));
+          }}
+        >
+          <Star
+            className="h-6 w-6"
+            style={{ color: starred ? "#FFD600" : "#FFFFFF" }}
+            fill={starred ? "#FFD600" : "none"}
+            strokeWidth={1.4}
+          />
+          {starCount}
+        </StatPill>
+        <StatPill onClick={(e) => e.stopPropagation()}>
+          <MessageCircle className="h-6 w-6" strokeWidth={1.5} />({part.comments})
+        </StatPill>
       </div>
     </div>
   );
-}
+};
 
-/* ── Thread Card (inside Gist panel) ─── */
-function GistThreadCard({ thread }) {
+/* ── Section heading — Figma: Satoshi 24px, capitalize ───────────────── */
+const RailHeading = ({ children, color = "#FFFFFF", weight = 400 }) => (
+  <p
+    style={{
+      fontFamily: SATOSHI,
+      fontWeight: weight,
+      fontSize: "24px",
+      lineHeight: "32px",
+      textTransform: "capitalize",
+      color,
+      margin: 0,
+    }}
+  >
+    {children}
+  </p>
+);
+
+/* ── Slide-over panel shell (Comments / Gist) ────────────────────────── */
+const SlideOverPanel = ({ open, title, onClose, children, footer }) => (
+  <div
+    className="fixed right-0 top-0 z-50 flex h-screen flex-col transition-transform duration-300"
+    style={{
+      width: "600px",
+      maxWidth: "100vw",
+      background: "rgba(28, 28, 30, 0.92)",
+      backdropFilter: "blur(36px)",
+      WebkitBackdropFilter: "blur(36px)",
+      borderLeft: "1px solid rgba(255,255,255,0.15)",
+      transform: open ? "translateX(0)" : "translateX(100%)",
+      pointerEvents: open ? "auto" : "none",
+    }}
+  >
+    <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
+      <h3 className="text-white" style={{ fontFamily: SATOSHI, fontSize: "24px" }}>
+        {title}
+      </h3>
+      <button onClick={onClose} className="text-white/60 transition-colors hover:text-white">
+        <X className="h-5 w-5" />
+      </button>
+    </div>
+    <div className="flex-1 space-y-4 overflow-y-auto px-6 py-5">{children}</div>
+    {footer && <div className="border-t border-white/10 px-6 py-4">{footer}</div>}
+  </div>
+);
+
+/* ── Thread card — Figma: 1202px wide, rgba(28,28,30,.5) + blur(36) ──── */
+const ThreadCard = ({ thread }) => {
   const [starred, setStarred] = useState(false);
-  const [starCount, setStarCount] = useState(thread.stars);
-  const [replied, setReplied] = useState(false);
-  const [replyCount, setReplyCount] = useState(thread.replies);
+  const [starCount, setStarCount] = useState(thread.stars ?? 5);
 
   return (
-    <div className="bg-[#1a1a1a]/60 border border-white/5 rounded-xl p-4 hover:bg-[#1e1e1e] transition-colors">
-      {/* Header row */}
-      <div className="flex justify-between items-start mb-2">
-        <div className="flex items-center gap-2 text-xs flex-wrap">
-          <img src="https://i.pravatar.cc/28?u=mikasa" alt="" className="w-6 h-6 rounded-full shrink-0" />
-          <span className="text-white text-[11px] font-semibold">{thread.author}</span>
-          <span className="text-white/40 text-[9px]">•</span>
-          <span className="text-white/30 bg-white/8 px-1.5 py-0.5 rounded text-[9px]">{thread.category}</span>
-          <span className="text-white/30 text-[9px]">• {thread.time}</span>
+    <div
+      className="flex flex-col"
+      style={{
+        width: "1202px",
+        maxWidth: "100%",
+        padding: "24px",
+        gap: "16px",
+        background: "rgba(28, 28, 30, 0.5)",
+        border: "1px solid rgba(255, 255, 255, 0.3)",
+        backdropFilter: "blur(36px)",
+        WebkitBackdropFilter: "blur(36px)",
+        borderRadius: "22px",
+      }}
+    >
+      {/* Author row */}
+      <div className="flex flex-col" style={{ gap: "12px" }}>
+        <div className="flex items-center justify-between" style={{ gap: "16px" }}>
+          <div className="flex items-center" style={{ gap: "4px" }}>
+            <img
+              src={thread.avatar}
+              alt=""
+              className="shrink-0 rounded-full object-cover"
+              style={{ width: "36px", height: "36px", border: "1px solid #D9D9D9" }}
+            />
+            <span
+              className="ml-1 text-white underline"
+              style={{ fontFamily: SF, fontSize: "14px", textTransform: "capitalize" }}
+            >
+              {thread.author}
+            </span>
+            <span
+              className="ml-2"
+              style={{ fontFamily: INTER, fontSize: "12px", color: "#EF00F4", opacity: 0.5 }}
+            >
+              •
+            </span>
+            <span
+              style={{
+                fontFamily: INTER,
+                fontSize: "12px",
+                color: "#FFFFFF",
+                opacity: 0.8,
+              }}
+            >
+              {thread.category}
+            </span>
+            <span
+              className="ml-2"
+              style={{ fontFamily: INTER, fontSize: "12px", color: "#FFFFFF", opacity: 0.5 }}
+            >
+              {thread.time}
+            </span>
+          </div>
+
+          {/* PLACEHOLDER: join / follow action */}
+          <div className="flex shrink-0 items-center" style={{ gap: "16px" }}>
+            <button
+              className="flex items-center justify-center transition-opacity hover:opacity-80"
+              style={{
+                padding: "4px 12px",
+                background: "#8E0CA3",
+                borderRadius: "27px",
+                fontFamily: SATOSHI,
+                fontSize: "14px",
+                lineHeight: "14px",
+                color: "#FFFFFF",
+              }}
+            >
+              Join
+            </button>
+            <button className="text-white/70 transition-colors hover:text-white">
+              <MoreHorizontal className="h-6 w-6" />
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-1.5 shrink-0">
-          <button className="bg-[#a855f7] hover:bg-[#9333ea] text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full transition-colors">Join</button>
-          <button className="text-white/40 hover:text-white"><MoreHorizontal className="w-3.5 h-3.5" /></button>
-        </div>
+        <div style={{ height: "1px", background: "rgba(255,255,255,0.2)" }} />
       </div>
 
-      {/* Story reference */}
-      {thread.hasStoryRef && (
-        <div className="flex items-center gap-2 mb-2 bg-white/5 rounded-lg p-2">
-          <img src="https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?q=80&w=60&auto=format&fit=crop" className="w-8 h-10 rounded object-cover shrink-0" alt="" />
-          <div>
-            <p className="text-white/80 text-[11px] font-semibold">Infidel</p>
-            <p className="text-[#14FF00] text-[9px]">• Story</p>
+      {/* Body — either a story reference box above the text, or a side image */}
+      {thread.storyRef ? (
+        <div className="flex flex-col" style={{ gap: "20px" }}>
+          <div
+            className="flex items-center"
+            style={{
+              width: "300px",
+              height: "52px",
+              padding: "4px 4px 4px 8px",
+              gap: "8px",
+              opacity: 0.8,
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "4px",
+            }}
+          >
+            <img
+              src={thread.storyRef.thumbnail}
+              alt=""
+              className="shrink-0 object-cover"
+              style={{ width: "27px", height: "39px", borderRadius: "1px" }}
+            />
+            <div className="flex flex-1 flex-col justify-center">
+              <span className="text-white" style={{ fontFamily: SF, fontSize: "20px", lineHeight: "24px" }}>
+                {thread.storyRef.title}
+              </span>
+            </div>
+            <span
+              className="shrink-0"
+              style={{ fontFamily: SF, fontSize: "14px", color: "rgba(255,255,255,0.5)" }}
+            >
+              {thread.storyRef.part}
+            </span>
           </div>
-          <span className="text-white/40 text-[9px] ml-auto">{thread.storyPart}</span>
+          <p
+            className="text-white"
+            style={{ fontFamily: SATOSHI, fontSize: "24px", lineHeight: "32px", margin: 0 }}
+          >
+            {thread.content}
+          </p>
+        </div>
+      ) : (
+        <div className="flex items-start" style={{ gap: "26px" }}>
+          <p
+            className="flex-1 text-white"
+            style={{ fontFamily: SATOSHI, fontSize: "24px", lineHeight: "32px", margin: 0 }}
+          >
+            {thread.content}
+          </p>
+          {thread.image && (
+            <img
+              src={thread.image}
+              alt=""
+              className="shrink-0 object-cover"
+              style={{ width: "141px", height: "88px", borderRadius: "4px" }}
+            />
+          )}
         </div>
       )}
 
-      {/* Content + image */}
-      <div className="flex gap-3 items-start">
-        <p className="text-[12px] text-white/80 leading-snug flex-1">{thread.content}</p>
-        {thread.image && <img src={thread.image} alt="" className="w-14 h-16 object-cover rounded shrink-0" />}
-      </div>
-
       {/* Stats row */}
-      <div className="flex items-center gap-4 mt-3 text-[10px] text-white/40">
-        <button onClick={() => { setStarred(!starred); setStarCount(p => starred ? p - 1 : p + 1); }}
-          className={`flex items-center gap-1 transition-colors ${starred ? "text-yellow-400" : "hover:text-yellow-400"}`}>
-          <Star className={`w-3 h-3 ${starred ? "fill-yellow-400" : ""}`} />{starCount}
-        </button>
-        <button onClick={() => { setReplied(!replied); setReplyCount(p => replied ? p - 1 : p + 1); }}
-          className={`flex items-center gap-1 transition-colors ${replied ? "text-blue-400" : "hover:text-white"}`}>
-          <MessageCircle className="w-3 h-3" />{replyCount}
-        </button>
-        <button className="flex items-center gap-1 hover:text-white transition-colors">
-          <Eye className="w-3 h-3" />{thread.views}
-        </button>
-        <button className="flex items-center gap-1 hover:text-white transition-colors">
-          <Share2 className="w-3 h-3" />
-        </button>
-      </div>
-    </div>
-  );
-}
-
-/* ── Inline Comments Panel ────────────────────── */
-function InlineCommentsPanel({ onClose }) {
-  const [text, setText] = useState("");
-  const [comments, setComments] = useState([]);
-
-  const submit = () => {
-    if (!text.trim()) return;
-    setComments(prev => [{ id: Date.now(), text: text.trim(), author: "You", time: "just now" }, ...prev]);
-    setText("");
-  };
-
-  return (
-    <div className="w-[320px] shrink-0 bg-[#111111] border-l border-white/8 flex flex-col self-stretch rounded-r-xl">
-      {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-white/8 shrink-0">
-        <h3 className="text-white font-bold text-base">Comments</h3>
-        <button onClick={onClose} className="text-white/40 hover:text-white transition-colors">
-          <X className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* Body */}
-      <div className="flex-1 overflow-y-auto px-5 py-4 min-h-[400px]">
-        {comments.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center gap-4 py-12">
-            {/* Alien/avatar illustration */}
-            <div className="relative w-24 h-24">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-4xl shadow-lg shadow-purple-500/30">
-                👾
-              </div>
-              <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-green-500 text-xs flex items-center justify-center">✦</div>
-              <div className="absolute -bottom-1 -left-2 w-5 h-5 rounded-full bg-pink-500 text-xs flex items-center justify-center">✦</div>
-            </div>
-            <div>
-              <p className="text-white font-semibold text-base">Start the discussion</p>
-              <p className="text-white/40 text-sm mt-1 leading-snug">Looking to share your thoughts and start the conversation</p>
-            </div>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-3">
-            {comments.map(c => (
-              <div key={c.id} className="bg-[#1a1a1a] rounded-xl p-3 border border-white/5">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-400 flex items-center justify-center text-[10px] font-bold">Y</div>
-                  <span className="text-white text-[12px] font-semibold">{c.author}</span>
-                  <span className="text-white/30 text-[10px]">• {c.time}</span>
-                </div>
-                <p className="text-white/75 text-[13px] leading-snug">{c.text}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Input */}
-      <div className="px-4 py-4 border-t border-white/8 shrink-0">
-        <div className="flex items-center gap-2">
-          <input
-            value={text}
-            onChange={e => setText(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && submit()}
-            placeholder="Share Your thoughts"
-            className="flex-1 bg-[#1a1a1a] border border-white/10 rounded-lg px-4 py-2.5 text-[13px] text-white placeholder-white/30 outline-none focus:border-white/25"
+      <div className="flex items-center" style={{ gap: "8px" }}>
+        <StatPill
+          onClick={() => {
+            setStarred((s) => !s);
+            setStarCount((c) => (starred ? c - 1 : c + 1));
+          }}
+        >
+          <Star
+            className="h-5 w-5"
+            style={{ color: starred ? "#FFD600" : "#FFFFFF" }}
+            fill={starred ? "#FFD600" : "none"}
+            strokeWidth={1.5}
           />
-          <button
-            onClick={submit}
-            className="bg-[#1c1c1e] hover:bg-[#2a2a2a] text-white text-[12px] font-semibold px-4 py-2.5 rounded-lg whitespace-nowrap transition-colors border border-white/10"
-          >
-            Add Comment
-          </button>
-        </div>
+          {starCount}
+        </StatPill>
+        <StatPill>
+          <MessageCircle className="h-6 w-6" strokeWidth={1.5} />
+          {thread.replies}
+        </StatPill>
+        <StatPill>
+          <Eye className="h-6 w-6" strokeWidth={1.2} />
+          {thread.views}
+        </StatPill>
+        <StatPill
+          title="Share"
+          onClick={() => {
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(window.location.href).catch(() => {});
+            }
+          }}
+        >
+          <Share2 className="h-[22px] w-[22px]" strokeWidth={1} />
+        </StatPill>
       </div>
     </div>
   );
-}
+};
 
-/* ── Inline Gist / Threads Panel ─────────────── */
-function InlineGistPanel({ onClose }) {
-  const [threadText, setThreadText] = useState("");
-  const [localThreads, setLocalThreads] = useState(THREADS);
-
-  const submit = () => {
-    if (!threadText.trim()) return;
-    setLocalThreads(prev => [{
-      id: Date.now(),
-      author: "You",
-      category: "Thread",
-      time: "just now",
-      hasStoryRef: false,
-      content: threadText.trim(),
-      image: null,
-      stars: 0, replies: 0, views: "0",
-    }, ...prev]);
-    setThreadText("");
-  };
-
-  return (
-    <div className="w-[340px] shrink-0 bg-[#111111] border-l border-white/8 flex flex-col self-stretch rounded-r-xl">
-      {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-white/8 shrink-0">
-        <button className="flex items-center gap-1.5 text-white font-bold text-base hover:text-white/80 transition-colors">
-          Gist <span className="text-sm text-white/50">▼</span>
-        </button>
-        <button onClick={onClose} className="text-white/40 hover:text-white transition-colors">
-          <X className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* Thread list */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3 min-h-[400px]">
-        {localThreads.map(t => <GistThreadCard key={t.id} thread={t} />)}
-      </div>
-
-      {/* Write Thread input */}
-      <div className="px-4 py-4 border-t border-white/8 shrink-0">
-        <div className="flex items-center gap-2 bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-2.5">
-          <input
-            value={threadText}
-            onChange={e => setThreadText(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && submit()}
-            placeholder="Write a Thread..."
-            className="flex-1 bg-transparent text-[13px] text-white placeholder-white/30 outline-none"
-          />
-          <button
-            onClick={submit}
-            className="w-8 h-8 rounded-lg bg-[#01F1E3] hover:bg-[#00c8e0] flex items-center justify-center transition-colors shrink-0"
-          >
-            <Send className="w-4 h-4 text-black" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ── Main Story Detail Page ───────────── */
-export default function StoryDetailPage({ story, onBack }) {
-  const [activePart, setActivePart] = useState(1);
-
-  /* Stats state */
-  const [viewCount] = useState(42312);
-  const [starCount, setStarCount] = useState(5);
+/* =========================================================================
+   Page
+========================================================================= */
+const StoryDetailPage = ({ story, onBack }) => {
+  const [activePart, setActivePart] = useState(0);
   const [starred, setStarred] = useState(false);
-  const [commentCount] = useState(124);
+  const [panel, setPanel] = useState(null); // null | "comments" | "gist"
+  const [replyText, setReplyText] = useState("");
 
-  /* Panel state */
-  const [showComments, setShowComments] = useState(false);
-  const [showThreads, setShowThreads] = useState(false);
+  // Real API values win; the mock only fills the gaps.
+  const coverImg = story?.image || story?.imageUrl || mockStoryDetail.coverUrl;
+  const title = story?.title || mockStoryDetail.title;
+  const artist = story?.author || mockStoryDetail.artist;
+  const genres =
+    story?.genres?.length > 0
+      ? story.genres
+      : story?.genre
+        ? [story.genre]
+        : mockStoryDetail.genres;
+  const about = story?.description || mockStoryDetail.about;
+  const writer = story?.writer || mockStoryDetail.writer;
+  const content = story?.content || mockStoryContent;
+  // The API returns parts as {id, title, duration}; the design needs
+  // label/date/thumbnail. Normalize so either shape renders.
+  const parts = (story?.parts?.length > 0 ? story.parts : mockStoryParts).map((p, i) => ({
+    id: p.id ?? `part-${i}`,
+    label: p.label || p.title || `Part ${i + 1}`,
+    date: p.date || p.duration || "",
+    thumbnail: p.thumbnail || coverImg,
+    stars: p.stars ?? 5,
+    comments: p.comments ?? 2,
+  }));
+  const threads = story?.threads?.length > 0 ? story.threads : mockStoryThreads;
+  const recommendations =
+    story?.recommendations?.length > 0 ? story.recommendations : mockStoryRecommendations;
 
-  /* Boost state */
-  const [boosted, setBoosted] = useState(false);
+  // PLACEHOLDER counters — backend supplies real values.
+  const views = story?.views || mockStoryDetail.views;
+  const commentCount = story?.comments ?? mockStoryDetail.comments;
+  const [starCount, setStarCount] = useState(story?.stars ?? mockStoryDetail.stars);
 
-  const coverImg = story?.image || "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?q=80&w=600&auto=format&fit=crop";
-  const title = story?.title || "Infidel";
-  const author = story?.author || "Aaron Campbell";
-  const genres = story?.genres?.length > 0 ? story.genres : story?.genre ? [story.genre] : ["Horror", "Thriller"];
-  const content = story?.content || STORY_CONTENT;
-
-  /* Toggle panels (mutually exclusive) */
-  const toggleComments = () => { setShowComments(p => !p); setShowThreads(false); };
-  const toggleThreads = () => { setShowThreads(p => !p); setShowComments(false); };
-
-  const panelOpen = showComments || showThreads;
+  const currentPart = parts[activePart] || parts[0];
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+    <div className="relative w-full overflow-x-hidden" style={{ background: "#010101" }}>
+      {/* ═══════════════ Ambient glows (Figma: 490-641px, blur 250) ═══════ */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className="absolute"
+          style={{
+            width: "535px",
+            height: "535px",
+            left: 0,
+            top: "5236px",
+            background: CYAN,
+            opacity: 0.2,
+            filter: "blur(250px)",
+            borderRadius: "363px",
+          }}
+        />
+        <div
+          className="absolute"
+          style={{
+            width: "641px",
+            height: "641px",
+            left: "1240px",
+            top: "5241px",
+            background: "#DF28E2",
+            opacity: 0.15,
+            filter: "blur(250px)",
+            borderRadius: "363px",
+          }}
+        />
+      </div>
 
-      {/* ── Full hero blurred background ── */}
-      <div className="relative w-full" style={{ minHeight: "100vh" }}>
-        <div className="absolute top-0 left-0 right-0 h-[600px] overflow-hidden z-0">
-          <div className="absolute inset-0 bg-cover bg-center scale-110"
-            style={{ backgroundImage: `url(${coverImg})`, filter: "blur(40px) brightness(0.25) saturate(1.4)" }} />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black" />
-        </div>
+      {/* ═══════════════ HERO — blurred cover art behind the content ═══════ */}
+      <div className="absolute left-0 top-0 w-full overflow-hidden" style={{ height: "3004px" }}>
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${coverImg})`, filter: "brightness(0.45)" }}
+        />
+        {/* Left fade (Figma Rectangle 34624261, rotated) */}
+        <div
+          className="absolute left-0 top-0"
+          style={{
+            width: "674px",
+            height: "100%",
+            background: "linear-gradient(90deg, #060106 0%, rgba(6,1,6,0) 100%)",
+          }}
+        />
+        {/* Bottom fade into the page background (Rectangle 34624260) */}
+        <div
+          className="absolute bottom-0 left-0 w-full"
+          style={{
+            height: "1557px",
+            background:
+              "linear-gradient(180deg, rgba(1,1,1,0) 0%, #060106 17.25%, #010101 85.61%)",
+          }}
+        />
+      </div>
 
-        {/* Back button */}
+      {/* ═══════════════ STORY SECTION ═══════════════════════════════════ */}
+      <section
+        className="relative z-10 flex flex-col items-center"
+        style={{ padding: "300px 200px 0" }}
+      >
+        {/* Back link */}
         {onBack && (
-          <button onClick={onBack}
-            className="absolute top-28 left-8 z-20 flex items-center gap-1.5 text-white/60 hover:text-white text-sm transition-colors">
-            <ChevronLeft className="w-4 h-4" /> Back
-          </button>
+          <div style={{ width: "1520px", maxWidth: "100%", marginBottom: "24px" }}>
+            <button
+              onClick={onBack}
+              className="flex items-center gap-1.5 text-white/60 transition-colors hover:text-white"
+              style={{ fontFamily: SATOSHI, fontSize: "16px" }}
+            >
+              <ChevronLeft className="h-4 w-4" /> Back
+            </button>
+          </div>
         )}
 
-        {/* ── Main two-column layout ── */}
-        <div className={`relative z-10 mx-auto px-6 pt-32 pb-6 transition-all duration-300 ${panelOpen ? "max-w-[1400px]" : "max-w-[1200px]"}`}>
-          <div className="flex gap-8 items-start">
-
-            {/* ══ LEFT SIDEBAR — hidden when panel is open ══ */}
-            {!panelOpen && <div className="w-[240px] shrink-0 flex flex-col">
-
-              {/* Cover image — with yellow glow when boosted */}
-              <div className={`rounded-lg overflow-hidden transition-all duration-500 ${boosted
-                ? "shadow-[0_0_50px_15px_rgba(234,179,8,0.5),0_0_100px_30px_rgba(234,179,8,0.25)]"
-                : "shadow-2xl shadow-black/60"
-                }`}>
-                <img src={coverImg} alt={title} className="w-full aspect-[2/3] object-cover block" />
-              </div>
-              <p className="text-white/40 text-[10px] mt-2">Artist: {author}</p>
-
-              {/* Action buttons */}
-              <div className="flex items-center mt-4 w-full h-[42px]">
-                {/* Left group: Listen + Tip (and Boost if unboosted) */}
-                <div className={`flex items-stretch h-full overflow-hidden border border-white/5 ${boosted ? "rounded-md flex-1" : "rounded-md w-full"}`}>
-                  <button className="flex items-center justify-center gap-2 bg-[#121212] hover:bg-[#1a1a1a] px-3 text-[13px] font-medium text-[#f5f5f5] transition-colors whitespace-nowrap flex-1">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#14FF00] shrink-0" />
-                    Listen Audio
-                  </button>
-                  <button className="flex items-center justify-center gap-1.5 bg-[#4c3286] hover:bg-[#5a3a90] px-3 text-[13px] font-bold text-white transition-colors whitespace-nowrap flex-1">
-                    <DollarSign className="w-4 h-4 shrink-0" strokeWidth={2.5} />
-                    Tip Author
-                  </button>
-                  {/* Unboosted Boost Button is attached */}
-                  {!boosted && (
-                    <button
-                      onClick={() => setBoosted(true)}
-                      className="flex items-center justify-center bg-[#14FF00] hover:bg-[#10dd00] w-[42px] shrink-0 transition-colors"
-                    >
-                      <Zap className="w-4 h-4 shrink-0 fill-black text-black" />
-                    </button>
-                  )}
-                </div>
-
-                {/* Boosted Heart Button is separate */}
-                {boosted && (
-                  <button
-                    onClick={() => setBoosted(false)}
-                    className="flex items-center justify-center bg-white hover:bg-gray-200 w-[42px] h-[42px] rounded-full shrink-0 ml-3 transition-colors shadow-lg"
-                  >
-                    <Heart className="w-5 h-5 text-black" />
-                  </button>
-                )}
-              </div>
-
-              {/* Earn badge — appears only after boosting */}
-              {boosted && (
-                <p className="text-[#01F1E3] text-[13px] font-semibold mt-3">
-                  Earn <span className="text-white font-bold">0.00005</span> <span className="text-[#01F1E3] font-bold">$SPCA</span>
-                </p>
-              )}
-
-              {/* About Story */}
-              <div className="mt-5">
-                <p className="text-white/80 text-sm font-semibold mb-2">About Story</p>
-                <p className="text-white/40 text-[12px] leading-relaxed">
-                  A Haunted House Story For The 21st Century, INFIDEL Follows An American Muslim Woman And Her Multi-Racial Neighbors Who Move Into A Building Haunted By Entities That Feed Off Xenophobia.
-                </p>
-              </div>
-
-              {/* Writer */}
-              <div className="mt-5">
-                <p className="text-white/80 text-sm font-semibold mb-2">Writer</p>
-                <div className="flex items-center gap-2">
-                  <img src="https://i.pravatar.cc/32?u=porneak" alt="" className="w-7 h-7 rounded-full" />
-                  <span className="text-white/70 text-[12px]">Pornsak Pichetshote</span>
-                </div>
-              </div>
-
-              {/* Parts */}
-              <div className="mt-5">
-                <p className="text-[#01F1E3] text-sm font-semibold mb-3">Parts</p>
-                <div className="flex flex-col gap-2">
-                  {PARTS.map(part => (
-                    <PartCard
-                      key={part.id}
-                      part={part}
-                      isActive={activePart === part.id}
-                      onClick={() => setActivePart(part.id)}
+        <div
+          className="flex items-start justify-center"
+          style={{ width: "1520px", maxWidth: "100%", gap: "36px" }}
+        >
+          {/* ══════════ LEFT RAIL — 445px ══════════ */}
+          <div className="flex shrink-0 flex-col" style={{ width: "445px", gap: "50px" }}>
+            <div className="flex flex-col" style={{ gap: "40px" }}>
+              <div className="flex flex-col" style={{ gap: "22px" }}>
+                {/* Cover + artist credit */}
+                <div className="flex flex-col" style={{ gap: "25px" }}>
+                  <div style={{ width: "445px", height: "714px", position: "relative" }}>
+                    <img
+                      src={coverImg}
+                      alt={title}
+                      className="object-cover"
+                      style={{ width: "445px", height: "687px" }}
                     />
-                  ))}
-                </div>
-              </div>
-            </div>}
+                    <p
+                      className="absolute"
+                      style={{
+                        top: "699px",
+                        left: 0,
+                        margin: 0,
+                        fontFamily: SATOSHI,
+                        fontSize: "14px",
+                        lineHeight: "14px",
+                        textTransform: "capitalize",
+                        color: MUTED,
+                      }}
+                    >
+                      Artist: {artist}
+                    </p>
+                  </div>
 
-            {/* ══ RIGHT CONTENT AREA (story + inline panel) ══ */}
-            <div className="flex-1 min-w-0 flex">
-
-              {/* Story content container */}
-              <div className={`relative flex-1 min-w-0 bg-[#0e0e0e]/85 backdrop-blur-sm p-6 border border-white/5 overflow-hidden transition-all duration-300 ${panelOpen ? "rounded-l-xl" : "rounded-xl"}`}>
-                
-                {/* Background profile/cover pic watermark */}
-                <div className="absolute inset-0 z-0 pointer-events-none opacity-5 flex items-center justify-center">
-                  <img src={coverImg} alt="Story Background" className="w-[150%] h-[150%] object-cover blur-[2px]" />
-                </div>
-
-                <div className="relative z-10">
-                  {/* Top row: genres + stats */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-                    {/* Genre tags — sharp square corners */}
-                    <div className="flex gap-2 flex-wrap">
-                      {genres.map(g => (
-                        <span key={g} className="bg-[#14FF00] text-black text-[13px] font-black px-5 py-1.5" style={{ borderRadius: 0 }}>
-                          {g}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Stats row — 5 rounded pills matching reference */}
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <StatPill cyan>
-                        <Eye className="w-4 h-4" /> {viewCount.toLocaleString()}
-                      </StatPill>
-                      <StatPill
-                        active={starred}
-                        onClick={() => { setStarred(!starred); setStarCount(p => starred ? p - 1 : p + 1); }}
+                  {/* Action row — Listen / Tip / Boost */}
+                  <div className="flex items-center" style={{ gap: "10px" }}>
+                    {/* PLACEHOLDER: audio playback */}
+                    <button
+                      className="flex shrink-0 items-center transition-opacity hover:opacity-90"
+                      style={{
+                        height: "49px",
+                        padding: "8px 14px",
+                        gap: "4px",
+                        background: "rgba(255, 255, 255, 0.2)",
+                        backdropFilter: "blur(27px)",
+                        WebkitBackdropFilter: "blur(27px)",
+                      }}
+                    >
+                      <span
+                        className="flex items-center justify-center rounded-full"
+                        style={{ width: "32px", height: "32px" }}
                       >
-                        <Star className={`w-4 h-4 ${starred ? "fill-yellow-400 text-yellow-400" : ""}`} /> {starCount}
-                      </StatPill>
-                      <StatPill active={showComments} onClick={toggleComments}>
-                        <MessageCircle className={`w-4 h-4 ${showComments ? "text-[#01F1E3]" : ""}`} /> ({commentCount})
-                      </StatPill>
-                      <StatPill onClick={() => { if (navigator.clipboard) navigator.clipboard.writeText(window.location.href).catch(() => { }); }}>
-                        <Share2 className="w-4 h-4" />
-                      </StatPill>
-                      {/* Threads / Gist button — spool icon */}
-                      <StatPill active={showThreads} onClick={toggleThreads}>
-                        <ThreadSpoolIcon className="w-4.5 h-4.5" />
-                      </StatPill>
-                    </div>
+                        <Volume2 className="h-6 w-6" style={{ color: CYAN }} />
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: SATOSHI,
+                          fontSize: "20px",
+                          lineHeight: "27px",
+                          color: "#FFFFFF",
+                        }}
+                      >
+                        Listen Audio
+                      </span>
+                    </button>
+
+                    {/* PLACEHOLDER: tip / payment flow */}
+                    <button
+                      className="flex shrink-0 items-center transition-opacity hover:opacity-90"
+                      style={{
+                        height: "49px",
+                        padding: "9px 14px",
+                        gap: "4px",
+                        background: PURPLE,
+                        backdropFilter: "blur(27px)",
+                        WebkitBackdropFilter: "blur(27px)",
+                      }}
+                    >
+                      <DollarSign className="h-[22px] w-[22px] text-black" strokeWidth={1.6} />
+                      <span
+                        style={{
+                          fontFamily: SATOSHI,
+                          fontSize: "20px",
+                          lineHeight: "27px",
+                          color: "#000000",
+                        }}
+                      >
+                        Tip Author
+                      </span>
+                    </button>
+
+                    {/* PLACEHOLDER: boost purchase flow */}
+                    <button
+                      className="flex shrink-0 items-center justify-center transition-opacity hover:opacity-90"
+                      style={{
+                        width: "104px",
+                        height: "42px",
+                        padding: "10px 16px",
+                        gap: "8px",
+                        background:
+                          "radial-gradient(50% 50% at 50% 50%, rgba(255, 227, 22, 0.21) 0%, #FFE316 100%)",
+                      }}
+                    >
+                      <Rocket
+                        className="h-[22px] w-[22px] text-black"
+                        style={{ transform: "rotate(-45deg)" }}
+                      />
+                      <span
+                        style={{
+                          fontFamily: SATOSHI,
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          color: "#000000",
+                        }}
+                      >
+                        Boost
+                      </span>
+                    </button>
                   </div>
-
-                  {/* Title — with rocket icon when boosted */}
-                  <h1 className="text-3xl font-normal text-white mb-5 flex items-center gap-2 flex-wrap">
-                    {title}
-                    <span className="text-white/50 font-normal text-xl">(Part-{activePart})</span>
-                    {boosted && <Rocket className="w-6 h-6 text-yellow-400 fill-yellow-400" />}
-                  </h1>
-
-                {/* Story content */}
-                <div className="space-y-4 text-white/75 text-[14px] leading-7">
-                  {content.split("\n\n").map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))}
                 </div>
 
-                  {/* Pagination */}
-                  <div className="flex items-center justify-center gap-3 mt-8">
-                    <button
-                      onClick={() => setActivePart(p => Math.max(1, p - 1))}
-                      className="w-8 h-8 rounded-full bg-white/8 hover:bg-white/15 flex items-center justify-center transition-colors"
+                {/* Earn line */}
+                <p
+                  style={{
+                    margin: 0,
+                    fontFamily: SATOSHI,
+                    fontSize: "24px",
+                    lineHeight: "32px",
+                    textTransform: "capitalize",
+                    color: CYAN,
+                  }}
+                >
+                  earn {mockStoryDetail.earnAmount} SPCA
+                </p>
+              </div>
+
+              {/* About + Writer */}
+              <div className="flex flex-col items-end" style={{ width: "418px", gap: "24px" }}>
+                <div className="flex w-full flex-col" style={{ gap: "10px" }}>
+                  <RailHeading>About Story</RailHeading>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontFamily: SATOSHI,
+                      fontSize: "16px",
+                      lineHeight: "22px",
+                      textTransform: "capitalize",
+                      color: MUTED,
+                    }}
+                  >
+                    {about}
+                  </p>
+                </div>
+
+                <div className="flex w-full flex-col" style={{ gap: "10px" }}>
+                  <RailHeading>Writer</RailHeading>
+                  <div className="flex items-center" style={{ gap: "10px" }}>
+                    <img
+                      src={writer.avatar}
+                      alt=""
+                      className="shrink-0 rounded-full object-cover"
+                      style={{ width: "24px", height: "24px" }}
+                    />
+                    <span
+                      style={{
+                        fontFamily: SATOSHI,
+                        fontSize: "16px",
+                        lineHeight: "22px",
+                        textTransform: "capitalize",
+                        color: MUTED,
+                      }}
                     >
-                      <ChevronLeft className="w-4 h-4" />
-                    </button>
-                    <span className="text-white/70 text-sm font-medium">Part {activePart} of {PARTS.length}</span>
-                    <button
-                      onClick={() => setActivePart(p => Math.min(PARTS.length, p + 1))}
-                      className="w-8 h-8 rounded-full bg-white/8 hover:bg-white/15 flex items-center justify-center transition-colors"
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
+                      {writer.name}
+                    </span>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* ── Inline side panels (appear next to story, not as overlays) ── */}
-              {showComments && <InlineCommentsPanel onClose={() => setShowComments(false)} />}
-              {showThreads && <InlineGistPanel onClose={() => setShowThreads(false)} />}
+            {/* Parts list */}
+            <div className="flex flex-col" style={{ width: "431px", gap: "22px" }}>
+              <RailHeading color={PURPLE} weight={500}>
+                Parts
+              </RailHeading>
+              <div className="flex flex-col" style={{ gap: "15px" }}>
+                {parts.map((part, i) => (
+                  <PartRow
+                    key={part.id}
+                    part={part}
+                    isActive={activePart === i}
+                    onClick={() => setActivePart(i)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* ══════════ RIGHT — story panel, 1039px ══════════ */}
+          <div
+            className="flex flex-col"
+            style={{
+              width: "1039px",
+              maxWidth: "100%",
+              padding: "24px",
+              background: "rgba(28, 28, 30, 0.5)",
+              backdropFilter: "blur(36px)",
+              WebkitBackdropFilter: "blur(36px)",
+              borderRadius: "22px",
+            }}
+          >
+            {/* Heading: genre chips + stat pills */}
+            <div
+              className="flex flex-wrap items-center justify-between"
+              style={{ gap: "24px", paddingBottom: "24px" }}
+            >
+              <div className="flex items-center" style={{ gap: "14px" }}>
+                {genres.map((g) => (
+                  <span
+                    key={g}
+                    className="flex items-center justify-center"
+                    style={{
+                      height: "46px",
+                      padding: "12px 16px",
+                      background: GREEN,
+                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                      borderRadius: "4px",
+                      fontFamily: SATOSHI,
+                      fontSize: "20px",
+                      lineHeight: "27px",
+                      color: "#000000",
+                    }}
+                  >
+                    {g}
+                  </span>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap items-center" style={{ gap: "8px" }}>
+                <StatPill filled>
+                  <Eye className="h-6 w-6" strokeWidth={1.2} />
+                  {views}
+                </StatPill>
+                <StatPill
+                  onClick={() => {
+                    setStarred((s) => !s);
+                    setStarCount((c) => (starred ? c - 1 : c + 1));
+                  }}
+                >
+                  <Star
+                    className="h-6 w-6"
+                    style={{ color: starred ? "#FFD600" : "#FFFFFF" }}
+                    fill={starred ? "#FFD600" : "none"}
+                    strokeWidth={1.4}
+                  />
+                  {starCount}
+                </StatPill>
+                <StatPill
+                  active={panel === "comments"}
+                  onClick={() => setPanel((p) => (p === "comments" ? null : "comments"))}
+                >
+                  <MessageCircle className="h-6 w-6" strokeWidth={1.5} />({commentCount})
+                </StatPill>
+                <StatPill
+                  title="Share"
+                  onClick={() => {
+                    if (navigator.clipboard) {
+                      navigator.clipboard.writeText(window.location.href).catch(() => {});
+                    }
+                  }}
+                >
+                  <Share2 className="h-[22px] w-[22px]" strokeWidth={1} />
+                </StatPill>
+                <StatPill
+                  title="Gist"
+                  active={panel === "gist"}
+                  onClick={() => setPanel((p) => (p === "gist" ? null : "gist"))}
+                >
+                  <ThreadIcon size={18} />
+                </StatPill>
+              </div>
+            </div>
+
+            {/* Title + body */}
+            <div className="flex flex-col" style={{ gap: "16px" }}>
+              <h1
+                className="flex items-center text-white"
+                style={{
+                  margin: 0,
+                  gap: "8px",
+                  fontFamily: SATOSHI,
+                  fontWeight: 700,
+                  fontSize: "44px",
+                  lineHeight: "59px",
+                }}
+              >
+                {title}
+                <span style={{ fontWeight: 400 }}>({currentPart?.label || "Part 1"})</span>
+              </h1>
+
+              <div
+                className="flex flex-col text-white"
+                style={{ gap: "27px", fontFamily: SATOSHI, fontSize: "20px", lineHeight: "27px" }}
+              >
+                {content.split("\n\n").map((para, i) => (
+                  <p key={i} style={{ margin: 0 }}>
+                    {para}
+                  </p>
+                ))}
+              </div>
+
+              {/* Part pager — Figma Frame 1686553086: 113x48 */}
+              <div className="flex items-center justify-center" style={{ height: "48px" }}>
+                <div
+                  className="flex items-center justify-center"
+                  style={{
+                    height: "48px",
+                    padding: "8px 24px",
+                    gap: "10px",
+                    background: "rgba(255, 255, 255, 0.1)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                  }}
+                >
+                  <button
+                    onClick={() => setActivePart((p) => Math.max(0, p - 1))}
+                    disabled={activePart === 0}
+                    className="transition-opacity disabled:opacity-30"
+                    style={{ color: "rgba(255,255,255,0.6)" }}
+                  >
+                    <ChevronLeft className="h-8 w-4" />
+                  </button>
+                  <span
+                    style={{
+                      fontFamily: SF,
+                      fontSize: "20px",
+                      letterSpacing: "0.04em",
+                      textDecorationLine: "underline",
+                      color: "rgba(255, 255, 255, 0.9)",
+                    }}
+                  >
+                    {activePart + 1}
+                  </span>
+                  <button
+                    onClick={() => setActivePart((p) => Math.min(parts.length - 1, p + 1))}
+                    disabled={activePart === parts.length - 1}
+                    className="transition-opacity disabled:opacity-30"
+                    style={{ color: "rgba(255,255,255,0.6)" }}
+                  >
+                    <ChevronRight className="h-8 w-4" />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ── Story Threads ── */}
-      <div className="max-w-[1200px] mx-auto px-6 mt-20">
-        <h2 className="text-3xl font-normal text-center text-white mb-10">Story Threads</h2>
-        <div className="flex gap-8">
-          <div className="flex-1 flex flex-col gap-4">
-            {THREADS.map(t => (
-              <div key={t.id} className="bg-[#111] border border-white/5 rounded-xl p-5 hover:bg-[#161616] transition-colors">
-                <div className="flex justify-between items-start mb-3">
-                  <div className="flex items-center gap-2 text-xs flex-wrap">
-                    <img src="https://i.pravatar.cc/28?u=mikasa" alt="" className="w-7 h-7 rounded-full shrink-0" />
-                    <span className="text-white font-semibold">{t.author}</span>
-                    <span className="text-white/30 bg-white/8 px-2 py-0.5 rounded text-[10px]">{t.category}</span>
-                    <span className="text-white/30">• {t.time}</span>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <button className="bg-[#a855f7] hover:bg-[#9333ea] text-white text-[10px] font-bold px-3 py-1 rounded-full transition-colors">Join</button>
-                    <button className="text-white/40 hover:text-white"><MoreHorizontal className="w-4 h-4" /></button>
-                  </div>
-                </div>
-                {t.hasStoryRef && (
-                  <div className="flex items-center gap-2 mb-2">
-                    <img src="https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?q=80&w=60&auto=format&fit=crop" className="w-8 h-8 rounded object-cover" alt="" />
-                    <div>
-                      <p className="text-white/80 text-xs font-semibold">Infidel</p>
-                      <p className="text-[#14FF00] text-[10px]">• Story</p>
-                    </div>
-                    <span className="text-white/40 text-[10px] ml-1">{t.storyPart}</span>
-                  </div>
-                )}
-                <div className="flex gap-4 items-center justify-between">
-                  <p className="text-[14px] text-white/85 leading-snug flex-1">{t.content}</p>
-                  {t.image && <img src={t.image} alt="" className="w-16 h-20 object-cover rounded shrink-0" />}
-                </div>
-                <ThreadStatsRow thread={t} />
-              </div>
+      {/* ═══════════════ STORY THREADS ═══════════════════════════════════ */}
+      <section
+        className="relative z-10 flex flex-col items-center"
+        style={{ padding: "80px 200px" }}
+      >
+        <div style={{ width: "1528px", maxWidth: "100%", paddingBottom: "24px" }}>
+          <h2
+            className="text-center text-white"
+            style={{ margin: 0, fontFamily: SF, fontSize: "72px", lineHeight: "86px" }}
+          >
+            Story Threads
+          </h2>
+        </div>
+
+        <div
+          className="flex items-start justify-center"
+          style={{ width: "1588px", maxWidth: "100%", gap: "36px" }}
+        >
+          <div className="flex flex-col items-center" style={{ gap: "36px" }}>
+            {threads.map((t) => (
+              <ThreadCard key={t.id} thread={t} />
             ))}
           </div>
-          {/* Ad banner */}
-          <div className="w-[260px] shrink-0 hidden lg:block">
-            <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden border border-white/10 shadow-2xl"
-              style={{ background: "linear-gradient(135deg,#1a0a2e,#0a1a3e)" }}>
-              <div className="absolute top-2 right-2 bg-black/50 px-1.5 py-0.5 rounded">
-                <span className="text-[8px] text-white/40 uppercase">Ad</span>
-              </div>
-              <div className="absolute inset-0 flex flex-col items-center justify-start pt-8 p-5 text-center z-10">
-                <h3 className="text-5xl font-black text-yellow-400 tracking-widest drop-shadow-lg">SPICA</h3>
-                <div className="relative w-full mt-2">
-                  {["SPICA", "SPICA", "SPICA", "SPICA"].map((txt, i) => (
-                    <p key={i} className="text-[28px] font-black leading-tight tracking-widest"
-                      style={{ color: i % 2 === 0 ? "rgba(216,180,254,0.15)" : "rgba(139,92,246,0.2)" }}>{txt}</p>
-                  ))}
-                </div>
-                <div className="w-28 h-28 rounded-full mt-2 overflow-hidden border-2 border-pink-500/30 shadow-[0_0_30px_rgba(236,72,153,0.4)]">
-                  <img src="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=200&auto=format&fit=crop"
-                    className="w-full h-full object-cover mix-blend-screen" alt="Planet" />
-                </div>
-                <div className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-3 flex items-center gap-3 border border-white/10">
-                  <div className="w-10 h-10 rounded bg-cyan-500/20 flex items-center justify-center border border-cyan-500/30 shrink-0">
-                    <Star className="w-5 h-5 text-cyan-400" />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-[9px] text-white/40 uppercase tracking-widest font-bold">Planet</p>
-                    <p className="text-sm font-black text-white tracking-widest">XEBION</p>
-                  </div>
-                </div>
-              </div>
+
+          {/* PLACEHOLDER: ad slot — Figma 350x494.67 */}
+          <div
+            className="relative shrink-0 overflow-hidden"
+            style={{
+              width: "350px",
+              height: "494.67px",
+              border: "1px solid #FFFFFF",
+              background: "linear-gradient(160deg, #2a0a3e 0%, #0a0a1e 100%)",
+            }}
+          >
+            <button
+              className="absolute flex items-center justify-center"
+              style={{
+                width: "17.5px",
+                height: "17.5px",
+                right: "4.67px",
+                top: "4.67px",
+                background: "rgba(255, 255, 255, 0.5)",
+              }}
+            >
+              <X className="h-3 w-3 text-white" />
+            </button>
+            <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
+              <span
+                style={{
+                  fontFamily: SATOSHI,
+                  fontWeight: 700,
+                  fontSize: "48px",
+                  color: "#FFE316",
+                  letterSpacing: "0.1em",
+                }}
+              >
+                SPICA
+              </span>
+              <span style={{ fontFamily: SATOSHI, fontSize: "14px", color: "rgba(255,255,255,0.5)" }}>
+                Advertisement
+              </span>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ── Recommended From Ezzstar ── */}
-      <div className="max-w-[1200px] mx-auto px-6 mt-24 pb-20">
-        <h2 className="text-3xl font-normal text-center text-white mb-10">
-          Recommended From <span className="text-[#01F1E3]">Ezzstar</span>
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {RECOMMENDED.map(s => (
-            <StoryCard key={s.id} title={s.title} author={s.author} genre={s.genre} image={s.image} />
+      {/* ═══════════════ RECOMMENDED ════════════════════════════════════ */}
+      <section
+        className="relative z-10 flex flex-col items-center"
+        style={{ padding: "0 96px 80px", gap: "24px", isolation: "isolate" }}
+      >
+        <div
+          className="flex justify-center"
+          style={{ width: "1430px", maxWidth: "100%", paddingBottom: "40px" }}
+        >
+          <h2
+            className="text-center text-white"
+            style={{ margin: 0, fontFamily: SF, fontSize: "72px", lineHeight: "86px" }}
+          >
+            Recommended From <span style={{ color: CYAN }}>Ezzstar</span>
+          </h2>
+        </div>
+
+        <div
+          className="flex flex-wrap items-start justify-center"
+          style={{ width: "1728px", maxWidth: "100%", gap: "24px" }}
+        >
+          {recommendations.map((s) => (
+            <div key={s.id} style={{ width: "350px" }}>
+              <StoryCard
+                title={s.title}
+                author={s.author}
+                genre={s.genre}
+                image={s.image}
+                hasGlow={s.boosted}
+              />
+            </div>
           ))}
         </div>
-      </div>
+      </section>
+
+      {/* ═══════════════ SLIDE-OVER PANELS ══════════════════════════════ */}
+      {/* PLACEHOLDER: both panels are UI only — wire to the comments /
+          threads endpoints when they exist. */}
+      <SlideOverPanel
+        open={panel === "comments"}
+        title={`Comments (${commentCount})`}
+        onClose={() => setPanel(null)}
+        footer={
+          <div className="flex items-center gap-3">
+            <input
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+              placeholder="Add a comment..."
+              className="flex-1 bg-transparent text-white placeholder-white/40 outline-none"
+              style={{ fontFamily: SATOSHI, fontSize: "16px" }}
+            />
+            <button
+              onClick={() => setReplyText("")}
+              className="flex items-center justify-center rounded-full p-2 transition-colors hover:bg-white/10"
+              style={{ color: CYAN }}
+            >
+              <Send className="h-5 w-5" />
+            </button>
+          </div>
+        }
+      >
+        <p className="text-white/50" style={{ fontFamily: SATOSHI, fontSize: "16px" }}>
+          No comments yet.
+        </p>
+      </SlideOverPanel>
+
+      <SlideOverPanel open={panel === "gist"} title="Story Gist" onClose={() => setPanel(null)}>
+        {threads.map((t) => (
+          <div
+            key={t.id}
+            className="flex flex-col gap-2 border-b border-white/10 pb-4"
+            style={{ fontFamily: SATOSHI }}
+          >
+            <div className="flex items-center gap-2">
+              <img src={t.avatar} alt="" className="h-8 w-8 rounded-full object-cover" />
+              <span className="text-white" style={{ fontSize: "14px" }}>
+                {t.author}
+              </span>
+              <span className="text-white/40" style={{ fontSize: "12px" }}>
+                {t.time}
+              </span>
+            </div>
+            <p className="text-white/80" style={{ margin: 0, fontSize: "16px", lineHeight: "22px" }}>
+              {t.content}
+            </p>
+          </div>
+        ))}
+      </SlideOverPanel>
     </div>
   );
-}
+};
 
-/* ── Thread Stats Row (stateful) ────── */
-function ThreadStatsRow({ thread }) {
-  const [starred, setStarred] = useState(false);
-  const [starCount, setStarCount] = useState(thread.stars);
-  const [replied, setReplied] = useState(false);
-  const [replyCount, setReplyCount] = useState(thread.replies);
-
-  return (
-    <div className="flex items-center gap-5 mt-4 text-[11px] text-white/40 font-medium">
-      <button onClick={() => { setStarred(!starred); setStarCount(p => starred ? p - 1 : p + 1); }}
-        className={`flex items-center gap-1.5 transition-colors ${starred ? "text-yellow-400" : "hover:text-yellow-400"}`}>
-        <Star className={`w-3.5 h-3.5 ${starred ? "fill-yellow-400" : ""}`} />{starCount}
-      </button>
-      <button onClick={() => { setReplied(!replied); setReplyCount(p => replied ? p - 1 : p + 1); }}
-        className={`flex items-center gap-1.5 transition-colors ${replied ? "text-blue-400" : "hover:text-white"}`}>
-        <MessageCircle className="w-3.5 h-3.5" />{replyCount}
-      </button>
-      <button className="flex items-center gap-1.5 hover:text-white transition-colors">
-        <Eye className="w-3.5 h-3.5" />{thread.views}
-      </button>
-      <button onClick={() => { if (navigator.clipboard) navigator.clipboard.writeText(window.location.href).catch(() => { }); }}
-        className="flex items-center gap-1.5 hover:text-white transition-colors">
-        <Share2 className="w-3.5 h-3.5" />
-      </button>
-    </div>
-  );
-}
+export default StoryDetailPage;

@@ -419,7 +419,9 @@ const MangaDetails = () => {
 
   const handleOpenChapter = (chapterId) => {
     if (manga.isMock) {
-      // Placeholder chapters have no real pages to read yet.
+      // Placeholder chapters have no real pages yet, but the reader still
+      // renders its dev fallback so the flow is walkable end to end.
+      navigate(`/manga/read/${chapterId}`);
       return;
     }
     if (manga.source === "jikan") {

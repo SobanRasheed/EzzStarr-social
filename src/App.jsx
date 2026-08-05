@@ -49,13 +49,6 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "manga/read/:id",
-        async lazy() {
-          const module = await import("./components/manga/MangaReader");
-          return { Component: module.default };
-        },
-      },
-      {
         path: "Gist",
         async lazy() {
           const module = await import("./pages/Gist");
@@ -179,6 +172,16 @@ const router = createBrowserRouter([
         element: <div>Page Not Found</div>,
       },
     ],
+  },
+  // The reader is full-screen: the design has no site navbar/footer on these
+  // frames, its own header card carries the Back button. So it sits outside
+  // <Layout /> rather than inside it.
+  {
+    path: "manga/read/:id",
+    async lazy() {
+      const module = await import("./components/manga/MangaReader");
+      return { Component: module.default };
+    },
   },
 ]);
 
