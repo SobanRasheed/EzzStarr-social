@@ -12,7 +12,12 @@ export default function GistHome() {
         {/* The 1920px container is split into LeftSidebar, FeedColumn, and RightSidebar */}
         <LeftSidebar activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
         <FeedColumn activeFilter={activeFilter} />
-        <RightSidebar />
+        {/* Discover uses the full 1590px feed width, so the rail is dropped there
+            (Figma node 8475:88868). Popular gets the trending-creators list;
+            the other tabs show only the Upgrade card. */}
+        {activeFilter !== "discover" && (
+          <RightSidebar variant={activeFilter === "popular" ? "popular" : "default"} />
+        )}
       </div>
     </div>
   );

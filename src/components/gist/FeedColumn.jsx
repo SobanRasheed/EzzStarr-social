@@ -2,8 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGists } from "../../store/slices/gistSlice";
 import PostCard from "./PostCard";
+import DiscoverGrid from "./DiscoverGrid";
+import { mockGists, mockGistGroups } from "../../config/mockGistData";
 import { FaPaperclip } from "react-icons/fa";
 import { FaMagnifyingGlass, FaChevronDown } from "react-icons/fa6";
+
+/* Which header bars each tab shows (Figma: nodes 8475:88624 / 88747 / 89059 /
+   89104 / 88868). Recent drops both; Joined keeps only search + sort. */
+const TAB_CHROME = {
+  "": { create: true, search: true },
+  popular: { create: true, search: true },
+  joined: { create: false, search: true },
+  recent: { create: false, search: false },
+  discover: { create: true, search: true },
+};
 
 export default function FeedColumn({ activeFilter }) {
   const dispatch = useDispatch();
@@ -250,16 +262,26 @@ export default function FeedColumn({ activeFilter }) {
     );
   }
 
+  // Dev fallback: show mock content when the API is unavailable.
+  const displayGists = error && (!gists || gists.length === 0) ? mockGists : gists;
+  const showError = error && (!displayGists || displayGists.length === 0);
+
+  const chrome = TAB_CHROME[activeFilter] ?? TAB_CHROME[""];
+  const isDiscover = activeFilter === "discover";
+
   return (
-    <div className="w-full max-w-[1200px] flex-1 min-w-0 lg:border-l lg:border-r border-[rgba(255,255,255,0.25)] backdrop-blur-[36px] flex flex-col items-center">
-      
+    <div
+      className={`w-full ${isDiscover ? "max-w-[1590px]" : "max-w-[1200px]"} flex-1 min-w-0 lg:border-l lg:border-r border-[rgba(255,255,255,0.25)] backdrop-blur-[36px] flex flex-col items-center`}
+    >
+
       {/* Create Post Bar */}
+      {chrome.create && (
       <div className="w-full flex items-center justify-between h-[63px] px-[12px] py-[16px] bg-[rgba(0,0,0,0.25)] border-b border-[rgba(255,255,255,0.1)]">
         <div className="flex items-center gap-4 w-full">
           <img src="https://i.pravatar.cc/40?img=9" alt="User" className="w-[36px] h-[36px] rounded-full" />
-          <input 
-            type="text" 
-            placeholder="Share something cool today" 
+          <input
+            type="text"
+            placeholder="Share something cool today"
             className="flex-1 bg-transparent border-none outline-none font-inter text-[16px] text-white placeholder-[#999999]"
           />
         </div>
@@ -268,12 +290,14 @@ export default function FeedColumn({ activeFilter }) {
             <FaPaperclip size={18} />
           </button>
           <button className="bg-[#01F1E3] hover:opacity-90 text-black font-satoshi font-medium text-[14px] px-6 py-2 rounded-[10px] transition-opacity whitespace-nowrap">
-            + Create Gist
+            {isDiscover ? "+ Create gist group" : "+ Create Gist"}
           </button>
         </div>
       </div>
+      )}
 
       {/* Filter Bar */}
+      {chrome.search && (
       <div className="w-full px-4 lg:px-6 flex flex-col sm:flex-row items-center sm:justify-end h-auto min-h-[80px] py-4 gap-4 sm:gap-6 mt-4">
         {/* Search */}
         <div className="relative w-full sm:w-[386px] h-[48px] border-b border-white flex items-center">
@@ -291,13 +315,25 @@ export default function FeedColumn({ activeFilter }) {
           <FaChevronDown size={12} />
         </div>
       </div>
+      )}
 
-      {/* Feed Posts */}
+      {/* Discover: grid of gist groups instead of a post stack */}
+      {isDiscover ? (
+        <div className="w-full px-4 lg:px-6 pb-20">
+          {isLoading ? (
+            <div className="text-center py-10 text-white/60">Loading gist groups...</div>
+          ) : (
+            <DiscoverGrid groups={mockGistGroups} />
+          )}
+        </div>
+      ) : (
+
+      /* Feed Posts */
       <div className="w-full flex flex-col items-center pb-20">
         {isLoading && <div className="text-center py-10 text-white/60">Loading Gists...</div>}
-        {error && <div className="text-center py-10 text-red-500">{error}</div>}
-        
-        {!isLoading && !error && gists && gists.map((gist, i) => {
+        {showError && <div className="text-center py-10 text-red-500">{error}</div>}
+
+        {!isLoading && !showError && displayGists && displayGists.map((gist, i) => {
           // Adapt the database gist properties to match the PostCard expectations
           const post = {
             id: gist.id || gist._id || String(i),
@@ -314,6 +350,7 @@ export default function FeedColumn({ activeFilter }) {
           return <PostCard key={post.id} post={post} />;
         })}
       </div>
+      )}
 
     </div>
   );

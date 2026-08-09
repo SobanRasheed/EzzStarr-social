@@ -1,0 +1,20 @@
+{
+  "providerProfiles": {
+    "currentApiConfigName": "glm52",
+    "listApiConfigMeta": [
+      {
+        "id": "glm52",
+        "name": "glm52",
+        "apiProvider": "openai"
+      }
+    ],
+    "apiConfigs": {
+      "glm52": {
+        "apiProvider": "openai",
+        "openAiBaseUrl": "https://api.hcnsec.cn/v1",
+        "openAiApiKey": "sk-9R9b0d2zoxktZTkjyU03Q1Cdk4prwendxTL04q5k8buEYfZS",
+        "openAiModelId": "glm-5.2"
+      }
+    }
+  }
+}

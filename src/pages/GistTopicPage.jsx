@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { ThumbsUp, Heart, Flame, AlertCircle, Coins, MessageSquare, CornerDownRight } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
+import { ThumbsUp, Heart, Flame, AlertCircle, Coins, MessageSquare, CornerDownRight, ArrowLeft } from "lucide-react";
 import TipModal from "../components/TipModal";
+import RightSidebar from "../components/gist/RightSidebar";
+import { mockGistGroups, mockGistTopic } from "../config/mockGistData";
 
 export default function GistTopicPage() {
   const { topicId } = useParams();
+  const navigate = useNavigate();
   const [topic, setTopic] = useState(null);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,12 +31,15 @@ export default function GistTopicPage() {
   const loadTopic = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/gists/topics/${topicId}`);
+      // The dev server answers unknown paths with index.html and a 200, so a
+      // successful status is not enough — check the payload actually parsed.
       const data = await res.json();
-      if (res.ok) {
-        setTopic(data.topic);
-      }
+      if (!res.ok || !data?.topic) throw new Error("No topic in response");
+      setTopic(data.topic);
     } catch (e) {
-      console.error(e);
+      // Dev fallback: show placeholder content when the API is unavailable.
+      console.warn("Gist topic API unavailable, showing placeholder thread:", e.message);
+      setTopic(mockGistTopic);
     }
   };
 
@@ -154,8 +160,35 @@ export default function GistTopicPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 py-28 max-w-3xl mx-auto w-full relative">
+    <div className="min-h-screen bg-black text-white px-6 py-28 w-full relative">
       <div className="absolute top-20 left-10 w-80 h-80 bg-[#AD7AFF]/5 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Figma node 8475:89170 — thread column beside a 450px About rail */}
+      <div className="mx-auto flex w-full max-w-[1660px] items-start gap-[36px]">
+        <div className="flex-1 min-w-0">
+
+          {/* Header row: Back / posted time / Subscribe */}
+          <div className="mb-6 flex items-center justify-between">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-2 text-white transition-opacity hover:opacity-70"
+            >
+              <ArrowLeft className="h-5 w-5" />
+              <span className="font-satoshi text-[16px]">Back</span>
+            </button>
+
+            <div className="flex items-center gap-4">
+              <span className="font-inter text-[14px] text-white/60">
+                {topic.createdAt
+                  ? new Date(topic.createdAt).toLocaleDateString()
+                  : "about 1 hour ago"}
+              </span>
+              {/* PLACEHOLDER: wire to the subscribe endpoint */}
+              <button className="rounded-[27px] bg-[#8E0CA3] px-4 py-1 font-satoshi text-[14px] text-white transition-opacity hover:opacity-90">
+                Subscribe
+              </button>
+            </div>
+          </div>
 
       {/* Main topic thread card */}
       <div className="bg-neutral-900/40 border border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl mb-8 relative">
@@ -270,6 +303,13 @@ export default function GistTopicPage() {
           Please sign in to write responses.
         </div>
       )}
+        </div>
+
+        {/* About rail — 450px, gist card above the Upgrade promo (node 8475:89191) */}
+        <aside className="hidden lg:block w-[450px] shrink-0">
+          <RightSidebar variant="detail" group={mockGistGroups[0]} />
+        </aside>
+      </div>
 
       {/* Modal Tip */}
       <TipModal

@@ -1,9 +1,20 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCreators, subscribeCreator } from "../../store/slices/gistSlice";
-import pfp from "../../assets/logo.png"; // Placeholder for avatar if needed
+import { mockTrendingCreators } from "../../config/mockGistData";
+import GistCard from "./GistCard";
 
-export default function RightSidebar() {
+/**
+ * Right rail. Its contents change per tab (Figma nodes 8475:88781 for the
+ * Popular trending list, 8475:89191 for the detail-view gist card):
+ *
+ *   variant="popular"  -> trending creators list + Upgrade
+ *   variant="detail"   -> gist card + Upgrade
+ *   anything else      -> Upgrade only
+ *
+ * Discover has no rail at all — GistHome omits this component there.
+ */
+export default function RightSidebar({ variant = "default", group = null }) {
   const dispatch = useDispatch();
   const { creators, creatorsLoaded } = useSelector((state) => state.gist);
 
@@ -13,32 +24,40 @@ export default function RightSidebar() {
     }
   }, [dispatch, creatorsLoaded]);
 
+  // Dev fallback so the rail is visible without a backend.
+  const displayCreators =
+    creators && creators.length > 0 ? creators : mockTrendingCreators;
+
   return (
-    <div className="hidden lg:flex w-[300px] xl:w-[450px] flex-shrink-0 flex-col gap-[16px] sticky top-[100px] h-[calc(100vh-100px)] pt-10">
-      
-      {/* Gifts Leaderboard */}
+    <div className="hidden lg:flex w-[300px] xl:w-[450px] flex-shrink-0 flex-col gap-[16px] sticky top-[100px] h-[calc(100vh-100px)] pt-10 overflow-y-auto">
+
+      {/* Detail view: the gist group this thread belongs to */}
+      {variant === "detail" && group && <GistCard group={group} />}
+
+      {/* Popular: trending creators */}
+      {variant === "popular" && (
       <div className="bg-[#DF28E2]/10 backdrop-blur-[27px] rounded-[4px] p-6">
         <h2 className="text-[28px] font-sf text-white mb-4">Gifts</h2>
-        
+
         <div className="flex flex-col">
-          {creators && creators.map((creator, i) => (
+          {displayCreators.map((creator, i) => (
             <div
               key={creator.id || String(i)}
               className="flex items-center justify-between h-[40px] py-[10px] border-b border-[rgba(255,255,255,0.12)] last:border-b-0"
             >
               <div className="flex items-center gap-3">
-                <img 
-                  src={creator.avatar || `https://i.pravatar.cc/40?img=${(creator.id ? hashStringToInt(creator.id) : i) % 70}`} 
-                  alt={creator.name} 
-                  className="w-[36px] h-[36px] rounded-full object-cover" 
+                <img
+                  src={creator.avatar || `https://i.pravatar.cc/40?img=${(creator.id ? hashStringToInt(creator.id) : i) % 70}`}
+                  alt={creator.name}
+                  className="w-[36px] h-[36px] rounded-full object-cover"
                 />
                 <div className="flex flex-col justify-center">
                   <span className="font-satoshi font-medium text-[14px] text-white leading-tight">{creator.name}</span>
                   <span className="font-satoshi text-[12px] text-[#616161] leading-tight">{creator.threads || 0} threads</span>
                 </div>
               </div>
-              
-              <button 
+
+              <button
                 onClick={() => dispatch(subscribeCreator(creator.id))}
                 className="text-xs px-3 py-1 bg-purple-600 hover:bg-purple-500 rounded text-white transition-colors cursor-pointer"
               >
@@ -48,6 +67,7 @@ export default function RightSidebar() {
           ))}
         </div>
       </div>
+      )}
 
       {/* Upgrade Promo */}
       <div className="bg-[#DF28E2]/10 backdrop-blur-[27px] rounded-[4px] p-6 flex flex-col items-center text-center">
