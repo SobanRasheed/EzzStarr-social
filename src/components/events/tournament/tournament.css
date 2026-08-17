@@ -297,3 +297,186 @@
   font-weight: 500;
   white-space: pre-wrap;
 }
+
+.tmt-prose a {
+  color: var(--tmt-magenta);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.tmt-prose a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- sidebar cards ---------- */
+
+.tmt-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tmt-side__card {
+  border-radius: 4px;
+  background: var(--tmt-side);
+  backdrop-filter: blur(27px);
+  overflow: hidden;
+}
+
+.tmt-side__head {
+  margin: 0;
+  padding: 20px 32px 20px 24px;
+  font-family: var(--font-sf, sans-serif);
+  font-size: 28px;
+  line-height: 33px;
+  font-weight: 400;
+}
+
+.tmt-side__body {
+  padding: 16px 32px 16px 24px;
+}
+
+/* Figma paints these labels with a top-down white gradient. */
+.tmt-gradient-text {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 9%, #fff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tmt-host {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 32px 10px 24px;
+}
+
+.tmt-host__logo {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #ffff09;
+}
+
+.tmt-host__name,
+.tmt-size__label {
+  font-family: var(--font-sf, sans-serif);
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 500;
+  letter-spacing: -0.36px;
+}
+
+.tmt-side__head--tight {
+  padding: 14px 32px 4px 24px;
+}
+
+.tmt-size {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 32px 10px 24px;
+}
+
+.tmt-size__icon {
+  width: 44px;
+  height: 44px;
+  opacity: 0.4;
+}
+
+.tmt-platforms {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tmt-platforms img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tmt-timeline {
+  display: flex;
+  gap: 10px;
+  min-height: 199px;
+}
+
+.tmt-timeline__rail {
+  width: 5px;
+  flex: 0 0 5px;
+  background: #e06edf;
+}
+
+.tmt-timeline__stops {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 7px;
+}
+
+.tmt-timeline__label {
+  display: block;
+  font-family: var(--font-sf, sans-serif);
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: -0.36px;
+}
+
+.tmt-timeline__date {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  opacity: 0.5;
+}
+
+/* ---------- prizes ---------- */
+
+.tmt-prize {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 4px 0;
+  color: #fff;
+}
+
+.tmt-prize--gold {
+  color: #ffd600;
+}
+
+.tmt-prize--silver {
+  color: #d8d8d8;
+}
+
+.tmt-prize--bronze {
+  color: #e67505;
+}
+
+.tmt-prize__place {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.tmt-prize__medal {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.tmt-prize__medal--empty {
+  visibility: hidden;
+}
+
+.tmt-prize__amount {
+  font-size: 28px;
+  line-height: 38px;
+  white-space: nowrap;
+}
