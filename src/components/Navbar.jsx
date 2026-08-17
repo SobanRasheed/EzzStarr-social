@@ -4,6 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchWallet } from "../store/slices/walletSlice";
 import LoginModal from "../components/LoginModal";
 import logo from "../assets/logo.png";
+import iconDiscord from "../assets/brand/icon-discord.svg";
+import iconTelegram from "../assets/brand/icon-telegram.svg";
+import iconX from "../assets/brand/icon-x.svg";
+import iconInstagram from "../assets/brand/icon-instagram.svg";
+import iconLinkedin from "../assets/brand/icon-linkedin.svg";
 import {
   FaMagnifyingGlass,
   FaBars,
@@ -13,11 +18,11 @@ import WalletWidget from "./WalletWidget";
 import NotificationBell from "./NotificationBell";
 
 const figmaSocialIcons = [
-  ["Discord", "https://www.figma.com/api/mcp/asset/15894437-5a44-46d3-a346-e34a671d1b18.svg"],
-  ["Telegram", "https://www.figma.com/api/mcp/asset/56f1cfb5-568d-4e51-888f-c85adf649dee.svg"],
-  ["X", "https://www.figma.com/api/mcp/asset/4f3a0037-aee7-448c-9e70-018d15ee424e.svg"],
-  ["Instagram", "https://www.figma.com/api/mcp/asset/3df73a74-bb57-4b23-a2f0-d1ba3f8b9f6f.svg"],
-  ["LinkedIn", "https://www.figma.com/api/mcp/asset/36b00b80-9aad-4f56-8bc1-1ee54d8e0a42.svg"],
+  ["Discord", iconDiscord],
+  ["Telegram", iconTelegram],
+  ["X", iconX],
+  ["Instagram", iconInstagram],
+  ["LinkedIn", iconLinkedin],
 ];
 
 const Navbar = () => {
