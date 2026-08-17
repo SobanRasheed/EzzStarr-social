@@ -150,3 +150,127 @@ export const prizes = {
   ],
   total: { label: "Total Prize", amount: "2,500 SPCA" },
 };
+
+const DEFAULT_LINEUP = ["ACExZisanOP", "ACExArafat", "ACExAadeyan7"];
+
+const teamNames = [
+  "1HP eSports",
+  "GHOST SQUAD",
+  "Rajshahi Rising Stars",
+  "ACE LEGENDS",
+  "KaResports",
+  "SF71",
+  "Death Four Win",
+  "MARKxNEXT LEVEL",
+  "ShadowAceEsports",
+  "Fallan Dream Reborn",
+  "NIGHTMARE OFFICIAL",
+  "SiL3Nt Esports",
+  "GEARS OFF KILL",
+  "NN ESPORTS",
+  "Skull",
+  "GENIE ESPORT",
+  "PETAHERTZ Esports",
+  "STRAWHAT ESPORTS",
+];
+
+const lineupOverrides = {
+  "Rajshahi Rising Stars": ["A.B.Nur", "NxMUッNlGGA", "XT乂SeaSMOKE"],
+};
+
+export const participants = teamNames.map((name, index) => ({
+  name,
+  logo: teamLogos[index] ?? avatarFallback,
+  lineup: lineupOverrides[name] ?? DEFAULT_LINEUP,
+  extraCount: 4,
+}));
+
+export const faq = {
+  heading: "Frequently Asked Questions",
+  subheading:
+    "Unleashing clarity and empowering decision-making. Find in-depth answers and gain deeper understanding.",
+  action: { label: "Support Center", href: "#support" },
+  items: [
+    {
+      question: "What is  Ezzstar Social?",
+      answer:
+        "Ezzstar Social is a creator and gamer platform where you can share content, participate in event, upgrade your profile, earn Spica, and boost your visibility and growth.",
+    },
+    {
+      question: "How do i earn Spica on the platform ?",
+      answer:
+        "You can earn Spica by posting content, views, receiving tips from audience, reading your favorite content, engaging with the community, and participating in events.",
+    },
+    {
+      question: "What is the NFT Signature, and why is it important?",
+      answer:
+        "Your NFT Signature is the on-chain identity attached to everything you publish on Ezzstar. It proves authorship, travels with the work, and lets tips and royalties route back to you automatically.",
+    },
+    {
+      question: "Do I need crypto knowledge to use Ezzstar Social?",
+      answer:
+        "No. You can sign up with an email, create and read content, and collect Spica without touching a wallet. Connecting one only becomes useful when you want to withdraw.",
+    },
+    {
+      question: "Can I use another payment option to receive tips?",
+      answer:
+        "Tips settle in Spica by default. Once your wallet is connected you can convert and withdraw through any payout method supported in your region.",
+    },
+  ],
+};
+
+const step = (start, count, gap) =>
+  Array.from({ length: count }, (_, i) => start + i * gap);
+
+// Round 1 pairings repeat two logo variants down the ladder in Figma.
+const bracketPair = [
+  [
+    { name: "Focus_xp1", handle: "gamer6611", logo: bracketTeamA },
+    { name: "Kimoplame", handle: "gaymer15", logo: avatarFallback },
+  ],
+  [
+    { name: "Focus_xp1", handle: "gamer6611", logo: bracketTeamB },
+    { name: "Kimoplame", handle: "gaymer15", logo: bracketTeamA },
+  ],
+];
+
+// Absolute geometry lifted from Figma node 8475:91697 ("Bracks", 1585x3532).
+// The screen scales this canvas rather than recomputing the ladder, so the
+// connectors stay glued to the cards at every viewport.
+export const brackets = {
+  views: ["Rounds", "Finals"],
+  kickoff: "06-Apr-2024 1:00AM",
+  canvas: { width: 1585, height: 3532 },
+  cardWidth: 329,
+  rounds: [
+    {
+      label: "Round 1",
+      x: 0,
+      labelX: 0,
+      cardHeight: 180,
+      ys: step(52, 16, 220),
+      teams: (index) => bracketPair[index % 2],
+    },
+    { label: "Round 2", x: 496, labelX: 496, cardHeight: 148, ys: [129, 620, 1015, 1506, 1897, 2388, 2779, 3270] },
+    { label: "Round 3", x: 768, labelX: 778, cardHeight: 148, ys: [372, 1258, 2140, 3022] },
+    { label: "Round 4", x: 1256, labelX: 1256, cardHeight: 148, ys: [810, 2575] },
+  ],
+  // Elbows are drawn with a border on top/right/bottom only (no left edge),
+  // exactly how the Figma rectangles are stroked.
+  connectors: [
+    ...step(102, 4, 886).flatMap((y) => [
+      { x: 328, y, w: 114, h: 270 },
+      { x: 328, y: y + 471, w: 114, h: 241 },
+    ]),
+    ...step(202, 4, 886).flatMap((y) => [
+      { x: 442, y, w: 53, h: 1 },
+      { x: 442, y: y + 491, w: 53, h: 1 },
+    ]),
+    ...step(200, 4, 882).map((y) => ({ x: 612, y, w: 114, h: 493 })),
+    ...step(446, 4, 886).map((y) => ({ x: 726, y, w: 53, h: 1 })),
+    ...step(447, 2, 1765).map((y) => ({ x: 1098, y, w: 114, h: 875 })),
+    ...step(884, 2, 1765).map((y) => ({ x: 1212, y, w: 53, h: 1 })),
+  ],
+};
+
+export default tournament;
