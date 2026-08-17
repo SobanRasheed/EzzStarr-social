@@ -5,17 +5,20 @@ import { fetchWallet } from "../store/slices/walletSlice";
 import LoginModal from "../components/LoginModal";
 import logo from "../assets/logo.png";
 import {
-  FaDiscord,
-  FaXTwitter,
-  FaInstagram,
-  FaLinkedinIn,
   FaMagnifyingGlass,
   FaBars,
 } from "react-icons/fa6";
-import { PiTelegramLogo } from "react-icons/pi";
 import { FaTimes as FaTimesIcon } from "react-icons/fa";
 import WalletWidget from "./WalletWidget";
 import NotificationBell from "./NotificationBell";
+
+const figmaSocialIcons = [
+  ["Discord", "https://www.figma.com/api/mcp/asset/15894437-5a44-46d3-a346-e34a671d1b18.svg"],
+  ["Telegram", "https://www.figma.com/api/mcp/asset/56f1cfb5-568d-4e51-888f-c85adf649dee.svg"],
+  ["X", "https://www.figma.com/api/mcp/asset/4f3a0037-aee7-448c-9e70-018d15ee424e.svg"],
+  ["Instagram", "https://www.figma.com/api/mcp/asset/3df73a74-bb57-4b23-a2f0-d1ba3f8b9f6f.svg"],
+  ["LinkedIn", "https://www.figma.com/api/mcp/asset/36b00b80-9aad-4f56-8bc1-1ee54d8e0a42.svg"],
+];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,11 +75,7 @@ const Navbar = () => {
 
             {/* Social Icons (Desktop Only) */}
             <div className="hidden md:flex items-center gap-4 text-gray-400">
-              <FaDiscord className="hover:text-white cursor-pointer transition" />
-              <PiTelegramLogo className="hover:text-white cursor-pointer transition" />
-              <FaXTwitter className="hover:text-white cursor-pointer transition" />
-              <FaInstagram className="hover:text-white cursor-pointer transition" />
-              <FaLinkedinIn className="hover:text-white cursor-pointer transition" />
+              {figmaSocialIcons.map(([label, src]) => <img key={label} src={src} alt={label} className="w-3.5 h-3.5 object-contain opacity-80 hover:opacity-100 cursor-pointer transition" />)}
               <div className="w-px h-5 bg-white/10 mx-1" />
             </div>
 

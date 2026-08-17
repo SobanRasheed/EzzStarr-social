@@ -1,0 +1,32 @@
+/* Desktop and laptop reflow: preserve the Figma desktop composition without horizontal scrolling. */
+@media (max-width: 1600px) {
+  .figma-event-detail { min-width: 0; overflow-x: clip; }
+  .figma-screen-header { padding-inline: clamp(32px, 6vw, 100px); }
+  .figma-screen-header nav { position:static; margin-left:auto; margin-right:clamp(20px, 4vw, 70px); gap:clamp(16px, 2vw, 30px); }
+  .figma-screen-header nav a { font-size:14px; }
+  .event-detail-hero { padding-inline:clamp(56px, 8vw, 120px); }
+  .event-detail-body { width:100%; height:auto; min-height:1240px; grid-template-columns:minmax(0, 1fr) minmax(310px, 360px); gap:20px; padding:20px clamp(40px, 8vw, 120px) 100px; }
+  .event-detail-copy { width:auto; height:auto; min-height:1120px; }
+  .event-detail-sidebar, .event-detail-sidecard { width:auto; }
+  .event-detail-sidebar { height:664px; }
+  .figma-faq { width:100%; height:auto; min-height:1026px; padding-inline:clamp(40px, 8vw, 140px); }
+  .figma-faq-content { width:100%; max-width:1254px; }
+}
+
+@media (max-width: 1180px) {
+  .figma-screen-header { height:96px; padding-block:26px; }
+  .figma-screen-header>a img { width:170px; height:auto; }
+  .figma-screen-header nav { gap:16px; margin-right:24px; }
+  .figma-screen-header nav a { font-size:13px; }
+  .header-actions { gap:8px; }
+  .header-actions>img:nth-of-type(n+4) { display:none; }
+  .event-detail-hero { height:760px; padding:150px 48px 56px; }
+  .event-detail-hero h1 { font-size:48px; }
+  .event-detail-timer { min-width:320px; }
+  .event-detail-body { grid-template-columns:1fr; min-height:0; padding-inline:48px; }
+  .event-detail-copy { min-height:0; }
+  .event-detail-sidebar { width:100%; height:auto; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); align-items:stretch; justify-content:stretch; }
+  .event-detail-sidecard { width:100%; }
+  .timeline-card { grid-column:span 2; }
+  .figma-faq h2 { font-size:58px; }
+}

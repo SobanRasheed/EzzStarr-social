@@ -1,11 +1,11 @@
-import {
-  FaDiscord,
-  FaXTwitter,
-  FaInstagram,
-  FaLinkedinIn,
-} from "react-icons/fa6";
-import { PiTelegramLogo } from "react-icons/pi";
 import logo from "../assets/logo.png";
+const figmaSocialIcons = [
+  ["Discord", "https://discord.gg/sY3gsZVyeg", "https://www.figma.com/api/mcp/asset/15894437-5a44-46d3-a346-e34a671d1b18.svg"],
+  ["Telegram", "https://t.me/EzzstarSPCA", "https://www.figma.com/api/mcp/asset/56f1cfb5-568d-4e51-888f-c85adf649dee.svg"],
+  ["X", "https://x.com/ezzstarx?s=21", "https://www.figma.com/api/mcp/asset/4f3a0037-aee7-448c-9e70-018d15ee424e.svg"],
+  ["Instagram", "https://www.instagram.com/ezzstars/", "https://www.figma.com/api/mcp/asset/3df73a74-bb57-4b23-a2f0-d1ba3f8b9f6f.svg"],
+  ["LinkedIn", "https://www.linkedin.com/company/ezzstar/", "https://www.figma.com/api/mcp/asset/36b00b80-9aad-4f56-8bc1-1ee54d8e0a42.svg"],
+];
 const Footer = () => {
   return (
     <footer className="relative bg-black text-white pt-16 pb-10">
@@ -30,21 +30,7 @@ const Footer = () => {
 
         {/* Social icons */}
         <div className="flex items-center gap-5">
-          <a href="https://discord.gg/sY3gsZVyeg" target="_blank" rel="noopener noreferrer" className="hover:text-[#5865F2] transition">
-            <FaDiscord size={18} />
-          </a>
-          <a href="https://t.me/EzzstarSPCA" target="_blank" rel="noopener noreferrer" className="hover:text-[#0088cc] transition">
-            <PiTelegramLogo size={18} />
-          </a>
-          <a href="https://x.com/ezzstarx?s=21" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
-            <FaXTwitter size={18} />
-          </a>
-          <a href="https://www.instagram.com/ezzstars/" target="_blank" rel="noopener noreferrer" className="hover:text-[#E1306C] transition">
-            <FaInstagram size={18} />
-          </a>
-          <a href="https://www.linkedin.com/company/ezzstar/" target="_blank" rel="noopener noreferrer" className="hover:text-[#0077b5] transition">
-            <FaLinkedinIn size={18} />
-          </a>
+          {figmaSocialIcons.map(([label, href, src]) => <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition"><img src={src} alt={label} className="w-[18px] h-[18px] object-contain" /></a>)}
         </div>
 
         {/* Legal links */}

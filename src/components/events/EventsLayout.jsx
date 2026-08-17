@@ -1,15 +1,5 @@
-import { Outlet } from "react-router-dom";
-import EventsSubHero from "./EventsSubHero";
-import EventsTabs from "./EventsTabs";
-import EventsFaq from "./EventsFaq";
+import FigmaEventDetail from "./FigmaEventDetail";
 
 export default function EventsLayout() {
-  return (
-    <>
-      <EventsSubHero />
-      <EventsTabs />
-      <Outlet />
-      <EventsFaq />
-    </>
-  )
+  return <FigmaEventDetail />;
 }
