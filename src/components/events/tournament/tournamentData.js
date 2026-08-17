@@ -7,7 +7,6 @@
 import heroImage from "../assets/tournament/hero-cs2.jpg";
 import coinFee from "../assets/tournament/coin-fee.png";
 import coinReward from "../assets/tournament/coin-spca.png";
-import buttonLeading from "../assets/tournament/button-leading.png";
 import hostLogo from "../assets/tournament/host-esl.png";
 import medalGold from "../assets/tournament/medal-gold.png";
 import medalSilver from "../assets/tournament/medal-silver.png";
@@ -43,7 +42,6 @@ export const tournamentAssets = {
   heroImage,
   coinFee,
   coinReward,
-  buttonLeading,
   hostLogo,
   avatarFallback,
   iconUsers,

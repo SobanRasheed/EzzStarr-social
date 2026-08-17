@@ -480,3 +480,448 @@
   line-height: 38px;
   white-space: nowrap;
 }
+
+.tmt-prizes__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.tmt-prizes__total dt {
+  font-family: var(--font-sf, sans-serif);
+  font-size: 32px;
+  line-height: 38px;
+  font-weight: 500;
+}
+
+.tmt-prizes__total dd {
+  margin: 0;
+  font-size: 32px;
+  line-height: 43px;
+  font-weight: 700;
+}
+
+/* ---------- participants ---------- */
+
+.tmt-teams {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  gap: 16px;
+}
+
+.tmt-team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 32px 20px 24px;
+  border-radius: 4px;
+  background: var(--tmt-side);
+  backdrop-filter: blur(27px);
+}
+
+.tmt-team__logo {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.tmt-team__name {
+  display: block;
+  font-family: var(--font-sf, sans-serif);
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 500;
+  letter-spacing: -0.36px;
+}
+
+.tmt-team__lineup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-family: var(--font-sf, sans-serif);
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 500;
+  letter-spacing: -0.28px;
+}
+
+.tmt-team__players {
+  opacity: 0.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tmt-team__more {
+  flex: 0 0 auto;
+  font-weight: 700;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ---------- brackets ---------- */
+
+.tmt-brackets {
+  gap: 30px;
+  padding: 16px 14px 24px;
+}
+
+.tmt-brackets__views {
+  display: inline-flex;
+  align-self: flex-start;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.tmt-brackets__view {
+  padding: 12px 24px;
+  border: 1px solid transparent;
+  background: none;
+  color: #fff;
+  opacity: 0.5;
+  font: inherit;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: 0.64px;
+  cursor: pointer;
+}
+
+.tmt-brackets__view.is-active {
+  border-radius: 2px;
+  border-color: var(--tmt-magenta);
+  background: var(--tmt-panel);
+  backdrop-filter: blur(36px);
+  color: var(--tmt-magenta);
+  opacity: 1;
+}
+
+.tmt-brackets__viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+}
+
+.tmt-brackets__canvas {
+  position: relative;
+  width: 1585px;
+  height: 3532px;
+}
+
+.tmt-round {
+  position: absolute;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border: 1px solid #9c9c9c;
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.tmt-connector {
+  position: absolute;
+  border: 1px solid var(--tmt-hairline);
+  border-left: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.tmt-match {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  box-sizing: border-box;
+  padding: 24px;
+  border-radius: 22px;
+  background: var(--tmt-panel);
+  backdrop-filter: blur(36px);
+  overflow: hidden;
+}
+
+.tmt-match__kickoff {
+  position: absolute;
+  top: 16px;
+  right: 12px;
+  font-family: var(--font-inter, sans-serif);
+  font-size: 10px;
+  line-height: 16px;
+  opacity: 0.5;
+}
+
+.tmt-match__team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-inter, sans-serif);
+}
+
+.tmt-match__logo {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.tmt-match__name {
+  display: block;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.tmt-match__handle {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  line-height: 16px;
+  opacity: 0.5;
+}
+
+.tmt-match__vs {
+  font-family: var(--font-inter, sans-serif);
+  font-size: 14px;
+  line-height: 16px;
+}
+
+/* ---------- FAQ ---------- */
+
+.tmt-faq {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 130px 200px;
+}
+
+.tmt-faq__head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 951px;
+  padding-bottom: 12px;
+  text-align: center;
+}
+
+.tmt-faq__title {
+  margin: 0;
+  font-family: var(--font-sf, sans-serif);
+  font-size: 72px;
+  line-height: 86px;
+  font-weight: 400;
+}
+
+.tmt-faq__subtitle {
+  margin: 0;
+  font-size: 20px;
+  line-height: 27px;
+}
+
+.tmt-faq__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 4px;
+  background: var(--tmt-magenta);
+  color: #000;
+  font-size: 16px;
+  line-height: 22px;
+  text-decoration: none;
+}
+
+.tmt-faq__list {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  max-width: 1254px;
+}
+
+.tmt-faq__item {
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--tmt-panel);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 1px 3px rgba(0, 0, 5, 0.9),
+    0 1px 2px rgba(0, 0, 5, 0.7);
+}
+
+.tmt-faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  font: inherit;
+  font-size: 24px;
+  line-height: 28px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tmt-faq__toggle {
+  flex: 0 0 32px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 100px;
+  background: #000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Figma ships one cross glyph rotated 45deg; collapsed reads as "+". */
+.tmt-faq__toggle img {
+  width: 29px;
+  height: 29px;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.tmt-faq__item.is-open .tmt-faq__toggle img {
+  transform: rotate(0deg);
+}
+
+.tmt-faq__answer {
+  margin: 8px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 22px;
+  line-height: 30px;
+  opacity: 0.65;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1700px) {
+  .tmt {
+    --tmt-gutter: 72px;
+  }
+
+  .tmt-hero {
+    padding-inline: 72px;
+  }
+
+  .tmt-faq {
+    padding-inline: 72px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .tmt {
+    --tmt-gutter: 32px;
+  }
+
+  .tmt-hero {
+    min-height: 720px;
+    padding: 160px 32px 48px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 32px;
+  }
+
+  .tmt-hero__aside {
+    width: 100%;
+    max-width: 618px;
+  }
+
+  .tmt-title {
+    font-size: 48px;
+    line-height: 58px;
+  }
+
+  .tmt-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tmt-tabsbar {
+    padding-inline: 32px;
+    overflow-x: auto;
+  }
+
+  .tmt-faq {
+    padding: 80px 32px;
+  }
+
+  .tmt-faq__title {
+    font-size: 44px;
+    line-height: 54px;
+  }
+}
+
+@media (max-width: 720px) {
+  .tmt-hero {
+    padding: 140px 20px 40px;
+  }
+
+  .tmt-title {
+    font-size: 34px;
+    line-height: 42px;
+  }
+
+  .tmt-countdown__card {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .tmt-timer__value {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .tmt-timer__unit {
+    font-size: 18px;
+    line-height: 32px;
+    letter-spacing: -0.5px;
+  }
+
+  .tmt-panel__title {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .tmt-teams {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tmt-prize__place,
+  .tmt-prize__amount {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .tmt-faq__question {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .tmt-faq__answer {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
