@@ -1,0 +1,207 @@
+/* EzzStar Team Tournament detail screens.
+   Values transcribed from Figma nodes 8475:90863 / 91242 / 91124 / 91390 / 91639.
+   Figma blur radii are halved for CSS, which is the usual 1:2 mapping. */
+
+.tmt {
+  --tmt-page: #010101;
+  --tmt-panel: rgba(28, 28, 30, 0.5);
+  --tmt-side: rgba(223, 40, 226, 0.07);
+  --tmt-accent: #ad7aff;
+  --tmt-magenta: #df28e2;
+  --tmt-teal: #01f1e3;
+  --tmt-tabs-bg: #0f0f10;
+  --tmt-gutter: 140px;
+  --tmt-hairline: rgba(255, 255, 255, 0.2);
+
+  background: var(--tmt-page);
+  color: #fff;
+  font-family: var(--font-satoshi, sans-serif);
+}
+
+/* ---------- hero ---------- */
+
+.tmt-hero {
+  position: relative;
+  min-height: 945px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 220px 150px 70px;
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.tmt-hero__glow,
+.tmt-hero__shade-left,
+.tmt-hero__shade-bottom {
+  position: absolute;
+  pointer-events: none;
+}
+
+.tmt-hero__glow {
+  inset: -374px -113px auto;
+  height: 786px;
+  opacity: 0.1;
+  filter: blur(55px);
+  background: linear-gradient(180deg, #060106 61%, rgba(6, 1, 6, 0) 100%);
+}
+
+.tmt-hero__shade-left {
+  top: -148px;
+  left: 0;
+  width: 674px;
+  height: 1093px;
+  background: linear-gradient(180deg, rgba(1, 1, 1, 0) 0%, #060106 100%);
+}
+
+.tmt-hero__shade-bottom {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 510px;
+  background: linear-gradient(180deg, rgba(1, 1, 1, 0) 0%, #010101 89%);
+}
+
+.tmt-hero__main,
+.tmt-hero__aside {
+  position: relative;
+  z-index: 1;
+}
+
+.tmt-hero__main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 992px;
+}
+
+.tmt-tags {
+  display: flex;
+  gap: 12px;
+}
+
+.tmt-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  border-radius: 11px;
+  border: 0.2px solid currentColor;
+  backdrop-filter: blur(2px);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.tmt-tag--live {
+  color: #8aff7a;
+  background: rgba(138, 255, 122, 0.24);
+}
+
+.tmt-tag--category {
+  color: var(--tmt-magenta);
+  background: rgba(223, 40, 226, 0.24);
+}
+
+.tmt-title {
+  margin: 0;
+  font-family: var(--font-sf, sans-serif);
+  font-size: 72px;
+  line-height: 86px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.tmt-pills {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.tmt-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 22px;
+  white-space: nowrap;
+}
+
+.tmt-pill--closed {
+  gap: 8px;
+  background: #e22828;
+}
+
+.tmt-pill__coin {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tmt-hero__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 618px;
+  flex: 0 0 auto;
+}
+
+.tmt-countdown__label {
+  font-family: var(--font-inter, sans-serif);
+  font-size: 20px;
+  line-height: 24px;
+  opacity: 0.5;
+}
+
+.tmt-countdown__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 24px;
+  border-radius: 22px;
+  background: var(--tmt-panel);
+  backdrop-filter: blur(36px);
+}
+
+.tmt-timer {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  font-family: var(--font-sf, sans-serif);
+}
+
+.tmt-timer__value {
+  font-size: 44px;
+  line-height: 48px;
+}
+
+.tmt-timer__unit {
+  font-size: 32px;
+  line-height: 48px;
+  font-weight: 500;
+  letter-spacing: -1.5px;
+  opacity: 0.2;
+}
+
+/* ---------- tab strip ---------- */
+
+.tmt-tabsbar {
+  position: relative;
+  padding: 0 var(--tmt-gutter);
+}
+
+.tmt-tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 12px;
+  background: var(--tmt-tabs-bg);
+}

@@ -256,21 +256,17 @@ export const brackets = {
     { label: "Round 4", x: 1256, labelX: 1256, cardHeight: 148, ys: [810, 2575] },
   ],
   // Elbows are drawn with a border on top/right/bottom only (no left edge),
-  // exactly how the Figma rectangles are stroked.
+  // exactly how the Figma rectangles are stroked. Positions are verbatim from
+  // Figma — the ladder is not perfectly periodic, so they are listed, not derived.
   connectors: [
-    ...step(102, 4, 886).flatMap((y) => [
-      { x: 328, y, w: 114, h: 270 },
-      { x: 328, y: y + 471, w: 114, h: 241 },
-    ]),
-    ...step(202, 4, 886).flatMap((y) => [
-      { x: 442, y, w: 53, h: 1 },
-      { x: 442, y: y + 491, w: 53, h: 1 },
-    ]),
-    ...step(200, 4, 882).map((y) => ({ x: 612, y, w: 114, h: 493 })),
-    ...step(446, 4, 886).map((y) => ({ x: 726, y, w: 53, h: 1 })),
-    ...step(447, 2, 1765).map((y) => ({ x: 1098, y, w: 114, h: 875 })),
-    ...step(884, 2, 1765).map((y) => ({ x: 1212, y, w: 53, h: 1 })),
-  ],
+    { x: 328, w: 114, h: 270, ys: [102, 988, 1870, 2752] },
+    { x: 328, w: 114, h: 241, ys: [573, 1459, 2341, 3223] },
+    { x: 442, w: 53, h: 1, ys: [202, 693, 1088, 1579, 1970, 2461, 2852, 3343] },
+    { x: 612, w: 114, h: 493, ys: [200, 1086, 1968, 2850] },
+    { x: 726, w: 53, h: 1, ys: [446, 1332, 2214, 3096] },
+    { x: 1098, w: 114, h: 875, ys: [447, 2212] },
+    { x: 1212, w: 53, h: 1, ys: [884, 2649] },
+  ].flatMap(({ x, w, h, ys }) => ys.map((y) => ({ x, y, w, h }))),
 };
 
 export default tournament;
