@@ -1,4 +1,5 @@
-import TournamentSection, { GLOWS } from "../TournamentSection";
+import TournamentSection from "../TournamentSection";
+import { GLOWS } from "../tournamentGlows";
 import { participants } from "../tournamentData";
 
 // Figma node 8475:91390 — Participants. 18 team cards, three to a row, each with

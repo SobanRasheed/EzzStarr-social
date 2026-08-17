@@ -1,5 +1,6 @@
 import { Fragment } from "react";
-import TournamentSection, { GLOWS } from "../TournamentSection";
+import TournamentSection from "../TournamentSection";
+import { GLOWS } from "../tournamentGlows";
 import { brackets } from "../tournamentData";
 
 // Figma node 8475:91639 — Brackets. The ladder is positioned exactly as authored
