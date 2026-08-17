@@ -2,7 +2,8 @@ import { Outlet } from "react-router-dom";
 import TournamentHero from "./TournamentHero";
 import TournamentTabs from "./TournamentTabs";
 import TournamentFaq from "./TournamentFaq";
-import TournamentSection, { GLOWS } from "./TournamentSection";
+import TournamentSection from "./TournamentSection";
+import { GLOWS } from "./tournamentGlows";
 import "./tournament.css";
 
 // Shell shared by the five tournament detail frames: hero, tab strip, the active

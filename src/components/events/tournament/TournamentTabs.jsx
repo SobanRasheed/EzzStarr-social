@@ -19,8 +19,7 @@ export default function TournamentTabs() {
           ) : (
             <NavLink
               key={slug}
-              to={`../${slug}`}
-              relative="path"
+              to={slug}
               className={({ isActive }) => `tmt-tab${isActive ? " is-active" : ""}`}
             >
               {label}
