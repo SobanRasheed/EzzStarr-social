@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Layout from "./Layout"; // 👈 static import
 
 const router = createBrowserRouter([
@@ -75,28 +75,43 @@ const router = createBrowserRouter([
           {
             path: ":id",
             async lazy() {
-              const module = await import("./components/events/EventsLayout");
+              const module = await import("./components/events/tournament/TournamentLayout");
               return { Component: module.default };
             },
             children: [
+              { index: true, element: <Navigate to="overview" replace /> },
               {
                 path: "overview",
                 async lazy() {
-                  const module = await import("./components/events/Eventsoverview");
+                  const module = await import("./components/events/tournament/tabs/OverviewTab");
                   return { Component: module.default };
                 },
               },
               {
                 path: "prizes",
                 async lazy() {
-                  const module = await import("./components/events/Eventsprizes");
+                  const module = await import("./components/events/tournament/tabs/PrizesTab");
+                  return { Component: module.default };
+                },
+              },
+              {
+                path: "rules",
+                async lazy() {
+                  const module = await import("./components/events/tournament/tabs/RulesTab");
                   return { Component: module.default };
                 },
               },
               {
                 path: "participants",
                 async lazy() {
-                  const module = await import("./components/events/Eventsparticipants");
+                  const module = await import("./components/events/tournament/tabs/ParticipantsTab");
+                  return { Component: module.default };
+                },
+              },
+              {
+                path: "brackets",
+                async lazy() {
+                  const module = await import("./components/events/tournament/tabs/BracketsTab");
                   return { Component: module.default };
                 },
               },
